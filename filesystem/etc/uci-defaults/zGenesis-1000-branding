@@ -1,0 +1,36 @@
+#!/bin/bash
+# Copyright (C) 2017 Gregory L. Dietsche
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License version 2 as published by the
+# Free Software Foundation. This program is distributed in the hope that it
+# will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see http://www.gnu.org/licenses/.
+
+echo >> /etc/banner
+echo " Website: https://Genesis39.org/" >> /etc/banner
+echo " Version: $(cat /etc/genesis39_version)" >> /etc/banner
+echo >> /etc/banner
+
+echo "DISTRIB_DESCRIPTION='Genesis 39 Project $(cat /etc/genesis39_version)'" >> /etc/openwrt_release
+
+echo "VARIANT_ID='Genesis 39 Project'" >> /usr/lib/os-release
+echo "HOME_URL='https://Genesis39.org/'" >> /usr/lib/os-release
+
+uci -q batch <<-EOT
+  set system.@system[0].hostname='Genesis39'
+  commit system
+
+  set wireless.default_radio0.ssid='Genesis39'
+  set wireless.default_radio1.ssid='Genesis39'
+  set wireless.default_radio2.ssid='Genesis39'
+  set wireless.default_radio3.ssid='Genesis39'
+  set wireless.default_radio4.ssid='Genesis39'
+  commit wireless
+
+  set luci.diag.dns='Genesis39.org'
+  set luci.diag.ping='Genesis39.org'
+  set luci.diag.route='Genesis39.org'
+  commit luci
+EOT
