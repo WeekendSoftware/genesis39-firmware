@@ -1,0 +1,78 @@
+#!/bin/bash
+# Copyright (C) 2017 Gregory L. Dietsche
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License version 2 as published by the
+# Free Software Foundation. This program is distributed in the hope that it
+# will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see http://www.gnu.org/licenses/.
+
+uci -q batch <<-EOT
+  network.guest=interface
+  network.guest.type='bridge'
+  network.guest.proto='static'
+  network.guest.ipaddr='192.168.2.1'
+  network.guest.netmask='255.255.255.0'
+
+#add isolation
+  wireless.@wifi-iface[2]=wifi-iface
+  wireless.@wifi-iface[2].device='radio0'
+  wireless.@wifi-iface[2].mode='ap'
+  wireless.@wifi-iface[2].ssid='Genesis39-Guest'
+  wireless.@wifi-iface[2].encryption='psk2'
+  wireless.@wifi-iface[2].network='guest'
+
+  wireless.@wifi-iface[3]=wifi-iface
+  wireless.@wifi-iface[3].device='radio1'
+  wireless.@wifi-iface[3].mode='ap'
+  wireless.@wifi-iface[3].ssid='Genesis39-Guest'
+  wireless.@wifi-iface[3].encryption='psk-mixed'
+  wireless.@wifi-iface[3].network='guest'
+
+  dhcp.guest=dhcp
+  dhcp.guest.start='100'
+  dhcp.guest.leasetime='12h'
+  dhcp.guest.limit='150'
+  dhcp.guest.interface='guest'
+  commit dhcp
+
+#only accept output
+  firewall.@zone[2]=zone
+  firewall.@zone[2].input='ACCEPT'
+  firewall.@zone[2].forward='REJECT'
+  firewall.@zone[2].output='ACCEPT'
+  firewall.@zone[2].name='guest'
+  firewall.@zone[2].network='guest'
+
+  firewall.@forwarding[1]=forwarding
+  firewall.@forwarding[1].dest='wan'
+  firewall.@forwarding[1].src='guest'
+  firewall.@forwarding[2]=forwarding
+  firewall.@forwarding[2].dest='guest'
+  firewall.@forwarding[2].src='wan'
+
+  firewall.@rule[9]=rule
+  firewall.@rule[9].enabled='1'
+  firewall.@rule[9].src='guest'
+  firewall.@rule[9].dest_port='80'
+  firewall.@rule[9].target='DROP'
+  firewall.@rule[9].name='guest-no-webui-http'
+
+  firewall.@rule[10]=rule
+  firewall.@rule[10].enabled='1'
+  firewall.@rule[10].src='guest'
+  firewall.@rule[10].dest_port='443'
+  firewall.@rule[10].target='DROP'
+  firewall.@rule[10].name='guest-no-webui-https'
+
+  firewall.@rule[11]=rule
+  firewall.@rule[11].enabled='1'
+  firewall.@rule[11].src='guest'
+  firewall.@rule[11].dest_port='22'
+  firewall.@rule[11].target='DROP'
+  firewall.@rule[11].name='guest-no-ssh-management'
+
+  commit firewall
+  
+EOT
