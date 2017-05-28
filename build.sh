@@ -19,7 +19,7 @@ rm  dynamic-files/bin/*
 binfolder=`echo $(pwd)/dynamic-files/bin`
 
 pushd dynamic-files/$builder>/dev/null
-make image PROFILE="archer-c7-v2" PACKAGES="luci luci-app-sqm luci-app-ddns" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image  PACKAGES="luci luci-app-sqm luci-app-ddns" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete
