@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Copyright (C) 2017 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
@@ -8,29 +8,31 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
+netname=Guest
+
 uci -q batch <<-EOT
-  set network.guest=interface
-  set network.guest.type='bridge'
-  set network.guest.proto='static'
-  set network.guest.ipaddr='192.168.2.1'
-  set network.guest.netmask='255.255.255.0'
+  set network.$netname=interface
+  set network.$netname.type='bridge'
+  set network.$netname.proto='static'
+  set network.$netname.ipaddr='192.168.2.1'
+  set network.$netname.netmask='255.255.255.0'
 EOT
 
 uci -q batch <<-EOT
-  set dhcp.guest=dhcp
-  set dhcp.guest.start='50'
-  set dhcp.guest.leasetime='6h'
-  set dhcp.guest.limit='200'
-  set dhcp.guest.interface='guest'
+  set dhcp.$netname=dhcp
+  set dhcp.$netname.start='50'
+  set dhcp.$netname.leasetime='6h'
+  set dhcp.$netname.limit='200'
+  set dhcp.$netname.interface=$netname
 EOT
 
 iface=$(uci add wireless wifi-iface)
 uci -q batch <<-EOT
   set wireless.$iface.device='radio0'
   set wireless.$iface.mode='ap'
-  set wireless.$iface.ssid='Genesis39-Guest'
+  set wireless.$iface.ssid='Genesis39-${netname}'
   set wireless.$iface.encryption='psk2'
-  set wireless.$iface.network='guest'
+  set wireless.$iface.network=$netname
   set wireless.$iface.isolate='1'
 EOT
 
@@ -38,9 +40,9 @@ iface=$(uci add wireless wifi-iface)
 uci -q batch <<-EOT
   set wireless.$iface.device='radio1'
   set wireless.$iface.mode='ap'
-  set wireless.$iface.ssid='Genesis39-Guest'
+  set wireless.$iface.ssid='Genesis39-${netname}'
   set wireless.$iface.encryption='psk2'
-  set wireless.$iface.network='guest'
+  set wireless.$iface.network=$netname
   set wireless.$iface.isolate='1'
 EOT
 
@@ -49,13 +51,13 @@ uci -q batch <<-EOT
   set firewall.$rule.input='REJECT'
   set firewall.$rule.forward='REJECT'
   set firewall.$rule.output='ACCEPT'
-  set firewall.$rule.name='guest'
-  set firewall.$rule.network='guest'
+  set firewall.$rule.name=$netname
+  set firewall.$rule.network=$netname
 EOT
 
 rule=$(uci add firewall forwarding)
 uci -q batch <<-EOT
-  set firewall.$rule.src='guest'
+  set firewall.$rule.src=$netname
   set firewall.$rule.dest='wan'
 EOT
 
@@ -64,26 +66,26 @@ uci -q batch <<-EOT
   set firewall.$rule.target='ACCEPT'
   set firewall.$rule.proto='tcp udp'
   set firewall.$rule.dest_port='53'
-  set firewall.$rule.src='guest'
-  set firewall.$rule.name='guest dns'
+  set firewall.$rule.src=$netname
+  set firewall.$rule.name='${netname} dns'
 EOT
 
 rule=$(uci add firewall rule)
 uci -q batch <<-EOT
   set firewall.$rule.target='ACCEPT'
   set firewall.$rule.proto='udp'
-  set firewall.$rule.src='guest'
+  set firewall.$rule.src=$netname
   set firewall.$rule.family='ipv4'
   set firewall.$rule.dest_port='67'
   set firewall.$rule.src_port='68'
-  set firewall.$rule.name='guest dhcp4'
+  set firewall.$rule.name='${netname}dhcp4'
 EOT
 
 rule=$(uci add firewall rule)
 uci -q batch <<-EOT
   set firewall.$rule.target='ACCEPT'
-  set firewall.$rule.src='guest'
-  set firewall.$rule.name='guest dhcp6'
+  set firewall.$rule.src=$netname
+  set firewall.$rule.name='${netname} dhcp6'
   set firewall.$rule.family='ipv6'
   set firewall.$rule.dest_port='547'
   set firewall.$rule.proto='udp'
@@ -95,16 +97,16 @@ uci -q batch <<-EOT
   set firewall.$rule.target='ACCEPT'
   set firewall.$rule.family='ipv6'
   set firewall.$rule.proto='icmp'
-  set firewall.$rule.src='guest'
-  set firewall.$rule.name='guest icmp6'
+  set firewall.$rule.src='$netname'
+  set firewall.$rule.name='${netname} icmp6'
 EOT
 
 rule=$(uci add firewall rule)
 uci -q batch <<-EOT
   set firewall.$rule.target='ACCEPT'
   set firewall.$rule.proto='udp'
-  set firewall.$rule.src='guest'
-  set firewall.$rule.name='guest ntp'
+  set firewall.$rule.src='$netname'
+  set firewall.$rule.name='${netname} ntp'
   set firewall.$rule.dest_port='123'
 EOT
 
