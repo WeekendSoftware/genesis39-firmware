@@ -9,69 +9,69 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 
 uci -q batch <<-EOT
-  network.guest=interface
-  network.guest.type='bridge'
-  network.guest.proto='static'
-  network.guest.ipaddr='192.168.2.1'
-  network.guest.netmask='255.255.255.0'
+  set network.guest=interface
+  set network.guest.type='bridge'
+  set network.guest.proto='static'
+  set network.guest.ipaddr='192.168.2.1'
+  set network.guest.netmask='255.255.255.0'
 
-  wireless.@wifi-iface[2]=wifi-iface
-  wireless.@wifi-iface[2].device='radio0'
-  wireless.@wifi-iface[2].mode='ap'
-  wireless.@wifi-iface[2].ssid='Genesis39-Guest'
-  wireless.@wifi-iface[2].encryption='psk2'
-  wireless.@wifi-iface[2].network='guest'
-  wireless.@wifi-iface[2].isolate='1'
+  set wireless.@wifi-iface[2]=wifi-iface
+  set wireless.@wifi-iface[2].device='radio0'
+  set wireless.@wifi-iface[2].mode='ap'
+  set wireless.@wifi-iface[2].ssid='Genesis39-Guest'
+  set wireless.@wifi-iface[2].encryption='psk2'
+  set wireless.@wifi-iface[2].network='guest'
+  set wireless.@wifi-iface[2].isolate='1'
 
-  wireless.@wifi-iface[3]=wifi-iface
-  wireless.@wifi-iface[3].device='radio1'
-  wireless.@wifi-iface[3].mode='ap'
-  wireless.@wifi-iface[3].ssid='Genesis39-Guest'
-  wireless.@wifi-iface[3].encryption='psk-mixed'
-  wireless.@wifi-iface[3].network='guest'
-  wireless.@wifi-iface[3].isolate='1'
+  set wireless.@wifi-iface[3]=wifi-iface
+  set wireless.@wifi-iface[3].device='radio1'
+  set wireless.@wifi-iface[3].mode='ap'
+  set wireless.@wifi-iface[3].ssid='Genesis39-Guest'
+  set wireless.@wifi-iface[3].encryption='psk-mixed'
+  set wireless.@wifi-iface[3].network='guest'
+  set wireless.@wifi-iface[3].isolate='1'
 
-  dhcp.guest=dhcp
-  dhcp.guest.start='50'
-  dhcp.guest.leasetime='12h'
-  dhcp.guest.limit='200'
-  dhcp.guest.interface='guest'
+  set dhcp.guest=dhcp
+  set dhcp.guest.start='50'
+  set dhcp.guest.leasetime='12h'
+  set dhcp.guest.limit='200'
+  set dhcp.guest.interface='guest'
 
 #only accept output
-  firewall.@zone[2]=zone
-  firewall.@zone[2].input='ACCEPT'
-  firewall.@zone[2].forward='REJECT'
-  firewall.@zone[2].output='ACCEPT'
-  firewall.@zone[2].name='guest'
-  firewall.@zone[2].network='guest'
+  set firewall.@zone[2]=zone
+  set firewall.@zone[2].input='ACCEPT'
+  set firewall.@zone[2].forward='REJECT'
+  set firewall.@zone[2].output='ACCEPT'
+  set firewall.@zone[2].name='guest'
+  set firewall.@zone[2].network='guest'
 
-  firewall.@forwarding[1]=forwarding
-  firewall.@forwarding[1].dest='wan'
-  firewall.@forwarding[1].src='guest'
-  firewall.@forwarding[2]=forwarding
-  firewall.@forwarding[2].dest='guest'
-  firewall.@forwarding[2].src='wan'
+  set firewall.@forwarding[1]=forwarding
+  set firewall.@forwarding[1].dest='wan'
+  set firewall.@forwarding[1].src='guest'
+  set firewall.@forwarding[2]=forwarding
+  set firewall.@forwarding[2].dest='guest'
+  set firewall.@forwarding[2].src='wan'
 
-  firewall.@rule[9]=rule
-  firewall.@rule[9].enabled='1'
-  firewall.@rule[9].src='guest'
-  firewall.@rule[9].dest_port='80'
-  firewall.@rule[9].target='DROP'
-  firewall.@rule[9].name='guest-no-webui-http'
+  set firewall.@rule[9]=rule
+  set firewall.@rule[9].enabled='1'
+  set firewall.@rule[9].src='guest'
+  set firewall.@rule[9].dest_port='80'
+  set firewall.@rule[9].target='DROP'
+  set firewall.@rule[9].name='guest-no-webui-http'
 
-  firewall.@rule[10]=rule
-  firewall.@rule[10].enabled='1'
-  firewall.@rule[10].src='guest'
-  firewall.@rule[10].dest_port='443'
-  firewall.@rule[10].target='DROP'
-  firewall.@rule[10].name='guest-no-webui-https'
+  set firewall.@rule[10]=rule
+  set firewall.@rule[10].enabled='1'
+  set firewall.@rule[10].src='guest'
+  set firewall.@rule[10].dest_port='443'
+  set firewall.@rule[10].target='DROP'
+  set firewall.@rule[10].name='guest-no-webui-https'
 
-  firewall.@rule[11]=rule
-  firewall.@rule[11].enabled='1'
-  firewall.@rule[11].src='guest'
-  firewall.@rule[11].dest_port='22'
-  firewall.@rule[11].target='DROP'
-  firewall.@rule[11].name='guest-no-ssh-management'
+  set firewall.@rule[11]=rule
+  set firewall.@rule[11].enabled='1'
+  set firewall.@rule[11].src='guest'
+  set firewall.@rule[11].dest_port='22'
+  set firewall.@rule[11].target='DROP'
+  set firewall.@rule[11].name='guest-no-ssh-management'
 
 EOT
 
