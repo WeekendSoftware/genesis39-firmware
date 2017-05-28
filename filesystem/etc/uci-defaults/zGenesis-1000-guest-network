@@ -15,13 +15,13 @@ uci -q batch <<-EOT
   network.guest.ipaddr='192.168.2.1'
   network.guest.netmask='255.255.255.0'
 
-#add isolation
   wireless.@wifi-iface[2]=wifi-iface
   wireless.@wifi-iface[2].device='radio0'
   wireless.@wifi-iface[2].mode='ap'
   wireless.@wifi-iface[2].ssid='Genesis39-Guest'
   wireless.@wifi-iface[2].encryption='psk2'
   wireless.@wifi-iface[2].network='guest'
+  wireless.@wifi-iface[2].isolate='1'
 
   wireless.@wifi-iface[3]=wifi-iface
   wireless.@wifi-iface[3].device='radio1'
@@ -29,6 +29,7 @@ uci -q batch <<-EOT
   wireless.@wifi-iface[3].ssid='Genesis39-Guest'
   wireless.@wifi-iface[3].encryption='psk-mixed'
   wireless.@wifi-iface[3].network='guest'
+  wireless.@wifi-iface[3].isolate='1'
 
   dhcp.guest=dhcp
   dhcp.guest.start='50'
