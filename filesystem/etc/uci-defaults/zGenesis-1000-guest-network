@@ -14,65 +14,83 @@ uci -q batch <<-EOT
   set network.guest.proto='static'
   set network.guest.ipaddr='192.168.2.1'
   set network.guest.netmask='255.255.255.0'
+EOT
 
-  set wireless.@wifi-iface[2]=wifi-iface
-  set wireless.@wifi-iface[2].device='radio0'
-  set wireless.@wifi-iface[2].mode='ap'
-  set wireless.@wifi-iface[2].ssid='Genesis39-Guest'
-  set wireless.@wifi-iface[2].encryption='psk2'
-  set wireless.@wifi-iface[2].network='guest'
-  set wireless.@wifi-iface[2].isolate='1'
-
-  set wireless.@wifi-iface[3]=wifi-iface
-  set wireless.@wifi-iface[3].device='radio1'
-  set wireless.@wifi-iface[3].mode='ap'
-  set wireless.@wifi-iface[3].ssid='Genesis39-Guest'
-  set wireless.@wifi-iface[3].encryption='psk-mixed'
-  set wireless.@wifi-iface[3].network='guest'
-  set wireless.@wifi-iface[3].isolate='1'
-
+uci -q batch <<-EOT
   set dhcp.guest=dhcp
   set dhcp.guest.start='50'
-  set dhcp.guest.leasetime='12h'
+  set dhcp.guest.leasetime='6h'
   set dhcp.guest.limit='200'
   set dhcp.guest.interface='guest'
+EOT
 
-#only accept output
-  set firewall.@zone[2]=zone
-  set firewall.@zone[2].input='ACCEPT'
-  set firewall.@zone[2].forward='REJECT'
-  set firewall.@zone[2].output='ACCEPT'
-  set firewall.@zone[2].name='guest'
-  set firewall.@zone[2].network='guest'
+iface=$(uci add wireless wifi-iface)
+uci -q batch <<-EOT
+  set wireless.$iface.device='radio0'
+  set wireless.$iface.mode='ap'
+  set wireless.$iface.ssid='Genesis39-Guest'
+  set wireless.$iface.encryption='psk2'
+  set wireless.$iface.network='guest'
+  set wireless.$iface.isolate='1'
+EOT
 
-  set firewall.@forwarding[1]=forwarding
-  set firewall.@forwarding[1].dest='wan'
-  set firewall.@forwarding[1].src='guest'
-  set firewall.@forwarding[2]=forwarding
-  set firewall.@forwarding[2].dest='guest'
-  set firewall.@forwarding[2].src='wan'
+iface=$(uci add wireless wifi-iface)
+uci -q batch <<-EOT
+  set wireless.$iface.device='radio1'
+  set wireless.$iface.mode='ap'
+  set wireless.$iface.ssid='Genesis39-Guest'
+  set wireless.$iface.encryption='psk2'
+  set wireless.$iface.network='guest'
+  set wireless.$iface.isolate='1'
+EOT
 
-  set firewall.@rule[9]=rule
-  set firewall.@rule[9].enabled='1'
-  set firewall.@rule[9].src='guest'
-  set firewall.@rule[9].dest_port='80'
-  set firewall.@rule[9].target='DROP'
-  set firewall.@rule[9].name='guest-no-webui-http'
 
-  set firewall.@rule[10]=rule
-  set firewall.@rule[10].enabled='1'
-  set firewall.@rule[10].src='guest'
-  set firewall.@rule[10].dest_port='443'
-  set firewall.@rule[10].target='DROP'
-  set firewall.@rule[10].name='guest-no-webui-https'
+rule=$(uci add firewall zone)
+uci -q batch <<-EOT
+  set firewall.$rule.input='ACCEPT'
+  set firewall.$rule.forward='REJECT'
+  set firewall.$rule.output='ACCEPT'
+  set firewall.$rule.name='guest'
+  set firewall.$rule.network='guest'
+EOT
 
-  set firewall.@rule[11]=rule
-  set firewall.@rule[11].enabled='1'
-  set firewall.@rule[11].src='guest'
-  set firewall.@rule[11].dest_port='22'
-  set firewall.@rule[11].target='DROP'
-  set firewall.@rule[11].name='guest-no-ssh-management'
+rule=$(uci add firewall forwarding)
+uci -q batch <<-EOT
+  set firewall.$rule.dest='wan'
+  set firewall.$rule.src='guest'
+EOT
 
+rule=$(uci add firewall forwarding)
+uci -q batch <<-EOT
+  set firewall.$rule.dest='guest'
+  set firewall.$rule.src='wan'
+EOT
+
+rule=$(uci add firewall rule)
+uci -q batch <<-EOT
+  set firewall.$rule.enabled='1'
+  set firewall.$rule.src='guest'
+  set firewall.$rule.dest_port='80'
+  set firewall.$rule.target='DROP'
+  set firewall.$rule.name='guest-no-webui-http'
+EOT
+
+rule=$(uci add firewall rule)
+uci -q batch <<-EOT
+  set firewall.$rule.enabled='1'
+  set firewall.$rule.src='guest'
+  set firewall.$rule.dest_port='443'
+  set firewall.$rule.target='DROP'
+  set firewall.$rule.name='guest-no-webui-https'
+EOT
+
+rule=$(uci add firewall rule)
+uci -q batch <<-EOT
+  set firewall.$rule.enabled='1'
+  set firewall.$rule.src='guest'
+  set firewall.$rule.dest_port='22'
+  set firewall.$rule.target='DROP'
+  set firewall.$rule.name='guest-no-ssh-management'
 EOT
 
 uci commit
