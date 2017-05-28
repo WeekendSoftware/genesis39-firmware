@@ -31,11 +31,10 @@ uci -q batch <<-EOT
   wireless.@wifi-iface[3].network='guest'
 
   dhcp.guest=dhcp
-  dhcp.guest.start='100'
+  dhcp.guest.start='50'
   dhcp.guest.leasetime='12h'
-  dhcp.guest.limit='150'
+  dhcp.guest.limit='200'
   dhcp.guest.interface='guest'
-  commit dhcp
 
 #only accept output
   firewall.@zone[2]=zone
@@ -73,6 +72,6 @@ uci -q batch <<-EOT
   firewall.@rule[11].target='DROP'
   firewall.@rule[11].name='guest-no-ssh-management'
 
-  commit firewall
-  
 EOT
+
+uci commit
