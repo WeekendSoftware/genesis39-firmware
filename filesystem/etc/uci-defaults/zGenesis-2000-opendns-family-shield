@@ -18,7 +18,6 @@ EOT
 uci -q batch <<-EOT
   set network.wan.peerdns='0'
   set network.wan6.peerdns='0'
-  commit network
 
   #DO NOT Allow upstream responses in the 127.0.0.0/8 range, e.g. for RBL services
   delete dhcp.@dnsmasq[0].rebind_localhost
@@ -26,8 +25,9 @@ uci -q batch <<-EOT
   delete dhcp.@dnsmasq[0].server
   add_list dhcp.@dnsmasq[0].server=208.67.222.123
   add_list dhcp.@dnsmasq[0].server=208.67.220.123
-  commit dhcp
 
   set ddns.myddns_ipv4.service_name='opendns.com'
-  commit ddns
 EOT
+
+uci commit
+
