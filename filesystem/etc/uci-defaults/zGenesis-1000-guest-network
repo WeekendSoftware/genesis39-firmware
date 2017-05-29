@@ -26,25 +26,31 @@ uci -q batch <<-EOT
   set dhcp.$netname.interface=$netname
 EOT
 
-iface=$(uci add wireless wifi-iface)
-uci -q batch <<-EOT
-  set wireless.$iface.device='radio0'
-  set wireless.$iface.mode='ap'
-  set wireless.$iface.ssid='Genesis39-${netname}'
-  set wireless.$iface.encryption='psk2'
-  set wireless.$iface.network=$netname
-  set wireless.$iface.isolate='1'
+has_radio=$(uci get wireless.radio0)
+if [[ $? -eq 0  ]]; then
+  iface=$(uci add wireless wifi-iface 2>/dev/null)
+  uci -q batch <<-EOT
+    set wireless.$iface.device='radio0'
+    set wireless.$iface.mode='ap'
+    set wireless.$iface.ssid='Genesis39-${netname}'
+    set wireless.$iface.encryption='psk2'
+    set wireless.$iface.network=$netname
+    set wireless.$iface.isolate='1'
 EOT
+fi
 
-iface=$(uci add wireless wifi-iface)
-uci -q batch <<-EOT
-  set wireless.$iface.device='radio1'
-  set wireless.$iface.mode='ap'
-  set wireless.$iface.ssid='Genesis39-${netname}'
-  set wireless.$iface.encryption='psk2'
-  set wireless.$iface.network=$netname
-  set wireless.$iface.isolate='1'
+has_radio=$(uci get wireless.radio1 2>/dev/null)
+if [[ $? -eq 0  ]]; then
+  iface=$(uci add wireless wifi-iface)
+  uci -q batch <<-EOT
+    set wireless.$iface.device='radio1'
+    set wireless.$iface.mode='ap'
+    set wireless.$iface.ssid='Genesis39-${netname}'
+    set wireless.$iface.encryption='psk2'
+    set wireless.$iface.network=$netname
+    set wireless.$iface.isolate='1'
 EOT
+fi
 
 rule=$(uci add firewall zone)
 uci -q batch <<-EOT
