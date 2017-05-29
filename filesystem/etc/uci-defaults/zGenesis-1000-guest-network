@@ -26,6 +26,12 @@ uci -q batch <<-EOT
   set dhcp.$netname.interface=$netname
 EOT
 
+uci -q batch <<-EOT
+  set dhcp.$netname.ra='server'
+  set dhcp.$netname.dhcpv6='server'
+  set dhcp.$netname.ra_management='1'
+EOT
+
 has_radio=$(uci get wireless.radio0)
 if [[ $? -eq 0  ]]; then
   iface=$(uci add wireless wifi-iface 2>/dev/null)
