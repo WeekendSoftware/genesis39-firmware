@@ -31,7 +31,6 @@ EOT
 uci -q batch <<-EOT
   set dhcp.$netname.ra='server'
   set dhcp.$netname.dhcpv6='server'
-  set dhcp.$netname.ra_management='1'
 EOT
 
 has_radio=$(uci -q get wireless.radio0)
