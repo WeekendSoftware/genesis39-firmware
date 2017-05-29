@@ -9,6 +9,8 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 
 netname=Guest
+wifiname='Genesis39-Guest'
+wifikey='Genesis39'
 
 uci -q batch <<-EOT
   set network.$netname=interface
@@ -38,7 +40,8 @@ if [[ $? -eq 0  ]]; then
   uci -q batch <<-EOT
     set wireless.$iface.device='radio0'
     set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='Genesis39-${netname}'
+    set wireless.$iface.ssid='${wifiname}'
+    set wireless.$iface.key='${wifikey}'
     set wireless.$iface.encryption='psk2'
     set wireless.$iface.network=$netname
     set wireless.$iface.isolate='1'
@@ -51,7 +54,8 @@ if [[ $? -eq 0  ]]; then
   uci -q batch <<-EOT
     set wireless.$iface.device='radio1'
     set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='Genesis39-${netname}'
+    set wireless.$iface.ssid='${wifiname}'
+    set wireless.$iface.key='${wifikey}'
     set wireless.$iface.encryption='psk2'
     set wireless.$iface.network=$netname
     set wireless.$iface.isolate='1'
