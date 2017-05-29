@@ -84,7 +84,7 @@ uci -q batch <<-EOT
   set firewall.$rule.family='ipv4'
   set firewall.$rule.dest_port='67'
   set firewall.$rule.src_port='68'
-  set firewall.$rule.name='${netname}dhcp4'
+  set firewall.$rule.name='${netname} dhcp4'
 EOT
 
 rule=$(uci add firewall rule)
