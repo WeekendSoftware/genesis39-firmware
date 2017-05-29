@@ -36,7 +36,7 @@ EOT
 
 has_radio=$(uci get wireless.radio0)
 if [[ $? -eq 0  ]]; then
-  iface=$(uci add wireless wifi-iface 2>/dev/null)
+  iface=$(uci -q add wireless wifi-iface)
   uci -q batch <<-EOT
     set wireless.$iface.device='radio0'
     set wireless.$iface.mode='ap'
@@ -48,7 +48,7 @@ if [[ $? -eq 0  ]]; then
 EOT
 fi
 
-has_radio=$(uci get wireless.radio1 2>/dev/null)
+has_radio=$(uci -q get wireless.radio1)
 if [[ $? -eq 0  ]]; then
   iface=$(uci add wireless wifi-iface)
   uci -q batch <<-EOT
@@ -123,7 +123,7 @@ uci -q batch <<-EOT
   set firewall.$rule.name='${netname} icmp6'
 EOT
 
-if [[ $(uci get system.ntp.enable_server) -eq 1  ]]; then
+if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
   rule=$(uci add firewall rule)
   uci -q batch <<-EOT
     set firewall.$rule.target='ACCEPT'
