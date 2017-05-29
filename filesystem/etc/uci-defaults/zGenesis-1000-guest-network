@@ -123,13 +123,15 @@ uci -q batch <<-EOT
   set firewall.$rule.name='${netname} icmp6'
 EOT
 
-rule=$(uci add firewall rule)
-uci -q batch <<-EOT
-  set firewall.$rule.target='ACCEPT'
-  set firewall.$rule.proto='udp'
-  set firewall.$rule.src='$netname'
-  set firewall.$rule.name='${netname} ntp'
-  set firewall.$rule.dest_port='123'
+if [[ $(uci get system.ntp.enable_server) -eq 1  ]]; then
+  rule=$(uci add firewall rule)
+  uci -q batch <<-EOT
+    set firewall.$rule.target='ACCEPT'
+    set firewall.$rule.proto='udp'
+    set firewall.$rule.src='$netname'
+    set firewall.$rule.name='${netname} ntp'
+    set firewall.$rule.dest_port='123'
 EOT
+fi
 
 uci commit
