@@ -122,7 +122,9 @@ uci -q batch <<-EOT
   set firewall.$rule.name='${netname} icmp6'
 EOT
 
+#Allow ntp access if the router is setup as a ntp server
 if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
+  logger -t Genesis39 "Allowing ${netname} to access ntp on this router"
   rule=$(uci add firewall rule)
   uci -q batch <<-EOT
     set firewall.$rule.target='ACCEPT'
