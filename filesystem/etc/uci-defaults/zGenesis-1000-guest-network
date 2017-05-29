@@ -73,6 +73,12 @@ EOT
 
 rule=$(uci add firewall forwarding)
 uci -q batch <<-EOT
+  set firewall.$rule.src='lan'
+  set firewall.$rule.dest=$netname
+EOT
+
+rule=$(uci add firewall forwarding)
+uci -q batch <<-EOT
   set firewall.$rule.src=$netname
   set firewall.$rule.dest='wan'
 EOT
