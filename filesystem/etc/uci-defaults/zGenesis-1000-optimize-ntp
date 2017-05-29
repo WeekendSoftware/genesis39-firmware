@@ -9,8 +9,11 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 
 cat <<EOT >> /etc/firewall.user
-echo "   * Genesis 39: Reroute all NTP requests to this router"
+echo "   * Genesis 39: Reroute all LAN NTP requests to this router"
 iptables -t nat -A PREROUTING -s 192.168.1.0/24 -p udp --dport 123 -j DNAT --to 192.168.1.1
+
+echo "   * Genesis 39: Reroute all Guest NTP requests to this router"
+iptables -t nat -A PREROUTING -s 192.168.2.0/24 -p udp --dport 123 -j DNAT --to 192.168.2.1
 
 EOT
 
