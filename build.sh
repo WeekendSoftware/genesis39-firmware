@@ -8,17 +8,32 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
-builder=lede-imagebuilder-17.01.1-ar71xx-generic.Linux-x86_64
+# MY_DIR=$(dirname $(readlink -f $0))
+# $MY_DIR/settings.sh
+source settings.sh
 
 #The LEDE image builder wants this umask set
 umask 022
 
-#the BIN_DIR variable seems to do better when it has a fully qualified path.
-mkdir -p dynamic-files/bin
-rm  dynamic-files/bin/*
-binfolder=`echo $(pwd)/dynamic-files/bin`
 
-pushd dynamic-files/$builder>/dev/null
+if [ ! -f $genesisBuilder.tar.xz  ]; then
+	mkdir -p dynamic-files
+	pushd dynamic-files>/dev/null
+
+	echo Download Image Builder
+	wget --continue -q --show-progress $genesisDownload
+
+	echo Extracting Image Builder
+	tar -xf $genesisBuilder.tar.xz
+	popd>/dev/null
+fi
+
+#the BIN_DIR variable seems to do better when it has a fully qualified path.
+mkdir -p dynamic-files/bin/$genesisBuilder
+rm  dynamic-files/bin/$genesisBuilder/*
+binfolder=`echo $(pwd)/dynamic-files/bin/$genesisBuilder`
+
+pushd dynamic-files/$genesisBuilder>/dev/null
 make image  PACKAGES="luci luci-app-sqm luci-app-ddns" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null

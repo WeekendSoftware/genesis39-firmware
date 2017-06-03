@@ -8,16 +8,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
+MY_DIR=$(dirname $(readlink -f $0))
+$MY_DIR/settings.sh
+
 echo Install packages
 sudo apt-get install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc wget unzip python
-
-mkdir -p dynamic-files
-pushd dynamic-files>/dev/null
-
-echo Download LEDE ar71xx Image Builder
-wget --continue -q --show-progress https://downloads.lede-project.org/releases/17.01.1/targets/ar71xx/generic/lede-imagebuilder-17.01.1-ar71xx-generic.Linux-x86_64.tar.xz
-
-echo Extracting Image Builder
-tar -xf lede-imagebuilder-17.01.1-ar71xx-generic.Linux-x86_64.tar.xz
 
 popd>/dev/null
