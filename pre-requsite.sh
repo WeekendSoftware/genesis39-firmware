@@ -8,10 +8,5 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
-MY_DIR=$(dirname $(readlink -f $0))
-$MY_DIR/settings.sh
-
 echo Install packages
 sudo apt-get install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc wget unzip python
-
-popd>/dev/null
