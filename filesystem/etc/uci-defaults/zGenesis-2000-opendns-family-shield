@@ -8,17 +8,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
-cat <<EOT >> /etc/firewall.user
-echo "   * Genesis 39: Reroute all LAN DNS requests to this router"
-iptables -t nat -A PREROUTING -s 192.168.1.0/24 -p udp --dport 53 -j DNAT --to 192.168.1.1
-iptables -t nat -A PREROUTING -s 192.168.1.0/24 -p tcp --dport 53 -j DNAT --to 192.168.1.1
-
-echo "   * Genesis 39: Reroute all Guest DNS requests to this router"
-iptables -t nat -A PREROUTING -s 192.168.2.0/24 -p udp --dport 53 -j DNAT --to 192.168.2.1
-iptables -t nat -A PREROUTING -s 192.168.2.0/24 -p tcp --dport 53 -j DNAT --to 192.168.2.1
-
-EOT
-
 uci -q batch <<-EOT
   set network.wan.peerdns='0'
   set network.wan6.peerdns='0'
@@ -31,6 +20,28 @@ uci -q batch <<-EOT
   add_list dhcp.@dnsmasq[0].server=208.67.220.123
 
   set ddns.myddns_ipv4.service_name='opendns.com'
+EOT
+
+rule=$(uci add firewall redirect)
+uci -q batch <<-EOT
+  set firewall.$rule.target='DNAT'
+  set firewall.$rule.src='lan'
+  set firewall.$rule.proto='tcpudp'
+  set firewall.$rule.src_dport='53'
+  set firewall.$rule.dest='lan'
+  set firewall.$rule.dest_ip='192.168.1.1'
+  set firewall.$rule.name='redirect all lan dns requests to this router'
+EOT
+
+rule=$(uci add firewall redirect)
+uci -q batch <<-EOT
+  set firewall.$rule.target='DNAT'
+  set firewall.$rule.src='Guest'
+  set firewall.$rule.proto='tcpudp'
+  set firewall.$rule.src_dport='53'
+  set firewall.$rule.dest='Guest'
+  set firewall.$rule.dest_ip='192.168.1.1'
+  set firewall.$rule.name='redirect all lan Guest requests to this router'
 EOT
 
 uci commit
