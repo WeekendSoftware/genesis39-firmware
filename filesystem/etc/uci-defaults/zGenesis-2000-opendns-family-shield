@@ -41,7 +41,7 @@ uci -q batch <<-EOT
   set firewall.$rule.src_dport='53'
   set firewall.$rule.dest='Guest'
   set firewall.$rule.dest_ip='192.168.1.1'
-  set firewall.$rule.name='redirect all lan Guest requests to this router'
+  set firewall.$rule.name='redirect all Guest dns requests to this router'
 EOT
 
 uci commit
