@@ -22,15 +22,18 @@ echo "HOME_URL='https://Genesis39.org/'" >> /usr/lib/os-release
 uci -q batch <<-EOT
   set system.@system[0].hostname='Genesis39'
 
-  set wireless.default_radio0.ssid='Genesis39'
-  set wireless.default_radio1.ssid='Genesis39'
-  set wireless.default_radio2.ssid='Genesis39'
-  set wireless.default_radio3.ssid='Genesis39'
-  set wireless.default_radio4.ssid='Genesis39'
-
   set luci.diag.dns='Genesis39.org'
   set luci.diag.ping='Genesis39.org'
   set luci.diag.route='Genesis39.org'
 EOT
+
+set_ssid() {
+  uci -q batch <<-EOT
+  set wireless.$1.ssid='Genesis39'
+EOT
+}
+
+config_load wireless
+config_foreach set_ssid wifi-iface
 
 uci commit
