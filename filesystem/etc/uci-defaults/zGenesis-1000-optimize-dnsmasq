@@ -7,6 +7,7 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+. /lib/functions.sh
 
 uci -q batch <<-EOT
   set dhcp.@dnsmasq[0].cachesize='4096'

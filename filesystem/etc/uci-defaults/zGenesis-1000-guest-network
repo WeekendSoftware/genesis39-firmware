@@ -7,6 +7,7 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+. /lib/functions.sh
 
 netname=Guest
 wifiname='Genesis39-Guest'
@@ -26,6 +27,7 @@ uci -q batch <<-EOT
   set dhcp.$netname.leasetime='6h'
   set dhcp.$netname.limit='200'
   set dhcp.$netname.interface=$netname
+  set dhcp.$netname.dhcp_option='42,192.168.2.1'
 EOT
 
 uci -q batch <<-EOT
