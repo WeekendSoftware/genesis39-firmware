@@ -38,7 +38,7 @@ uci -q batch <<-EOT
   set firewall.$rule.src='Guest'
   set firewall.$rule.proto='udp'
   set firewall.$rule.src_dport='123'
-  set firewall.$rule.dest='lan'
+  set firewall.$rule.dest='Guest'
   set firewall.$rule.dest_ip='192.168.1.1'
   set firewall.$rule.name='redirect all Guest ntp requests to this router'
 EOT
