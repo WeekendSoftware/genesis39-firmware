@@ -23,9 +23,12 @@ EOT
 
 wifi_wps() {
   uci -q batch <<-EOT
+  set wireless.$1.encryption='psk2'
+  set wireless.$1.key='!Genesis39'
+
   set wireless.$1.wps_device_name="Genesis39 AP"
   set wireless.$1.wps_manufacturer="Genesis39.org"
-  set wireless.$1.wps_pushbutton=1
+  set wireless.$1.wps_pushbutton='1'
 EOT
 }
 
