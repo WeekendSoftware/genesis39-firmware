@@ -33,7 +33,14 @@ set_ssid() {
 EOT
 }
 
+enable_wifi() {
+  uci -q batch <<-EOT
+  set wireless.$1.disabled=0
+EOT
+}
+
 config_load wireless
+config_foreach enable_wifi wifi-device
 config_foreach set_ssid wifi-iface
 
 uci commit
