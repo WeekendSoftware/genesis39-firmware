@@ -9,20 +9,29 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
 
-set_ssid() {
+wifi_ssid() {
   uci -q batch <<-EOT
   set wireless.$1.ssid='Genesis39'
 EOT
 }
 
-enable_wifi() {
+wifi_enable() {
   uci -q batch <<-EOT
   set wireless.$1.disabled=0
 EOT
 }
 
+wifi_wps() {
+  uci -q batch <<-EOT
+  set wireless.$1.wps_device_name="Genesis39 AP"
+  set wireless.$1.wps_manufacturer="Genesis39.org"
+  set wireless.$1.wps_pushbutton=1
+EOT
+}
+
 config_load wireless
-config_foreach enable_wifi wifi-device
-config_foreach set_ssid wifi-iface
+config_foreach wifi_enable wifi-device
+config_foreach wifi_ssid wifi-iface
+config_foreach wifi_wps wifi-iface
 
 uci commit
