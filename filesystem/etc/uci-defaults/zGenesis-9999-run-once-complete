@@ -16,7 +16,7 @@ then
   touch $config
   uci -q batch <<-EOT
     add genesis39 init
-    set genesis39.init.run_once=true
+    set genesis39.init.run_once=1
 EOT
   uci commit genesis39
 fi

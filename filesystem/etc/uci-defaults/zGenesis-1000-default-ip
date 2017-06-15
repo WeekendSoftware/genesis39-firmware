@@ -10,7 +10,7 @@
 . /lib/functions.sh
 
 uci -q batch <<-EOT
-  network.lan.ipaddr='192.168.10.1'
+  set network.lan.ipaddr='192.168.10.1'
 EOT
 
 uci commit
