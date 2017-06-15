@@ -34,7 +34,7 @@ rm  dynamic-files/bin/$genesisBuilder/*
 binfolder=`echo $(pwd)/dynamic-files/bin/$genesisBuilder`
 
 pushd dynamic-files/$genesisBuilder>/dev/null
-make image  PACKAGES="luci luci-app-sqm luci-app-ddns" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image  PACKAGES="luci luci-app-sqm luci-app-ddns -wpad-mini wpad hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete
