@@ -12,12 +12,13 @@
 netname=Guest
 wifiname='Genesis39-Guest'
 wifikey='Genesis39'
+ip='192.168.11.1'
 
 uci -q batch <<-EOT
   set network.$netname=interface
   set network.$netname.type='bridge'
   set network.$netname.proto='static'
-  set network.$netname.ipaddr='192.168.2.1'
+  set network.$netname.ipaddr='$ip'
   set network.$netname.netmask='255.255.255.0'
 EOT
 
@@ -27,7 +28,6 @@ uci -q batch <<-EOT
   set dhcp.$netname.leasetime='6h'
   set dhcp.$netname.limit='200'
   set dhcp.$netname.interface=$netname
-  set dhcp.$netname.dhcp_option='42,192.168.2.1'
 EOT
 
 uci -q batch <<-EOT
@@ -135,6 +135,18 @@ if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
     set firewall.$rule.name='${netname} ntp'
     set firewall.$rule.dest_port='123'
 EOT
+
+rule=$(uci add firewall redirect)
+uci -q batch <<-EOT
+  set firewall.$rule.target='DNAT'
+  set firewall.$rule.src='Guest'
+  set firewall.$rule.proto='udp'
+  set firewall.$rule.src_dport='123'
+  set firewall.$rule.dest='Guest'
+  set firewall.$rule.dest_ip='$ip'
+  set firewall.$rule.name='redirect all Guest ntp requests to this router'
+EOT
+
 fi
 
 uci commit
