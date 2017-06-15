@@ -7,23 +7,22 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+. /lib/functions.sh
 
-echo >> /etc/banner
-echo " Website: https://Genesis39.org/" >> /etc/banner
-echo " Version: $(cat /etc/genesis39_version)" >> /etc/banner
-echo >> /etc/banner
-
-echo "DISTRIB_DESCRIPTION='Genesis 39 Project $(cat /etc/genesis39_version)'" >> /etc/openwrt_release
-
-echo "VARIANT_ID='Genesis 39 Project'" >> /usr/lib/os-release
-echo "HOME_URL='https://Genesis39.org/'" >> /usr/lib/os-release
-
-uci -q batch <<-EOT
-  set system.@system[0].hostname='Genesis39'
-
-  set luci.diag.dns='Genesis39.org'
-  set luci.diag.ping='Genesis39.org'
-  set luci.diag.route='Genesis39.org'
+set_ssid() {
+  uci -q batch <<-EOT
+  set wireless.$1.ssid='Genesis39'
 EOT
+}
+
+enable_wifi() {
+  uci -q batch <<-EOT
+  set wireless.$1.disabled=0
+EOT
+}
+
+config_load wireless
+config_foreach enable_wifi wifi-device
+config_foreach set_ssid wifi-iface
 
 uci commit
