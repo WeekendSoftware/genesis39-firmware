@@ -17,9 +17,7 @@ then
   uci -q batch <<-EOT
     add genesis39 init
     set genesis39.init.run_once=true
-
-    add genesis39 uci-init
-  EOT
+EOT
   uci commit genesis39
 fi
 
