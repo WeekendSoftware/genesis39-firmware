@@ -14,6 +14,21 @@ wifiname='Genesis39-Guest'
 wifikey='Genesis39'
 ip='192.168.11.1'
 
+wifi_addGuest() {
+  iface=$(uci add wireless wifi-iface)
+  uci -q batch <<-EOT
+  set wireless.$iface.device=$1
+    set wireless.$iface.mode='ap'
+    set wireless.$iface.ssid='${wifiname}'
+    set wireless.$iface.key='${wifikey}'
+    set wireless.$iface.encryption='psk2'
+    set wireless.$iface.network=$netname
+    set wireless.$iface.isolate='1'
+EOT
+}
+
+config_foreach wifi_addGuest wifi-device
+
 uci -q batch <<-EOT
   set network.$netname=interface
   set network.$netname.type='bridge'
@@ -34,34 +49,6 @@ uci -q batch <<-EOT
   set dhcp.$netname.ra='server'
   set dhcp.$netname.dhcpv6='server'
 EOT
-
-has_radio=$(uci -q get wireless.radio0)
-if [[ $? -eq 0  ]]; then
-  iface=$(uci add wireless wifi-iface)
-  uci -q batch <<-EOT
-    set wireless.$iface.device='radio0'
-    set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='${wifiname}'
-    set wireless.$iface.key='${wifikey}'
-    set wireless.$iface.encryption='psk2'
-    set wireless.$iface.network=$netname
-    set wireless.$iface.isolate='1'
-EOT
-fi
-
-has_radio=$(uci -q get wireless.radio1)
-if [[ $? -eq 0  ]]; then
-  iface=$(uci add wireless wifi-iface)
-  uci -q batch <<-EOT
-    set wireless.$iface.device='radio1'
-    set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='${wifiname}'
-    set wireless.$iface.key='${wifikey}'
-    set wireless.$iface.encryption='psk2'
-    set wireless.$iface.network=$netname
-    set wireless.$iface.isolate='1'
-EOT
-fi
 
 rule=$(uci add firewall zone)
 uci -q batch <<-EOT
