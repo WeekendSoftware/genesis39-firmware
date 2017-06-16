@@ -27,6 +27,7 @@ wifi_addGuest() {
 EOT
 }
 
+config_load wireless
 config_foreach wifi_addGuest wifi-device
 
 uci -q batch <<-EOT
