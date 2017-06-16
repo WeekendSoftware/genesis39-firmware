@@ -17,7 +17,7 @@ ip='192.168.11.1'
 wifi_addGuest() {
   iface=$(uci add wireless wifi-iface)
   uci -q batch <<-EOT
-  set wireless.$iface.device=$1
+    set wireless.$iface.device='$1'
     set wireless.$iface.mode='ap'
     set wireless.$iface.ssid='${wifiname}'
     set wireless.$iface.key='${wifikey}'
