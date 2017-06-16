@@ -20,7 +20,7 @@ uci -q batch <<-EOT
   add_list dhcp.@dnsmasq[0].server=208.67.222.123
   add_list dhcp.@dnsmasq[0].server=208.67.220.123
 
-  set ddns.myddns_ipv4.service_name='opendns.com'
+  set ddns.myddns_ipv4.service_name='dnsomatic.com'
 EOT
 
 ip=$(uci get network.lan.ipaddr)
