@@ -7,6 +7,7 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+. /lib/functions.sh
 
 echo >> /etc/banner
 echo " Website: https://Genesis39.org/" >> /etc/banner
@@ -25,5 +26,16 @@ uci -q batch <<-EOT
   set luci.diag.ping='Genesis39.org'
   set luci.diag.route='Genesis39.org'
 EOT
+
+wifi_ssid() {
+  uci -q batch <<-EOT
+  set wireless.$1.ssid='Genesis39'
+  set wireless.$1.encryption='psk2'
+  set wireless.$1.key='!Genesis39'
+EOT
+}
+
+config_load wireless
+config_foreach wifi_ssid wifi-iface
 
 uci commit
