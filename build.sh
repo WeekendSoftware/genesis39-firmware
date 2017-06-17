@@ -16,7 +16,7 @@ source settings.sh
 umask 022
 
 
-if [ ! -f $genesisBuilder.tar.xz  ]; then
+if [ ! -f dynamic-files/$genesisBuilder.tar.xz  ]; then
 	mkdir -p dynamic-files
 	pushd dynamic-files>/dev/null
 
