@@ -8,6 +8,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
+. /lib/genesis39-run-once.sh
 
 echo >> /etc/banner
 echo " Website: https://Genesis39.org/" >> /etc/banner

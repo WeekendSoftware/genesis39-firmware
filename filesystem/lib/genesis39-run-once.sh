@@ -8,16 +8,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
-. /lib/genesis39-run-once.sh
 
-if [ ! -f "/etc/config/genesis39"  ]
-then
-  touch /etc/config/genesis39
-fi
+run_once() {
+  local init_ran
+  config_load genesis39
+  config_get_bool init_ran init ran 0
 
-uci -q batch <<-EOF
-    set genesis39.init=script
-    set genesis39.init.ran=1
-    commit genesis39
-EOF
-
+  if [ "$init_ran" -gt 0  ]; then
+    exit 0
+  fi
+}
