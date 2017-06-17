@@ -15,13 +15,13 @@ FamilyShield blocks domains that are categorized as:
  - Sexuality and Pornography
 
 ## Preconfigured WiFi Networks
-    - Genesis39
-        - You must be connected to this network to manage your wireless router.
-        - Devices on this network can communicate with oneanother and the internet.
-    - Genesis39-Guest
-        - WPS is supported to make connecting quick and easy.
-        - Devices connected to this network can only access the internet.
-        - Devices on this network are not allowed to manage your wireless router.
+- Genesis39
+    - You must be connected to this network to manage your wireless router.
+    - Devices on this network can communicate with oneanother and the internet.
+- Genesis39-Guest
+    - WPS is supported to make connecting quick and easy.
+    - Devices connected to this network can only access the internet.
+    - Devices on this network are not allowed to manage your wireless router.
 
 ## Supported Routers / WiFi Access Points
  - TP-LINK Archer C7 Hardware Version 2.0
