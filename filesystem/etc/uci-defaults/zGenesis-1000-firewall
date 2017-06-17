@@ -13,5 +13,3 @@
 uci -q batch <<-EOT
   set firewall.@defaults[0].drop_invalid='1'
 EOT
-
-uci commit

@@ -18,5 +18,3 @@ EOT
 
 config_load wireless
 config_foreach wifi_enable wifi-device
-
-uci commit

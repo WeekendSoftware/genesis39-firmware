@@ -13,4 +13,3 @@
 uci -q batch <<-EOT
   set dhcp.@dnsmasq[0].cachesize='4096'
 EOT
-uci commit

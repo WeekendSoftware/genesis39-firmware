@@ -14,5 +14,3 @@ uci -q batch <<-EOT
   set system.@system[0].zonename='America/Menominee'
   set system.@system[0].timezone='CST6CDT,M3.2.0,M11.1.0'
 EOT
-
-uci commit

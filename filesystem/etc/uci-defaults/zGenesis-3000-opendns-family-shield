@@ -47,6 +47,3 @@ uci -q batch <<-EOT
   set firewall.$rule.dest_ip='$ip'
   set firewall.$rule.name='redirect all Guest dns requests to this router'
 EOT
-
-uci commit
-

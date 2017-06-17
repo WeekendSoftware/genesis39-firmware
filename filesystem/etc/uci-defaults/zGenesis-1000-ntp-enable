@@ -22,5 +22,3 @@ uci -q batch <<-EOT
   add_list system.ntp.server='3.pool.ntp.org'
 
 EOT
-
-uci commit

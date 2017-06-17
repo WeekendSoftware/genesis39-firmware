@@ -18,6 +18,5 @@ fi
 uci -q batch <<-EOF
     set genesis39.init=script
     set genesis39.init.ran=1
-    commit genesis39
 EOF
 

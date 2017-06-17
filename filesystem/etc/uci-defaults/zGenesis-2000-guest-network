@@ -141,5 +141,3 @@ uci -q batch <<-EOT
 EOT
 
 fi
-
-uci commit
