@@ -17,7 +17,7 @@ FamilyShield blocks domains that are categorized as:
 ## Preconfigured WiFi Networks
 - Genesis39
     - You must be connected to this network to manage your wireless router.
-    - Devices on this network can communicate with oneanother and the internet.
+    - Devices on this network can communicate with one another and the internet.
 - Genesis39-Guest
     - WPS is supported to make connecting quick and easy.
     - Devices connected to this network can only access the internet.
