@@ -8,13 +8,11 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
-genesis39_run_once() {
-  local init_ran
-  config_load genesis39
-  config_get_bool init_ran init ran 0
+local init_ran
+config_load genesis39
+config_get_bool init_ran init ran 0
 
-  if [ "$init_ran" -gt 0  ]; then
-    exit 0
-  fi
-}
-genesis39_run_once
+if [ "$init_ran" -gt 0  ]; then
+  logger -t Genesis39 "Skipping init because it has already been run."
+  exit 0
+fi
