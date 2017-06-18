@@ -12,6 +12,9 @@ local init_ran
 config_load genesis39
 config_get_bool init_ran init ran 0
 
-if [ "$init_ran" -gt 0  ]; then
-  exit 0
-fi
+genesis39_run_once(){
+  if [ "$init_ran" -gt 0  ]; then
+    exit 0
+  fi
+}
+genesis39_run_once
