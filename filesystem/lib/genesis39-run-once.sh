@@ -13,6 +13,5 @@ config_load genesis39
 config_get_bool init_ran init ran 0
 
 if [ "$init_ran" -gt 0  ]; then
-  logger -t Genesis39 "Skipping init because it has already been run."
   exit 0
 fi
