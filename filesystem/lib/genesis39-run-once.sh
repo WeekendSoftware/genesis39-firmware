@@ -9,7 +9,7 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
 
-run_once() {
+genesis39_run_once() {
   local init_ran
   config_load genesis39
   config_get_bool init_ran init ran 0
@@ -18,3 +18,4 @@ run_once() {
     exit 0
   fi
 }
+genesis39_run_once
