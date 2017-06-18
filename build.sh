@@ -10,7 +10,7 @@
 
 # MY_DIR=$(dirname $(readlink -f $0))
 # $MY_DIR/settings.sh
-source settings.sh
+. settings.sh
 
 #The LEDE image builder wants this umask set
 umask 022
