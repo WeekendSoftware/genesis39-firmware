@@ -11,5 +11,5 @@
 . /lib/genesis39-run-once.sh
 
 uci -q batch <<-EOT
-  set dhcp.@dnsmasq[0].cachesize='4096'
+  set dhcp.@dnsmasq[0].cachesize='10000'
 EOT
