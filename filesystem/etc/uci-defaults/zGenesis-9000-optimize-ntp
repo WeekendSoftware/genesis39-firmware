@@ -11,4 +11,4 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
-genesis39_force_zone_ntp_to_router lan
+genesis39_force_zone_ntp_to_router lan lan
