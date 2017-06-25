@@ -58,6 +58,6 @@ uci -q batch <<-EOT
   set dhcp.$network.dhcpv6='server'
 EOT
 
-genesis39_add_zone $zonename
+genesis39_add_zone $zonename $networkname
 genesis39_allow_zone_ntp_to_router $zonename
 genesis39_force_zone_ntp_to_router $zonename $networkname
