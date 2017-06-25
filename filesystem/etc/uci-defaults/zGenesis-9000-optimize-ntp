@@ -9,15 +9,6 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
 . /lib/genesis39-run-once.sh
+. /lib/genesis39-functions.sh
 
-ip=$(uci get network.lan.ipaddr)
-rule=$(uci add firewall redirect)
-uci -q batch <<-EOT
-  set firewall.$rule.target='DNAT'
-  set firewall.$rule.src='lan'
-  set firewall.$rule.proto='udp'
-  set firewall.$rule.src_dport='123'
-  set firewall.$rule.dest='lan'
-  set firewall.$rule.dest_ip='$ip'
-  set firewall.$rule.name='redirect all lan ntp requests to this router'
-EOT
+genesis39_force_zone_ntp_to_router lan

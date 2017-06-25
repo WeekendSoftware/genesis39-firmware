@@ -9,8 +9,10 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
 . /lib/genesis39-run-once.sh
+. /lib/genesis39-functions.sh
 
-netname=Guest
+networkname=Guest
+zonename=Guest
 wifiname='Genesis39-Guest'
 wifikey='Genesis39'
 ip='192.168.11.1'
@@ -20,8 +22,8 @@ wifi_addGuest() {
   uci -q batch <<-EOT
     set wireless.$iface.device='$1'
     set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='${wifiname}'
-    set wireless.$iface.key='${wifikey}'
+    set wireless.$iface.ssid='$wifiname'
+    set wireless.$iface.key='$wifikey'
     set wireless.$iface.encryption='psk2'
     set wireless.$iface.network=$netname
     set wireless.$iface.isolate='1'
@@ -56,88 +58,5 @@ uci -q batch <<-EOT
   set dhcp.$netname.dhcpv6='server'
 EOT
 
-rule=$(uci add firewall zone)
-uci -q batch <<-EOT
-  set firewall.$rule.input='REJECT'
-  set firewall.$rule.forward='REJECT'
-  set firewall.$rule.output='ACCEPT'
-  set firewall.$rule.name=$netname
-  set firewall.$rule.network=$netname
-EOT
-
-#rule=$(uci add firewall forwarding)
-#uci -q batch <<-EOT
-#  set firewall.$rule.src='lan'
-#  set firewall.$rule.dest=$netname
-#EOT
-
-rule=$(uci add firewall forwarding)
-uci -q batch <<-EOT
-  set firewall.$rule.src=$netname
-  set firewall.$rule.dest='wan'
-EOT
-
-rule=$(uci add firewall rule)
-uci -q batch <<-EOT
-  set firewall.$rule.target='ACCEPT'
-  set firewall.$rule.proto='tcp udp'
-  set firewall.$rule.dest_port='53'
-  set firewall.$rule.src=$netname
-  set firewall.$rule.name='${netname} dns'
-EOT
-
-rule=$(uci add firewall rule)
-uci -q batch <<-EOT
-  set firewall.$rule.target='ACCEPT'
-  set firewall.$rule.proto='udp'
-  set firewall.$rule.src=$netname
-  set firewall.$rule.family='ipv4'
-  set firewall.$rule.dest_port='67'
-  set firewall.$rule.src_port='68'
-  set firewall.$rule.name='${netname} dhcp4'
-EOT
-
-rule=$(uci add firewall rule)
-uci -q batch <<-EOT
-  set firewall.$rule.target='ACCEPT'
-  set firewall.$rule.src=$netname
-  set firewall.$rule.name='${netname} dhcp6'
-  set firewall.$rule.family='ipv6'
-  set firewall.$rule.dest_port='547'
-  set firewall.$rule.proto='udp'
-  set firewall.$rule.src_port='546'
-EOT
-
-rule=$(uci add firewall rule)
-uci -q batch <<-EOT
-  set firewall.$rule.target='ACCEPT'
-  set firewall.$rule.family='ipv6'
-  set firewall.$rule.proto='icmp'
-  set firewall.$rule.src='$netname'
-  set firewall.$rule.name='${netname} icmp6'
-EOT
-
-#Allow ntp access if the router is setup as a ntp server
-if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
-  logger -t Genesis39 "Allowing ${netname} to access ntp on this router"
-  rule=$(uci add firewall rule)
-  uci -q batch <<-EOT
-    set firewall.$rule.target='ACCEPT'
-    set firewall.$rule.proto='udp'
-    set firewall.$rule.src='$netname'
-    set firewall.$rule.name='${netname} ntp'
-    set firewall.$rule.dest_port='123'
-EOT
-
-rule=$(uci add firewall redirect)
-uci -q batch <<-EOT
-  set firewall.$rule.target='DNAT'
-  set firewall.$rule.src='Guest'
-  set firewall.$rule.proto='udp'
-  set firewall.$rule.src_dport='123'
-  set firewall.$rule.dest='Guest'
-  set firewall.$rule.dest_ip='$ip'
-  set firewall.$rule.name='redirect all Guest ntp requests to this router'
-EOT
-
-fi
+genesis39_add_zone $zonename $networkname
+genesis39_force_zone_ntp_to_router $zonename

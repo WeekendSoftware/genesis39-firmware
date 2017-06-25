@@ -9,6 +9,7 @@
 # this program. If not, see http://www.gnu.org/licenses/.
 . /lib/functions.sh
 . /lib/genesis39-run-once.sh
+. /lib/genesis39-functions.sh
 
 uci -q batch <<-EOT
   set network.wan.peerdns='0'
@@ -36,26 +37,5 @@ else
 EOT
 fi
 
-ip=$(uci get network.lan.ipaddr)
-rule=$(uci add firewall redirect)
-uci -q batch <<-EOT
-  set firewall.$rule.target='DNAT'
-  set firewall.$rule.src='lan'
-  set firewall.$rule.proto='tcpudp'
-  set firewall.$rule.src_dport='53'
-  set firewall.$rule.dest='lan'
-  set firewall.$rule.dest_ip='$ip'
-  set firewall.$rule.name='redirect all lan dns requests to this router'
-EOT
-
-ip=$(uci get network.Guest.ipaddr)
-rule=$(uci add firewall redirect)
-uci -q batch <<-EOT
-  set firewall.$rule.target='DNAT'
-  set firewall.$rule.src='Guest'
-  set firewall.$rule.proto='tcpudp'
-  set firewall.$rule.src_dport='53'
-  set firewall.$rule.dest='Guest'
-  set firewall.$rule.dest_ip='$ip'
-  set firewall.$rule.name='redirect all Guest dns requests to this router'
-EOT
+genesis39_force_zone_dns_to_router lan
+genesis39_force_zone_dns_to_router Guest
