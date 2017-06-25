@@ -25,7 +25,7 @@ wifi_addGuest() {
     set wireless.$iface.ssid='$wifiname'
     set wireless.$iface.key='$wifikey'
     set wireless.$iface.encryption='psk2'
-    set wireless.$iface.network=$netname
+    set wireless.$iface.network=$network
     set wireless.$iface.isolate='1'
 
     set wireless.$iface.wps_device_name="Genesis39 AP"
@@ -38,25 +38,26 @@ config_load wireless
 config_foreach wifi_addGuest wifi-device
 
 uci -q batch <<-EOT
-  set network.$netname=interface
-  set network.$netname.type='bridge'
-  set network.$netname.proto='static'
-  set network.$netname.ipaddr='$ip'
-  set network.$netname.netmask='255.255.255.0'
+  set network.$network=interface
+  set network.$network.type='bridge'
+  set network.$network.proto='static'
+  set network.$network.ipaddr='$ip'
+  set network.$network.netmask='255.255.255.0'
 EOT
 
 uci -q batch <<-EOT
-  set dhcp.$netname=dhcp
-  set dhcp.$netname.start='50'
-  set dhcp.$netname.leasetime='6h'
-  set dhcp.$netname.limit='200'
-  set dhcp.$netname.interface=$netname
+  set dhcp.$network=dhcp
+  set dhcp.$network.start='50'
+  set dhcp.$network.leasetime='6h'
+  set dhcp.$network.limit='200'
+  set dhcp.$network.interface=$network
 EOT
 
 uci -q batch <<-EOT
-  set dhcp.$netname.ra='server'
-  set dhcp.$netname.dhcpv6='server'
+  set dhcp.$network.ra='server'
+  set dhcp.$network.dhcpv6='server'
 EOT
 
-genesis39_add_zone $zonename $networkname
-genesis39_force_zone_ntp_to_router $zonename
+genesis39_add_zone $zonename
+genesis39_allow_zone_ntp_to_router $zonename
+genesis39_force_zone_ntp_to_router $zonename $networkname

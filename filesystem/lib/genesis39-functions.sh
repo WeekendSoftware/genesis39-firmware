@@ -8,7 +8,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
-# for example forward lan Guest
+# for example allow lan to access Guest
 genesis39_forward_zone_to_zone(){
   local $src_zone=$1
   local $dst_zone=$2
@@ -36,10 +36,8 @@ genesis39_force_zone_dns_to_router(){
 EOT
 }
 
-genesis39_force_zone_ntp_to_router(){
+genesis39_allow_zone_ntp_to_router(){
   local zone=$1
-  local ip=$(uci get network.$zone.ipaddr)
-
   if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
     #Allow ntp access because the router is setup as a ntp server
     local rule=$(uci add firewall rule)
@@ -50,8 +48,17 @@ genesis39_force_zone_ntp_to_router(){
       set firewall.$rule.name='$zone ntp'
       set firewall.$rule.dest_port='123'
 EOT
+  fi
+}
+
+genesis39_force_zone_ntp_to_router(){
+  local zone=$1
+  local networkname=$2
+  local ip=$(uci get network.$networkname.ipaddr)
+
+  if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
     # Force all NTP traffic to this router
-    rule=$(uci add firewall redirect)
+    local rule=$(uci add firewall redirect)
     uci -q batch <<-EOT
       set firewall.$rule.target='DNAT'
       set firewall.$rule.src='$zone'
