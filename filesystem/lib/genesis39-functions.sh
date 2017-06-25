@@ -71,7 +71,7 @@ EOT
   fi
 }
 
-function genesis39_add_network(){
+genesis39_add_network(){
   local $network=$1
   local $ip=$2
 
