@@ -11,31 +11,11 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
-networkname=Guest
+network=Guest
 zonename=Guest
 wifiname='Genesis39-Guest'
 wifikey='Genesis39'
 ip='192.168.11.1'
-
-wifi_addGuest() {
-  iface=$(uci add wireless wifi-iface)
-  uci -q batch <<-EOT
-    set wireless.$iface.device='$1'
-    set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='$wifiname'
-    set wireless.$iface.key='$wifikey'
-    set wireless.$iface.encryption='psk2'
-    set wireless.$iface.network=$network
-    set wireless.$iface.isolate='1'
-
-    set wireless.$iface.wps_device_name="Genesis39 AP"
-    set wireless.$iface.wps_manufacturer="Genesis39.org"
-    set wireless.$iface.wps_pushbutton='1'
-EOT
-}
-
-config_load wireless
-config_foreach wifi_addGuest wifi-device
 
 uci -q batch <<-EOT
   set network.$network=interface
@@ -58,6 +38,26 @@ uci -q batch <<-EOT
   set dhcp.$network.dhcpv6='server'
 EOT
 
-genesis39_add_zone $zonename $networkname
+wifi_addGuest() {
+  iface=$(uci add wireless wifi-iface)
+  uci -q batch <<-EOT
+    set wireless.$iface.device='$1'
+    set wireless.$iface.mode='ap'
+    set wireless.$iface.ssid='$wifiname'
+    set wireless.$iface.key='$wifikey'
+    set wireless.$iface.encryption='psk2'
+    set wireless.$iface.network=$network
+    set wireless.$iface.isolate='1'
+
+    set wireless.$iface.wps_device_name="Genesis39 AP"
+    set wireless.$iface.wps_manufacturer="Genesis39.org"
+    set wireless.$iface.wps_pushbutton='1'
+EOT
+}
+
+config_load wireless
+config_foreach wifi_addGuest wifi-device
+
+genesis39_add_zone $zonename $network
 genesis39_allow_zone_ntp_to_router $zonename
-genesis39_force_zone_ntp_to_router $zonename $networkname
+genesis39_force_zone_ntp_to_router $zonename $network
