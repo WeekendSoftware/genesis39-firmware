@@ -10,8 +10,8 @@
 
 # for example allow lan to access Guest
 genesis39_forward_zone_to_zone(){
-  local $src_zone=$1
-  local $dst_zone=$2
+  local src_zone=$1
+  local dst_zone=$2
 
   local rule=$(uci add firewall forwarding)
   uci -q batch <<-EOT
@@ -72,8 +72,8 @@ EOT
 }
 
 genesis39_add_network(){
-  local $network=$1
-  local $ip=$2
+  local network=$1
+  local ip=$2
 
   uci -q batch <<-EOT
     set network.$network=interface
