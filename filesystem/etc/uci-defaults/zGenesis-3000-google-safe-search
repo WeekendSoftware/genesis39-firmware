@@ -11,13 +11,16 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
+#extra isn't an openwrt/lede option.
+#we use it so that it's easy to "turn it off" later
 addCNAME() {
   rule=$(uci add dhcp cname)
   uci -q batch <<-EOT
   set dhcp.$rule.cname=$1
   set dhcp.$rule.target=$2,$3
+  set dhcp.$rule.extra=$4
 EOT
 }
 
-AddCNAME forcesafesearch.google.com 216.239.38.120 86400
-AddCNAME google.com,www.google.com forcesafesearch.google.com 86400
+AddCNAME forcesafesearch.google.com 216.239.38.120 86400 googlesafesearch
+AddCNAME google.com,www.google.com forcesafesearch.google.com 86400 googlesafesearch
