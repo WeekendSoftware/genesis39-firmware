@@ -6,6 +6,9 @@ being overbearing. By installing this firmware, all computers, laptops,
 tablets, phones, and other devices connected to your wireless router will
 be protected by OpenDNS's Family Shield.
 
+## Google Safe Search
+- Blocks objectionable content in searches without being overbearing.
+
 ## OpenDNS Family Shield
 FamilyShield blocks domains that are categorized as:
  - Tasteless
