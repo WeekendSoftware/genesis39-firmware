@@ -22,5 +22,5 @@ addCNAME() {
 EOT
 }
 
-AddCNAME forcesafesearch.google.com 216.239.38.120 86400 googlesafesearch
-AddCNAME google.com,www.google.com forcesafesearch.google.com 86400 googlesafesearch
+addCNAME forcesafesearch.google.com 216.239.38.120 86400 googlesafesearch
+addCNAME google.com,www.google.com forcesafesearch.google.com 86400 googlesafesearch
