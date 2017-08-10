@@ -21,8 +21,8 @@ addCNAME() {
 EOT
 }
 
-uci add_list dhcp.@dnsmasq[0].addnhosts=/tmp/hosts.safesearch.google
+uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/hosts.safesearch.google
 addCNAME google.com,www.google.com forcesafesearch.google.com 86400
 
-uci add_list dhcp.@dnsmasq[0].addnhosts=/tmp/hosts.safesearch.bing
+uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/hosts.safesearch.bing
 addCNAME www.bing.com strict.bing.com 86400
