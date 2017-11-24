@@ -13,6 +13,9 @@
 #The LEDE image builder wants this umask set
 umask 022
 
+#git doesn't save permissions, so explicitly set what we need here
+#this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts
+chmod -R ugo+rX filesystem/genesis39
 
 if [ ! -f dynamic-files/$genesisBuilder.tar.xz  ]; then
 	mkdir -p dynamic-files

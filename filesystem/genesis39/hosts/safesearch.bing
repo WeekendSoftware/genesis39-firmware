@@ -7,5 +7,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
-204.79.197.220 strict.bing.com
-::FFFF:CC4F:C5DC strict.bing.com
+#
+# IMPORTANT: if this file is not working, make sure that dnsmasq is able to READ it!
+#
+
+204.79.197.220 strict.bing.com bing.com www.bing.com
+::FFFF:CC4F:C5DC strict.bing.com bing.com www.bing.com

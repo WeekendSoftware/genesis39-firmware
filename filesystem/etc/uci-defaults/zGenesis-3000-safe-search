@@ -11,5 +11,4 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
-uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/hosts.safesearch.google
-uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/hosts.safesearch.bing
+uci add_list dhcp.@dnsmasq[0].addnhosts=/genesis39/hosts
