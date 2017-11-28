@@ -26,8 +26,8 @@ EOT
 
 #
 # TODO detect if ddns is installed and then set this setting.
-# Since we're useing OpenDNS, their dnsomatic service can be
-# very usefull for techies who want to be able to access their
+# Since we're using OpenDNS, their dnsomatic service can be
+# very useful for techies who want to be able to access their
 # home from elsewhere
 #
 uci -q batch <<-EOT
