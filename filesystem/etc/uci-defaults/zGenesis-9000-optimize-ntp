@@ -11,4 +11,13 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
+#
+# Same trick that we did with DNS
+#
+# The router will answer all NTP requests even when a NTP client tries
+# to communicate with a different NTP server on the internet.
+#
+# This has the fun side-effect of making every host on the internet look
+# like it is running a NTP server!
+#
 genesis39_force_zone_ntp_to_router lan lan

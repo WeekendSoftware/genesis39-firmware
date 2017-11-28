@@ -11,4 +11,9 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
+
+#
+# All files in the given folder effectively become part of the /etc/hosts file
+# This is how we force SafeSearch for Bing and Google
+#
 uci add_list dhcp.@dnsmasq[0].addnhosts=/genesis39/hosts

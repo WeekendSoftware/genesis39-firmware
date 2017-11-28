@@ -11,6 +11,10 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
+#
+# We do NOT want to use the DNS servers advertised by the ISP because
+# we want to use the OpenDNS Family Shield DNS servers instead.
+#
 uci -q batch <<-EOT
   set network.wan.peerdns='0'
   set network.wan6.peerdns='0'
@@ -18,9 +22,22 @@ uci -q batch <<-EOT
   #DO NOT Allow upstream responses in the 127.0.0.0/8 range, e.g. for RBL services
   delete dhcp.@dnsmasq[0].rebind_localhost
 
+EOT
+
+#
+# TODO detect if ddns is installed and then set this setting.
+# Since we're useing OpenDNS, their dnsomatic service can be
+# very usefull for techies who want to be able to access their
+# home from elsewhere
+#
+uci -q batch <<-EOT
   set ddns.myddns_ipv4.service_name='dnsomatic.com'
 EOT
 
+#
+# If dnscrypt-proxy is installed, use it.
+# Otherwise, directly use the Family Shield DNS servers.
+#
 if command -v dnscrypt-proxy; then
   uci -q batch <<-EOT
     delete dhcp.@dnsmasq[0].server
@@ -37,5 +54,11 @@ else
 EOT
 fi
 
+#
+# Capture and redirect ALL DNS requests so that this router handles them.
+# This makes it very hard for someone to use a DNS server other than the one
+# we have configured. For example, trying to use 8.8.8.8 for DNS will no longer
+# answered by 8.8.8.8. Instead, this router will reply.
+#
 genesis39_force_zone_dns_to_router lan
 genesis39_force_zone_dns_to_router Guest
