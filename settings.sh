@@ -1,5 +1,15 @@
 #!/bin/bash
 
-export genesisBuilder=lede-imagebuilder-17.01.4-ar71xx-generic.Linux-x86_64
-export genesisDownload=https://downloads.lede-project.org/releases/17.01.4/targets/ar71xx/generic/lede-imagebuilder-17.01.4-ar71xx-generic.Linux-x86_64.tar.xz
-export buildProfile=archer-c7-v2
+#
+# Quick controls to set the target version and hardware
+# Only exporting variables that are required by the build script
+#
+ledeVersion=17.01.4
+ledeTarget=ar71xx
+export ledeProfile=archer-c7-v2
+
+#
+# variables used by the build script
+#
+export ledeBuilder=lede-imagebuilder-${ledeVersion}-${ledeTarget}-generic.Linux-x86_64
+export ledeDownload=https://downloads.lede-project.org/releases/${ledeVersion}/targets/${ledeTarget}/generic/lede-imagebuilder-${ledeVersion}-${ledeTarget}-generic.Linux-x86_64.tar.xz

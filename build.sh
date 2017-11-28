@@ -17,25 +17,25 @@ umask 022
 #this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts
 chmod -R ugo+rX filesystem/genesis39
 
-if [ ! -f dynamic-files/$genesisBuilder.tar.xz  ]; then
+if [ ! -f dynamic-files/$ledeBuilder.tar.xz  ]; then
 	mkdir -p dynamic-files
 	pushd dynamic-files>/dev/null
 
 	echo Download Image Builder
-	wget --continue -q --show-progress $genesisDownload
+	wget --continue -q --show-progress $ledeDownload
 
 	echo Extracting Image Builder
-	tar -xf $genesisBuilder.tar.xz
+	tar -xf $ledeBuilder.tar.xz
 	popd>/dev/null
 fi
 
 #the BIN_DIR variable seems to do better when it has a fully qualified path.
-mkdir -p dynamic-files/bin/$genesisBuilder
-rm  dynamic-files/bin/$genesisBuilder/*
-binfolder=`echo $(pwd)/dynamic-files/bin/$genesisBuilder`
+mkdir -p dynamic-files/bin/$ledeBuilder
+rm  dynamic-files/bin/$ledeBuilder/*
+binfolder=`echo $(pwd)/dynamic-files/bin/$ledeBuilder`
 
-pushd dynamic-files/$genesisBuilder>/dev/null
-make image  PROFILE="$buildProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy -wpad-mini wpad hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
+pushd dynamic-files/$ledeBuilder>/dev/null
+make image  PROFILE="$ledeProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy -wpad-mini wpad hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete
