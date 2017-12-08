@@ -18,7 +18,8 @@ uci -q batch <<-EOT
   set luci.diag.route='Genesis39.org'
 EOT
 
-mac=`cat /sys/class/net/wlan0/address | sed s/://g | grep -o '....$'`
+wan=`uci get network.wan.ifname`
+mac=`cat /sys/class/net/$wan/address | sed s/://g | grep -o '....$'`
 wifi_ssid() {
   uci -q batch <<-EOT
   set wireless.$1.ssid='Genesis39_$mac'
