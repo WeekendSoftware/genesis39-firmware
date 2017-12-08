@@ -15,6 +15,7 @@ network=Guest
 zonename=Guest
 wifiname='Genesis39-Guest'
 wifikey='Genesis39'
+wifiencryption='none'
 ip='192.168.12.1'
 
 genesis39_add_network $network $ip
@@ -29,7 +30,7 @@ wifi_addGuest() {
     set wireless.$iface.mode='ap'
     set wireless.$iface.ssid='$wifiname'
     set wireless.$iface.key='$wifikey'
-    set wireless.$iface.encryption='psk2'
+    set wireless.$iface.encryption='$wifiencryption'
     set wireless.$iface.network=$network
     set wireless.$iface.isolate='1'
 EOT
