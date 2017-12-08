@@ -11,8 +11,8 @@
 . /lib/genesis39-run-once.sh
 . /lib/genesis39-functions.sh
 
-wan=`uci get network.wan.ifname`
-mac=`cat /sys/class/net/$wan/address | sed s/://g | grep -o '....$'`
+lan=`uci get network.lan.ifname`
+mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
 network=Guest
 zonename=Guest
 wifiname="Genesis39_Guest_$mac"
