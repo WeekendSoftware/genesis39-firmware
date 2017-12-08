@@ -35,7 +35,7 @@ rm  dynamic-files/bin/$ledeBuilder/*
 binfolder=`echo $(pwd)/dynamic-files/bin/$ledeBuilder`
 
 pushd dynamic-files/$ledeBuilder>/dev/null
-make image  PROFILE="$ledeProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy -wpad-mini wpad hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image  PROFILE="$ledeProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete

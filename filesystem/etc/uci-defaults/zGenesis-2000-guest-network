@@ -32,10 +32,6 @@ wifi_addGuest() {
     set wireless.$iface.encryption='psk2'
     set wireless.$iface.network=$network
     set wireless.$iface.isolate='1'
-
-    set wireless.$iface.wps_device_name="Genesis39 AP"
-    set wireless.$iface.wps_manufacturer="Genesis39.org"
-    set wireless.$iface.wps_pushbutton='1'
 EOT
 }
 
