@@ -21,8 +21,6 @@ EOT
 wifi_ssid() {
   uci -q batch <<-EOT
   set wireless.$1.ssid='Genesis39'
-  set wireless.$1.encryption='psk2'
-  set wireless.$1.key='!Genesis39'
 EOT
 }
 
