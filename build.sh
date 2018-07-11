@@ -10,7 +10,7 @@
 
 . settings.sh
 
-#The LEDE image builder wants this umask set
+#The upstream image builder wants this umask set
 umask 022
 
 #this will put a marker in the image that will tell us what git commit was used to build the firmware.
@@ -20,25 +20,25 @@ git log -1 --format="%H"> filesystem/etc/genesis39_git_hash
 #this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts
 chmod -R ugo+rX filesystem/genesis39
 
-if [ ! -f dynamic-files/$ledeBuilder.tar.xz  ]; then
+if [ ! -f dynamic-files/$upstreamBuilder.tar.xz  ]; then
 	mkdir -p dynamic-files
 	pushd dynamic-files>/dev/null
 
 	echo Download Image Builder
-	wget --continue -q --show-progress $ledeDownload
+	wget --continue -q --show-progress $upstreamDownload
 
 	echo Extracting Image Builder
-	tar -xf $ledeBuilder.tar.xz
+	tar -xf $upstreamBuilder.tar.xz
 	popd>/dev/null
 fi
 
 #the BIN_DIR variable seems to do better when it has a fully qualified path.
-mkdir -p dynamic-files/bin/$ledeBuilder
-rm  dynamic-files/bin/$ledeBuilder/*
-binfolder=`echo $(pwd)/dynamic-files/bin/$ledeBuilder`
+mkdir -p dynamic-files/bin/$upstreamBuilder
+rm  dynamic-files/bin/$upstreamBuilder/*
+binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
 
-pushd dynamic-files/$ledeBuilder>/dev/null
-make image  PROFILE="$ledeProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
+pushd dynamic-files/$upstreamBuilder>/dev/null
+make image  PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete
