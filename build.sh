@@ -10,7 +10,7 @@
 
 . settings.sh
 
-#The upstream image builder wants this umask set
+#The OpenWrt image builder wants this umask set
 umask 022
 
 #this will put a marker in the image that will tell us what git commit was used to build the firmware.
