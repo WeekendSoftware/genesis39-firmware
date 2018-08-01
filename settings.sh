@@ -4,7 +4,7 @@
 # Quick controls to set the target version and hardware
 # Only exporting variables that are required by the build script
 #
-upstreamVersion=18.06.0-rc2
+upstreamVersion=18.06.0
 upstreamTarget=ar71xx
 export upstreamProfile=archer-c7-v2
 
