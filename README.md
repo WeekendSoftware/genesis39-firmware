@@ -21,7 +21,6 @@ FamilyShield blocks domains that are categorized as:
     - Devices on this network can communicate with one another and the internet.
     - Use this network with your Roku, Chromecast, Computers, NAS, and smart phone(s).
 - Genesis39-Guest
-    - WPS is supported to make connecting quick and easy.
     - Devices connected to this network can only access the internet.
     - Devices on this network are not allowed to manage your wireless router.
     - Use this network for friends, and devices that only need to access the internet.
