@@ -14,7 +14,7 @@
 umask 022
 
 #this will put a marker in the image that will tell us what git commit was used to build the firmware.
-git log -1 --format="%H"> filesystem/etc/genesis39_git_hash
+git log -1 --format="%H"> filesystem/genesis39/version.hash
 
 #git doesn't save permissions, so explicitly set what we need here
 #this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts

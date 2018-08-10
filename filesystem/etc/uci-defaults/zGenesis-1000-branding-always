@@ -10,10 +10,10 @@
 
 echo >> /etc/banner
 echo " Website: https://Genesis39.org/" >> /etc/banner
-echo " Version: $(cat /etc/genesis39_version)" >> /etc/banner
+echo " Version: $(cat /genesis39/version.human)" >> /etc/banner
 echo >> /etc/banner
 
-echo "DISTRIB_DESCRIPTION='Genesis 39 Project $(cat /etc/genesis39_version)'" >> /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='Genesis 39 Project $(cat /genesis39/version.human)'" >> /etc/openwrt_release
 
 echo "VARIANT_ID='Genesis 39 Project'" >> /usr/lib/os-release
 echo "HOME_URL='https://Genesis39.org/'" >> /usr/lib/os-release
