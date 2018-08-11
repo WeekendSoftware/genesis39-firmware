@@ -38,7 +38,7 @@ rm  dynamic-files/bin/$upstreamBuilder/*
 binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
 
 pushd dynamic-files/$upstreamBuilder>/dev/null
-make image  PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image  PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete
