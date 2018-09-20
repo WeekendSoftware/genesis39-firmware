@@ -13,8 +13,12 @@
 #The OpenWrt image builder wants this umask set
 umask 022
 
-#this will put a marker in the image that will tell us what git commit was used to build the firmware.
-git log -1 --format="%H"> filesystem/genesis39/version.hash
+GENESIS39_INFO_FILE=filesystem/etc/genesis39_release
+GENESIS39_RELEASE="${upstreamVersion}.G$(cat release-id)"
+echo "GENESIS39_BUILD_TIMESTAMP='$(date)'">$GENESIS39_INFO_FILE
+echo "GENESIS39_GIT_HASH='$(git log -1 --format="%H")'">>$GENESIS39_INFO_FILE
+echo "GENESIS39_RELEASE=${GENESIS39_RELEASE}">>$GENESIS39_INFO_FILE
+echo "GENESIS39_WEBSITE='https://genesis39.org'">>$GENESIS39_INFO_FILE
 
 #git doesn't save permissions, so explicitly set what we need here
 #this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts
@@ -38,7 +42,14 @@ rm  dynamic-files/bin/$upstreamBuilder/*
 binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
 
 pushd dynamic-files/$upstreamBuilder>/dev/null
-make image  PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy" FILES="../../filesystem/" BIN_DIR="$binfolder"
-#make clean
+
+make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns " FILES="../../filesystem/" BIN_DIR="$binfolder"
+
 popd>/dev/null
 echo Genesis 39: Build Complete
+
+outputImage="genesis39-${GENESIS39_RELEASE}-${upstreamTarget}-${upstreamProfile}.bin"
+echo deploying ${outputImage}
+cp dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/${upstreamFaction}-${upstreamVersion}-${upstreamTarget}-generic-${upstreamProfile}-squashfs-sysupgrade.bin /data/ace/greg/tftp/${outputImage}
+../usign/usign  -S -m /data/ace/greg/tftp/${outputImage} -s /home/greg/genesis39/usign-genesis39/usign.genesis39.secret.key
+chmod ugo+r /data/ace/greg/tftp/${outputImage}*

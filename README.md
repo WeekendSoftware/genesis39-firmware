@@ -4,16 +4,16 @@ The Genesis project exists to provide firmware for wireless routers that
 automatically blocks pornography and other objectionable websites without
 being overbearing. By installing this firmware, all computers, laptops,
 tablets, phones, and other devices connected to your wireless router will
-be protected by OpenDNS's Family Shield.
+be protected by OpenDNS's Family Shield and Google Safe Search.
 
 ## Google Safe Search
 - Blocks objectionable content in searches without being overbearing.
 
 ## OpenDNS Family Shield
 FamilyShield blocks domains that are categorized as:
+ - Sexuality and Pornography
  - Tasteless
  - Proxy/Anonymizer
- - Sexuality and Pornography
 
 ## Preconfigured WiFi Networks
 - Genesis39

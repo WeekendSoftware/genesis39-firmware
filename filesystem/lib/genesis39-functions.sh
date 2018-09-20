@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2017 Gregory L. Dietsche
+# Copyright (C) 2018 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
 # Free Software Foundation. This program is distributed in the hope that it
@@ -7,6 +7,50 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+
+# Call this from the beginning of each script that should run only once
+# The first parameter is the uci configuration section
+# The second parameter should be something that uniquely identifies the script.
+run_once_guard_begin(){
+  local config_section="$1"
+  local script_id="$2"
+  local result
+
+  config_load "$config_section"
+  config_get_bool result run_once "$script_id" 0
+
+  if [ "$result" -eq 1  ]; then
+    exit 0
+  fi
+}
+
+#
+# Call this at the end of each script that should run only once
+# The first parameter is the uci configuration section
+# The second parameter should be something that uniquely identifies the script and
+# should match the parameter given to run_once_guard_begin
+#
+run_once_guard_end(){
+  local config_section="$1"
+  local script_id="$2"
+
+  if [ ! -f "/etc/config/$config_section"  ]; then
+    touch "/etc/config/$config_section"
+  fi
+
+  uci -q set $config_section.run_once=script
+  uci -q set $config_section.run_once.$script_id=1
+}
+
+# Call this from the beginning of each script that should run only once.
+# This helper funcatino calls both run_once_guard_begin and run_once_guard_end
+# for you.
+# The first parameter is the uci configuration section
+# The second parameter should be something that uniquely identifies the script.
+run_once_guard(){
+  run_once_guard_begin "$1" "$2"
+  run_once_guard_end "$1" "$2"
+}
 
 # for example allow lan to access Guest
 genesis39_forward_zone_to_zone(){
@@ -20,6 +64,10 @@ genesis39_forward_zone_to_zone(){
 EOT
 }
 
+#
+# Force all DNS traffic in the given zone to this router instead of
+# allowing it to go to the DNS server that it was intended for.
+#
 genesis39_force_zone_dns_to_router(){
   local zone=$1
   local ip=$(uci get network.$zone.ipaddr)
@@ -36,6 +84,10 @@ genesis39_force_zone_dns_to_router(){
 EOT
 }
 
+#
+# Configure the given firewall zone so that NTP traffic sent to this router
+# can be answered.
+#
 genesis39_allow_zone_ntp_to_router(){
   local zone=$1
   if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
@@ -51,6 +103,10 @@ EOT
   fi
 }
 
+#
+# Force all NTP traffic in the given zone to this router instead of
+# allowing it to go to the NTP server that it was intended for.
+#
 genesis39_force_zone_ntp_to_router(){
   local zone=$1
   local networkname=$2
@@ -71,6 +127,8 @@ EOT
   fi
 }
 
+#
+# Create a network. Also, setup DHCP and IPv6
 genesis39_add_network(){
   local network=$1
   local ip=$2
@@ -97,6 +155,9 @@ EOT
 EOT
 }
 
+#
+# Create a new firewall zone
+#
 genesis39_add_zone(){
   local zone=$1
   local network=$2

@@ -8,8 +8,11 @@ upstreamVersion=18.06.1
 upstreamTarget=ar71xx
 export upstreamProfile=archer-c7-v2
 
+# lede|openwrt
+export upstreamFaction=openwrt
+
 #
 # variables used by the build script
 #
-export upstreamBuilder=openwrt-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64
-export upstreamDownload=https://downloads.openwrt.org/releases/${upstreamVersion}/targets/${upstreamTarget}/generic/openwrt-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64.tar.xz
+export upstreamBuilder=${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64
+export upstreamDownload=https://downloads.openwrt.org/releases/${upstreamVersion}/targets/${upstreamTarget}/generic/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64.tar.xz

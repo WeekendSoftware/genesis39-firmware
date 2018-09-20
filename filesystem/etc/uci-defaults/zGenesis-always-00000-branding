@@ -8,12 +8,21 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
+. /etc/openwrt_release
+. /etc/genesis39_release
+
 echo >> /etc/banner
-echo " Website: https://Genesis39.org/" >> /etc/banner
-echo " Version: $(cat /genesis39/version.human)" >> /etc/banner
+echo " Website          : ${GENESIS39_WEBSITE}" >> /etc/banner
+echo " Genesis39 Version: ${GENESIS39_RELEASE}" >> /etc/banner
+echo " OpenWrt Version  : ${DISTRIB_RELEASE}" >> /etc/banner
+echo " Built On         : ${GENESIS39_BUILD_TIMESTAMP}" >> /etc/banner
+echo " GIT Hash         : ${GENESIS39_GIT_HASH}" >> /etc/banner
 echo >> /etc/banner
 
-echo "DISTRIB_DESCRIPTION='Genesis 39 Project $(cat /genesis39/version.human)'" >> /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='Genesis 39 Project ${GENESIS39_VERSION}'" >> /etc/openwrt_release
 
 echo "VARIANT_ID='Genesis 39 Project'" >> /usr/lib/os-release
-echo "HOME_URL='https://Genesis39.org/'" >> /usr/lib/os-release
+echo "HOME_URL='${GENESIS39_Website}'" >> /usr/lib/os-release
+echo "BUG_URL='${GENESIS39_Website}'" >> /usr/lib/os-release
+
+exit 0

@@ -1,0 +1,74 @@
+#!/bin/sh
+# Copyright (C) 2018 Gregory L. Dietsche
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License version 2 as published by the
+# Free Software Foundation. This program is distributed in the hope that it
+# will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see http://www.gnu.org/licenses/.
+. /lib/genesis39-functions.sh
+
+#
+# This script should only run once. Without this, check, this script
+# would run again after an upgrade
+#
+run_once_guard genesis39 00000
+
+#
+# An unusual default, but this makes development easier
+#
+uci -q batch <<-EOT
+  set network.lan.ipaddr='192.168.1.1'
+EOT
+
+#
+# Change default hostname
+#
+uci -q batch <<-EOT
+  set system.@system[0].hostname='Genesis39'
+EOT
+
+
+#
+# Tweak the OpenWRT default firewall so that it drops invalid packets.
+#
+uci -q batch <<-EOT
+  set firewall.@defaults[0].drop_invalid='1'
+EOT
+
+#
+# The routers we're targeting have more than enough memory, so increase the
+# cache size to the maximum. This ensures VERY fast DNS lookups.
+#
+uci -q batch <<-EOT
+  set dhcp.@dnsmasq[0].cachesize='10000'
+EOT
+
+#
+# Enable the router to serve NTP time to devices connected to it.
+#
+uci -q batch <<-EOT
+  set system.ntp=timeserver
+  set system.ntp.enabled='1'
+  set system.ntp.enable_server='1'
+EOT
+
+# The router will answer all NTP requests even when a NTP client tries to
+# communicate with a different NTP server on the internet.
+#
+# This has the side-effect of making every host on the internet look like it is
+# running a NTP server!
+#
+genesis39_force_zone_ntp_to_router lan lan
+
+#
+# Default to a timezone in the USA. This will help with automatic upgrade
+# scheduling because we expect most users to be in the USA.
+#
+uci -q batch <<-EOT
+  set system.@system[0].zonename='America/Menominee'
+  set system.@system[0].timezone='CST6CDT,M3.2.0,M11.1.0'
+EOT
+
+exit 0
