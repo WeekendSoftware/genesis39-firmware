@@ -16,11 +16,9 @@
 #
 run_once_guard genesis39 00004
 
-lan=`uci get network.lan.ifname`
-mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
 network=Guest
 zonename=Guest
-wifiname="Genesis39_Guest_$mac"
+wifiname="Genesis39_Guest"
 wifikey='Genesis39'
 wifiencryption='none'
 ip='192.168.2.1'

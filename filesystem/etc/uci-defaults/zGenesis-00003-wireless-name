@@ -20,11 +20,9 @@ run_once_guard genesis39 00003
 # Change the Wifi SSID on each radio to Genesis39_FFFF where FFFF is the
 # last part of the MAC address.
 #
-lan=`uci get network.lan.ifname`
-mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
 wifi_ssid() {
   uci -q batch <<-EOT
-  set wireless.$1.ssid='Genesis39_$mac'
+  set wireless.$1.ssid='Genesis39'
 EOT
 
 }
