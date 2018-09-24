@@ -33,5 +33,6 @@ mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
 
 config_load wireless
 config_foreach wifi_ssid wifi-iface $mac
+uci commit wireless
 
 exit 0
