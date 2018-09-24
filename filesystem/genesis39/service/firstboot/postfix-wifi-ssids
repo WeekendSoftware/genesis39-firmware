@@ -1,0 +1,37 @@
+#!/bin/sh
+# Copyright (C) 2018 Gregory L. Dietsche
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License version 2 as published by the
+# Free Software Foundation. This program is distributed in the hope that it
+# will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see http://www.gnu.org/licenses/.
+. /lib/functions.sh
+. /lib/genesis39-functions.sh
+
+#
+# This script should only run once. Without this, check, this script
+# would run again after an upgrade
+#
+run_once_guard genesis39 service_0000_postfix_ssids
+
+#
+# Change the Wifi SSID on each radio to Genesis39_FFFF where FFFF is the
+# last part of the MAC address.
+#
+wifi_ssid() {
+  local ssid=`uci get wireless.$1.ssid`
+  uci -q batch <<-EOT
+  set wireless.$1.ssid='${ssid}_$2'
+EOT
+
+}
+
+lan=`uci get network.lan.ifname`
+mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
+
+config_load wireless
+config_foreach wifi_ssid wifi-iface $mac
+
+exit 0
