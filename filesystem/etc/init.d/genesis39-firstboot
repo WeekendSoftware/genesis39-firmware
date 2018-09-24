@@ -14,7 +14,10 @@ EXTRA_COMMANDS="explain"
 EXTRA_HELP="        explain Explains what this service is for"
  
 boot() {
+  echo "Updating wifi ssid(s)"
   /genesis39/service/firstboot/postfix-wifi-ssids
+
+  echo "Disabling the genesis39-firstboot service"
   /etc/init.d/genesis39-firstboot disable
 }
 
