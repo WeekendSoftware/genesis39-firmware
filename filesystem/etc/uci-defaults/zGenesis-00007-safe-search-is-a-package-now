@@ -1,4 +1,5 @@
-# Copyright (C) 2017 Gregory L. Dietsche
+#!/bin/sh
+# Copyright (C) 2018 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
 # Free Software Foundation. This program is distributed in the hope that it
@@ -6,10 +7,20 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+. /lib/genesis39-functions.sh
 
 #
-# IMPORTANT: if this file is not working, make sure that dnsmasq is able to READ it!
+# This script should only run once. Without this, check, this script
+# would run again after an upgrade
 #
+run_once_guard genesis39 00007
 
-204.79.197.220 strict.bing.com bing.com www.bing.com
-::FFFF:CC4F:C5DC strict.bing.com bing.com www.bing.com
+#
+# Safe Search will be implemented using packages now, so the original
+# hard coded method is no longer needed.
+#
+uci del_list dhcp.@dnsmasq[0].addnhosts=/genesis39/hosts
+
+echo src/gz genesis39 http://192.168.1.101/packages >> /etc/opkg/customfeeds.conf
+
+exit 0
