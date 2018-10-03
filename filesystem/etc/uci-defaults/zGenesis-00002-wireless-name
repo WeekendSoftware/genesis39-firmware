@@ -7,14 +7,13 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
-. /lib/functions.sh
-. /lib/genesis39-functions.sh
-
 #
 # This script should only run once. Without this, check, this script
 # would run again after an upgrade
 #
+. /lib/genesis39-functions.sh
 run_once_guard genesis39 00002
+. /lib/functions.sh
 
 #
 # Change the Wifi SSID on each radio to Genesis39_FFFF where FFFF is the
