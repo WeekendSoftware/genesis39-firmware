@@ -7,7 +7,6 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
-. /lib/functions.sh
 . /lib/genesis39-functions.sh
 
 #
@@ -16,16 +15,6 @@
 #
 run_once_guard genesis39 00005
 
-wifi_enable() {
-  uci -q batch <<-EOT
-  delete wireless.$1.disabled
-EOT
-}
-
-#
-# For each wireless device... enable it.
-#
-config_load wireless
-config_foreach wifi_enable wifi-device
+/etc/init.d/genesis39-firstboot enable
 
 exit 0

@@ -13,7 +13,7 @@
 # This script should only run once. Without this, check, this script
 # would run again after an upgrade
 #
-run_once_guard genesis39 00002
+run_once_guard genesis39 00001
 
 #
 # We do NOT want to use the DNS servers advertised by the ISP because
