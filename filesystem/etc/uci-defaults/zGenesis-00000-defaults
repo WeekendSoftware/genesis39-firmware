@@ -15,13 +15,6 @@
 run_once_guard genesis39 00000
 
 #
-# An unusual default, but this makes development easier
-#
-uci -q batch <<-EOT
-  set network.lan.ipaddr='192.168.1.1'
-EOT
-
-#
 # Change default hostname
 #
 uci -q batch <<-EOT
