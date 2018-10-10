@@ -20,21 +20,23 @@ echo "GENESIS39_GIT_HASH='$(git log -1 --format="%H")'">>$GENESIS39_INFO_FILE
 echo "GENESIS39_RELEASE=${GENESIS39_RELEASE}">>$GENESIS39_INFO_FILE
 echo "GENESIS39_WEBSITE='https://genesis39.org'">>$GENESIS39_INFO_FILE
 
-#git doesn't save permissions, so explicitly set what we need here
-#this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts
-chmod -R ugo+rX filesystem/genesis39
-
-if [ ! -f dynamic-files/$upstreamBuilder.tar.xz  ]; then
+if [ ! -d dynamic-files/$upstreamBuilder ]; then
 	mkdir -p dynamic-files
 	pushd dynamic-files>/dev/null
 
-	echo Download Image Builder
+	echo Downloading Image Builder
 	wget --continue -q --show-progress $upstreamDownload
 
 	echo Extracting Image Builder
 	tar -xf $upstreamBuilder.tar.xz
+
+	echo src genesis39 file:../genesis39-packages>>${upstreamBuilder}/repositories.conf
 	popd>/dev/null
 fi
+
+#git doesn't save permissions, so explicitly set what we need here
+#this is specifically needed so that dnsmasq can read the hosts from /genesis39/hosts
+chmod -R ugo+rX filesystem/genesis39
 
 #the BIN_DIR variable seems to do better when it has a fully qualified path.
 mkdir -p dynamic-files/bin/$upstreamBuilder
@@ -43,7 +45,7 @@ binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
 
 pushd dynamic-files/$upstreamBuilder>/dev/null
 
-make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search-google safe-search-bing" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns genesis39" FILES="../../filesystem/" BIN_DIR="$binfolder"
 
 popd>/dev/null
 echo Genesis 39: Build Complete

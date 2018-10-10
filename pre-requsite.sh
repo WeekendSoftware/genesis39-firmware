@@ -8,5 +8,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
 
+. settings.sh
+
 echo Install packages
 sudo apt-get install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc wget unzip python
+
+echo Setup SDK to use our local packages
+#echo src-link custom `pwd`/packages > 
