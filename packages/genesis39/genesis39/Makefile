@@ -22,6 +22,7 @@ define Package/genesis39
 	PKGARCH:=all
   DEPENDS:= \
   	+genesis39-keys \
+  	+genesis39-auto-upgrade \
   	+genesis39-debug \
   	+safe-search
 endef

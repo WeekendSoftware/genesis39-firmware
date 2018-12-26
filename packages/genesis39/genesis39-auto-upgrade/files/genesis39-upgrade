@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Copyright (c) 2018 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
+# This is free software, licensed under the MIT License
+#
+
+#Only upgrade if the package is installed and has an upgrade avaiable.
+function upgrade() {
+  opkg list-upgradable | grep -q ^$1\ && opkg upgrade $1
+}
+
+opkg update
+upgrade genesis39-keys
+upgrade genesis39-auto-upgrade
+upgrade genesis39-debug
+upgrade genesis39

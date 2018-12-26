@@ -20,7 +20,6 @@ define Package/genesis39-debug
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 Remote Debug
 	PKGARCH:=all
-  DEPENDS:=dropbear
 endef
 
 define Package/genesis39-debug/description
