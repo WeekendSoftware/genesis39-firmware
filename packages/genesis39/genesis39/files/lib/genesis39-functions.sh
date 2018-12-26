@@ -13,7 +13,7 @@
 # The second parameter should be something that uniquely identifies the script.
 run_once_guard_begin(){
   local config_section="$1"
-  local script_id="$2"
+  local script_id="${2//-/_/}"
   local result
 
   config_load "$config_section"
@@ -32,7 +32,7 @@ run_once_guard_begin(){
 #
 run_once_guard_end(){
   local config_section="$1"
-  local script_id="$2"
+  local script_id="${2//-/_/}"
 
   if [ ! -f "/etc/config/$config_section"  ]; then
     touch "/etc/config/$config_section"
