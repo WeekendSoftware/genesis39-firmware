@@ -12,19 +12,37 @@
 # would run again after an upgrade
 #
 . /lib/genesis39-functions.sh
-run_once_guard genesis39 00004
+run_once_guard genesis39 00030-guest-network
 . /lib/functions.sh
 
-wifi_enable() {
+network=Guest
+zonename=Guest
+wifiname="Genesis39_Guest"
+wifikey='Genesis39'
+wifiencryption='none'
+ip='192.168.2.1'
+
+genesis39_add_network $network $ip
+genesis39_add_zone $zonename $network
+genesis39_force_zone_dns_to_router Guest
+
+genesis39_allow_zone_ntp_to_router $zonename
+genesis39_force_zone_ntp_to_router $zonename $network
+
+wifi_addGuest() {
+  local iface=$(uci add wireless wifi-iface)
   uci -q batch <<-EOT
-  delete wireless.$1.disabled
+    set wireless.$iface.device='$1'
+    set wireless.$iface.mode='ap'
+    set wireless.$iface.ssid='$wifiname'
+    set wireless.$iface.key='$wifikey'
+    set wireless.$iface.encryption='$wifiencryption'
+    set wireless.$iface.network=$network
+    set wireless.$iface.isolate='1'
 EOT
 }
 
-#
-# For each wireless device... enable it.
-#
 config_load wireless
-config_foreach wifi_enable wifi-device
+config_foreach wifi_addGuest wifi-device
 
 exit 0
