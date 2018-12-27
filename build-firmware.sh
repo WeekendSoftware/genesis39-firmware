@@ -45,7 +45,7 @@ binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
 
 pushd dynamic-files/$upstreamBuilder>/dev/null
 
-make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns genesis39 genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns genesis39 genesis39-opkg-dev genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
 
 popd>/dev/null
 echo Genesis 39: Build Complete

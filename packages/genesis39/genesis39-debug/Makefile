@@ -31,17 +31,6 @@ endef
 define Package/genesis39-debug/install
 	$(INSTALL_DIR) $(1)/etc/dropbear
 	$(INSTALL_DATA) ./files/authorized_keys $(1)/etc/dropbear/authorized_keys
-
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
-endef
-
-define Package/genesis39-debug/prerm
-#!/bin/sh
-if [ -z "$${IPGK_INSTROOT}" ]; then
-  cat /etc/opkg/customfeeds.conf | grep -v "src/gz genesis39 http://192.168.1.101/packages" > /etc/opkg/customfeeds.conf
-fi
-exit 0
 endef
 
 $(eval $(call BuildPackage,genesis39-debug))
