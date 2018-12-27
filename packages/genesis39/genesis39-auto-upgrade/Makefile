@@ -33,16 +33,9 @@ endef
 define Package/genesis39-auto-upgrade/install
 	$(INSTALL_DIR) $(1)/sbin
 	$(INSTALL_BIN) ./files/genesis39-upgrade $(1)/sbin/
-endef
 
-define Package/genesis39-auto-upgrade/postinst
-#!/bin/sh
-if [ -z "$${IPGK_INSTROOT}" ]; then
-  (crontab -l ; echo "0 3 * * 1 /sbin/genesis39-upgrade") | sort | uniq | crontab -
-  /etc/init.d/cron enable
-  /etc/init.d/cron start
-fi
-exit 0
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
 endef
 
 define Package/genesis39-auto-upgrade/prerm

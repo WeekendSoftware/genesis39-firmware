@@ -1,5 +1,3 @@
-
-
 #
 # Copyright (c) 2018 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 # This is free software, licensed under the MIT License
@@ -33,14 +31,9 @@ endef
 define Package/genesis39-debug/install
 	$(INSTALL_DIR) $(1)/etc/dropbear
 	$(INSTALL_DATA) ./files/authorized_keys $(1)/etc/dropbear/authorized_keys
-endef
 
-define Package/genesis39-debug/postinst
-#!/bin/sh
-if [ -z "$${IPGK_INSTROOT}" ]; then
-  echo src/gz genesis39 http://192.168.1.101/packages>> /etc/opkg/customfeeds.conf
-fi
-exit 0
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
 endef
 
 define Package/genesis39-debug/prerm
