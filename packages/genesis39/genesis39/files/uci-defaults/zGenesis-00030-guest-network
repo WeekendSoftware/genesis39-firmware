@@ -12,7 +12,7 @@
 # would run again after an upgrade
 #
 . /lib/genesis39-functions.sh
-run_once_guard genesis39 00030-guest-network
+run_once_guard genesis39 00030_guest_network
 . /lib/functions.sh
 
 network=Guest

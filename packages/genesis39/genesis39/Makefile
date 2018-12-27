@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=genesis39-keys
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=2
+PKG_RELEASE:=4
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -35,8 +35,8 @@ define Package/genesis39/install
 	$(INSTALL_DIR) $(1)/genesis39/service/firstboot/
 	$(INSTALL_BIN) ./files/genesis39/service/firstboot/* $(1)/genesis39/service/firstboot/
 
-	$(INSTALL_DIR) $(1)/init.d
-	$(INSTALL_BIN) ./files/init.d/* $(1)/init.d/
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/init.d/* $(1)/etc/init.d/
 
 	$(INSTALL_DIR) $(1)/lib
 	$(INSTALL_DATA) ./files/lib/* $(1)/lib/

@@ -12,7 +12,7 @@
 # would run again after an upgrade
 #
 . /lib/genesis39-functions.sh
-run_once_guard genesis39 00010-default-filter
+run_once_guard genesis39 00010_default_filter
 
 #
 # We do NOT want to use the DNS servers advertised by the ISP because
