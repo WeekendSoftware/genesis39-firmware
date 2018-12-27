@@ -35,9 +35,6 @@ define Build/Compile
 endef
 
 define Package/genesis39/install
-	$(INSTALL_DIR) $(1)/bin
-	$(INSTALL_BIN) ./files/bin/* $(1)/bin/
-
 	$(INSTALL_DIR) $(1)/genesis39/service/firstboot/
 	$(INSTALL_BIN) ./files/genesis39/service/firstboot/* $(1)/genesis39/service/firstboot/
 
