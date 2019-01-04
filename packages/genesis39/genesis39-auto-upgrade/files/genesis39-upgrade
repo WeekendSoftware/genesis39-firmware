@@ -11,6 +11,7 @@ function upgrade() {
 
 opkg update
 upgrade genesis39-keys
+upgrade genesis39-opkg
 upgrade genesis39-auto-upgrade
 upgrade genesis39-debug
 upgrade genesis39
