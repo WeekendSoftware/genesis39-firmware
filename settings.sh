@@ -22,3 +22,8 @@ export upstreamSdkDownload=https://downloads.openwrt.org/releases/${upstreamVers
 
 #make sure LC_TIME is set correctly
 export LC_TIME=C
+
+# Publish Settings
+export genesis39_publish_packages=arst
+export genesis39_publish_image=arst
+
