@@ -35,7 +35,7 @@ endef
 define Package/genesis39-opkg/prerm
 #!/bin/sh
 if [ -z "$${IPGK_INSTROOT}" ]; then
-  cat /etc/opkg/customfeeds.conf | grep -v "src/gz genesis39 http://192.168.1.101/packages" > /etc/opkg/customfeeds.conf
+  cat /etc/opkg/customfeeds.conf | grep -v "src/gz genesis39" > /etc/opkg/customfeeds.conf
 fi
 exit 0
 endef
