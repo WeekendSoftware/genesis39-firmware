@@ -50,8 +50,10 @@ make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns 
 popd>/dev/null
 echo Genesis 39: Build Complete
 
-outputImage="genesis39-${GENESIS39_RELEASE}-${upstreamTarget}-${upstreamProfile}.bin"
-echo deploying ${outputImage}
-cp dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/${upstreamFaction}-${upstreamVersion}-${upstreamTarget}-generic-${upstreamProfile}-squashfs-sysupgrade.bin /data/ace/greg/tftp/${outputImage}
-../usign/usign  -S -m /data/ace/greg/tftp/${outputImage} -s /home/greg/genesis39/usign-genesis39/usign.genesis39.secret.key
-chmod ugo+r /data/ace/greg/tftp/${outputImage}*
+export genesis39_publish_packages=/data/ace/greg/tftp/g39/packages
+export genesis39_publish_firmware=/data/ace/greg/tftp/g39/firmware
+export genesis39_secret_key=/home/greg/genesis39/usign-genesis39/usign.genesis39.secret.key
+
+../usign/usign  -S -m ${genesis39_publish_firmware}/* -s ${genesis39_secret_key}
+chmod ugo+r dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/
+rsync -avz dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/${upstreamFaction}-${upstreamVersion}-${upstreamTarget}-generic-${upstreamProfile}-squashfs-sysupgrade.bin ${genesis39_publish_firmware}/

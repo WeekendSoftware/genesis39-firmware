@@ -24,6 +24,7 @@ export upstreamSdkDownload=https://downloads.openwrt.org/releases/${upstreamVers
 export LC_TIME=C
 
 # Publish Settings
-export genesis39_publish_packages=arst
-export genesis39_publish_image=arst
+export genesis39_publish_packages=/data/ace/greg/tftp/g39/packages/
+export genesis39_publish_firmware=/data/ace/greg/tftp/g39/firmware/
+export genesis39_secret_key=/home/greg/genesis39/usign-genesis39/usign.genesis39.secret.key
 
