@@ -18,7 +18,7 @@ GENESIS39_RELEASE="${upstreamVersion}.G$(cat release-id)"
 echo "GENESIS39_BUILD_TIMESTAMP='$(date)'">$GENESIS39_INFO_FILE
 echo "GENESIS39_GIT_HASH='$(git log -1 --format="%H")'">>$GENESIS39_INFO_FILE
 echo "GENESIS39_RELEASE=${GENESIS39_RELEASE}">>$GENESIS39_INFO_FILE
-echo "GENESIS39_WEBSITE='https://genesis39.org'">>$GENESIS39_INFO_FILE
+echo "GENESIS39_WEBSITE='https://www.genesis39.org'">>$GENESIS39_INFO_FILE
 
 if [ ! -d dynamic-files/$upstreamBuilder ]; then
 	mkdir -p dynamic-files
