@@ -43,7 +43,7 @@ make package/index
 cd ..
 if [ ! -d genesis39-packages ]; then
   #TODO: how to dynamically detect this path or the mips_24kc part.
-  ln -s ./openwrt-sdk-${upstreamVersion}-${upstreamTarget}-generic_gcc-7.3.0_musl.Linux-x86_64/bin/packages/mips_24kc/genesis39 genesis39-packages
+  ln -s ./openwrt-sdk-${upstreamVersion}-${upstreamTarget}-generic_gcc-7.5.0_musl.Linux-x86_64/bin/packages/mips_24kc/genesis39 genesis39-packages
 fi
 
 popd>/dev/null

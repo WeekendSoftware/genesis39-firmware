@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2018 Gregory L. Dietsche
+# Copyright (C) 2020 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
 # Free Software Foundation. This program is distributed in the hope that it
@@ -21,28 +21,28 @@ run_once_guard genesis39 00010_default_filter
 uci -q batch <<-EOT
   set network.wan.peerdns='0'
   set network.wan6.peerdns='0'
-
-  #DO NOT Allow upstream responses in the 127.0.0.0/8 range, e.g. for RBL services
-  delete dhcp.@dnsmasq[0].rebind_localhost
 EOT
 
 #
 # If dnscrypt-proxy is installed, use it.
-# Otherwise, directly use Cisco's Family Shield DNS servers.
+# Otherwise, directly use custom DNS servers.
 #
 if command -v dnscrypt-proxy; then
   uci -q batch <<-EOT
     delete dhcp.@dnsmasq[0].server
     add_list dhcp.@dnsmasq[0].server='127.0.0.1#5353'
     add_list dhcp.@dnsmasq[0].server='/pool.ntp.org/8.8.8.8'
+    add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
+    add_list dhcp.@dnsmasq[0].server='/www.genesis39.org/8.8.8.8'
+    add_list dhcp.@dnsmasq[0].server='/dl.genesis39.org/8.8.8.8'
 
     set dnscrypt-proxy.ns1.resolver='cisco-familyshield'
 EOT
 else
   uci -q batch <<-EOT
     delete dhcp.@dnsmasq[0].server
-    add_list dhcp.@dnsmasq[0].server=208.67.222.123
-    add_list dhcp.@dnsmasq[0].server=208.67.220.123
+    add_list dhcp.@dnsmasq[0].server=185.228.168.10
+    add_list dhcp.@dnsmasq[0].server=185.228.169.10
 EOT
 fi
 

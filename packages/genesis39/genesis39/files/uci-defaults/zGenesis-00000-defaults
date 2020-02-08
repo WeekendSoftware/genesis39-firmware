@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2018 Gregory L. Dietsche
+# Copyright (C) 2020 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
 # Free Software Foundation. This program is distributed in the hope that it
@@ -52,7 +52,7 @@ EOT
 # This has the side-effect of making every host on the internet look like it is
 # running a NTP server!
 #
-genesis39_force_zone_ntp_to_router lan lan
+#genesis39_force_zone_ntp_to_router lan lan
 
 #
 # Default to a timezone in the USA. This will help with automatic upgrade

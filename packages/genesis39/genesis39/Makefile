@@ -1,13 +1,13 @@
 #
-# Copyright (c) 2018 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
+# Copyright (c) 2020 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 # This is free software, licensed under the MIT License
 #
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=genesis39-keys
+PKG_NAME:=genesis39
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 

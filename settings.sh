@@ -4,9 +4,9 @@
 # Quick controls to set the target version and hardware
 # Only exporting variables that are required by the build script
 #
-upstreamVersion=18.06.1
-upstreamTarget=ar71xx
-export upstreamProfile=archer-c7-v2
+upstreamVersion=19.07.0
+upstreamTarget=ath79
+export upstreamProfile=tplink_archer-a7-v5
 
 # lede|openwrt
 export upstreamFaction=openwrt
@@ -17,7 +17,7 @@ export upstreamFaction=openwrt
 export upstreamBuilder=${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64
 export upstreamDownload=https://downloads.openwrt.org/releases/${upstreamVersion}/targets/${upstreamTarget}/generic/${upstreamBuilder}.tar.xz
 
-export upstreamSdk=openwrt-sdk-${upstreamVersion}-${upstreamTarget}-generic_gcc-7.3.0_musl.Linux-x86_64
+export upstreamSdk=openwrt-sdk-${upstreamVersion}-${upstreamTarget}-generic_gcc-7.5.0_musl.Linux-x86_64
 export upstreamSdkDownload=https://downloads.openwrt.org/releases/${upstreamVersion}/targets/${upstreamTarget}/generic/${upstreamSdk}.tar.xz
 
 #make sure LC_TIME is set correctly

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2017 Gregory L. Dietsche
+# Copyright (C) 2020 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
 # Free Software Foundation. This program is distributed in the hope that it
@@ -45,7 +45,8 @@ binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
 
 pushd dynamic-files/$upstreamBuilder>/dev/null
 
-make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns genesis39 genesis39-opkg-dev genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search genesis39 genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
+#make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search" FILES="../../filesystem/" BIN_DIR="$binfolder"
 
 popd>/dev/null
 echo Genesis 39: Build Complete
