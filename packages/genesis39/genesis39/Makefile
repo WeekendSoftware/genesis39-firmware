@@ -19,6 +19,7 @@ define Package/genesis39
 	TITLE:=Genesis 39
 	PKGARCH:=all
   DEPENDS:= \
+  	+genesis39-wifi-postfix-mac \
   	+genesis39-keys \
   	+genesis39-auto-upgrade \
   	+safe-search
@@ -32,12 +33,6 @@ define Build/Compile
 endef
 
 define Package/genesis39/install
-	$(INSTALL_DIR) $(1)/genesis39/service/firstboot/
-	$(INSTALL_BIN) ./files/genesis39/service/firstboot/* $(1)/genesis39/service/firstboot/
-
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/init.d/* $(1)/etc/init.d/
-
 	$(INSTALL_DIR) $(1)/lib
 	$(INSTALL_DATA) ./files/lib/* $(1)/lib/
 
