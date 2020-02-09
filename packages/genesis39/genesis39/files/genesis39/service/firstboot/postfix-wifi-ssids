@@ -28,4 +28,6 @@ config_load wireless
 config_foreach wifi_ssid wifi-iface $mac
 uci commit wireless
 
+/sbin/wifi reload
+
 exit 0
