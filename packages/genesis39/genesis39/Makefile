@@ -23,7 +23,8 @@ define Package/genesis39
   	+genesis39-wifi-postfix-mac \
   	+genesis39-keys \
   	+genesis39-auto-upgrade \
-  	+safe-search
+  	+safe-search \
+  	+script-guard
 endef
 
 define Package/genesis39/description

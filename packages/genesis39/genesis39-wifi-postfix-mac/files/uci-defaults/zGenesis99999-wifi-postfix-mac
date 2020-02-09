@@ -11,8 +11,8 @@
 # This script should only run once. Without this, check, this script
 # would run again after an upgrade
 #
-. /lib/genesis39-functions.sh
-run_once_guard genesis39 99999_genesis39_wifi_postfix_mac
+. /lib/script-guard.sh
+script_guard genesis39 99999_genesis39_wifi_postfix_mac
 
 /etc/init.d/genesis39-wifi-postfix-mac enable
 

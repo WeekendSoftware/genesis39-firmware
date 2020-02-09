@@ -20,6 +20,7 @@ define Package/genesis39-wifi-postfix-mac
 	PKGARCH:=all
   DEPENDS:= \
   	+genesis39-scripts \
+  	+script-guard
 endef
 
 define Package/genesis39-wifi-postfix-mac/description
