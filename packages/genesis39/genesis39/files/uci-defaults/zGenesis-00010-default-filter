@@ -50,8 +50,6 @@ fi
 #provider and auto-update everyone to the new provider.
 uci -q batch <<-EOT
   add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
-  add_list dhcp.@dnsmasq[0].server='/www.genesis39.org/8.8.8.8'
-  add_list dhcp.@dnsmasq[0].server='/dl.genesis39.org/8.8.8.8'
 EOT
 
 #
