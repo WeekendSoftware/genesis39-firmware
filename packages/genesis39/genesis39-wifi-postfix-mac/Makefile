@@ -18,6 +18,8 @@ define Package/genesis39-wifi-postfix-mac
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 WiFi Postfix Mac
 	PKGARCH:=all
+  DEPENDS:= \
+  	+genesis39-scripts \
 endef
 
 define Package/genesis39-wifi-postfix-mac/description

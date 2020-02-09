@@ -19,6 +19,7 @@ define Package/genesis39
 	TITLE:=Genesis 39
 	PKGARCH:=all
   DEPENDS:= \
+  	+genesis39-scripts \
   	+genesis39-wifi-postfix-mac \
   	+genesis39-keys \
   	+genesis39-auto-upgrade \
@@ -33,9 +34,6 @@ define Build/Compile
 endef
 
 define Package/genesis39/install
-	$(INSTALL_DIR) $(1)/lib
-	$(INSTALL_DATA) ./files/lib/* $(1)/lib/
-
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
 endef
