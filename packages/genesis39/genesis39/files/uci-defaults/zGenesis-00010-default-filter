@@ -32,9 +32,6 @@ if command -v dnscrypt-proxy; then
     delete dhcp.@dnsmasq[0].server
     add_list dhcp.@dnsmasq[0].server='127.0.0.1#5353'
     add_list dhcp.@dnsmasq[0].server='/pool.ntp.org/8.8.8.8'
-    add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
-    add_list dhcp.@dnsmasq[0].server='/www.genesis39.org/8.8.8.8'
-    add_list dhcp.@dnsmasq[0].server='/dl.genesis39.org/8.8.8.8'
 
     set dnscrypt-proxy.ns1.resolver='cisco-familyshield'
 EOT
@@ -45,6 +42,17 @@ else
     add_list dhcp.@dnsmasq[0].server=185.228.169.10
 EOT
 fi
+
+#DNS that should not be resolved using the default DNS servers.
+#This protects us in the unlikely event that the DNS provider
+#we're using for this project stops working. In that case,
+#we'll be able to upload new packages to point to a new DNS
+#provider and auto-update everyone to the new provider.
+uci -q batch <<-EOT
+  add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
+  add_list dhcp.@dnsmasq[0].server='/www.genesis39.org/8.8.8.8'
+  add_list dhcp.@dnsmasq[0].server='/dl.genesis39.org/8.8.8.8'
+EOT
 
 #
 # Capture and redirect ALL DNS requests so that this router handles them.
