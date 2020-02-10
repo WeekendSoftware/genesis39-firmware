@@ -15,7 +15,7 @@ EXTRA_HELP="        explain Explains what this service is for"
  
 boot() {
   echo "Updating wifi ssid(s)"
-  /genesis39/service/firstboot/genesis39-wifi-one-time
+  /genesis39/service/genesis39-wifi-one-time
 
   echo "Disabling the service"
   /etc/init.d/genesis39-wifi-one-time disable

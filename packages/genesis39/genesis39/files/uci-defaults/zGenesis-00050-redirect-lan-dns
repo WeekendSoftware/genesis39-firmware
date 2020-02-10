@@ -12,7 +12,7 @@
 # would run again after an upgrade
 #
 . /lib/script-guard.sh
-script_guard genesis39 zGenesis_00050_redirect_lan_dns
+script_guard genesis39 00050_redirect_lan_dns
 
 . /lib/genesis39-functions.sh
 
