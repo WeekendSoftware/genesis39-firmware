@@ -12,7 +12,7 @@
 # would run again after an upgrade
 #
 . /lib/script-guard.sh
-script_guard genesis39 zGenesis-00050-guest-network
+script_guard genesis39 zGenesis_00050_guest_network
 
 . /lib/genesis39-functions.sh
 . /lib/functions.sh
