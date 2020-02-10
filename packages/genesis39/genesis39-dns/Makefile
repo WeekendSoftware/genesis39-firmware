@@ -5,7 +5,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=genesis39
+PKG_NAME:=genesis39-dns
 PKG_VERSION:=1.0.0
 PKG_RELEASE:=5
 PKG_LICENSE:=MIT
@@ -13,31 +13,25 @@ PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/genesis39
+define Package/genesis39-dns
 	SECTION:=genesis39
-	CATEGORY:=Genesis39
+	CATEGORY:=Genesis39 DNS Filtering
 	TITLE:=Genesis 39
 	PKGARCH:=all
   DEPENDS:= \
-  	+genesis39-scripts \
-  	+genesis39-dns \
-  	+genesis39-wifi-postfix-mac \
-  	+genesis39-keys \
-  	+genesis39-auto-upgrade \
-  	+safe-search \
   	+script-guard
 endef
 
-define Package/genesis39/description
-Install this package to install Genesis 39 on your device.
+define Package/genesis39-dns/description
+Configure DNS to filter requests for the Genesis39 Project.
 endef
 
 define Build/Compile
 endef
 
-define Package/genesis39/install
+define Package/genesis39-dns/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
 endef
 
-$(eval $(call BuildPackage,genesis39))
+$(eval $(call BuildPackage,genesis39-dns))

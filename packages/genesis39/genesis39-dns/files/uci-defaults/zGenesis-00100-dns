@@ -1,0 +1,55 @@
+#!/bin/sh
+# Copyright (C) 2020 Gregory L. Dietsche
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License version 2 as published by the
+# Free Software Foundation. This program is distributed in the hope that it
+# will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see http://www.gnu.org/licenses/.
+#
+# This script should only run once. Without this, check, this script
+# would run again after an upgrade
+#
+. /lib/script-guard.sh
+script_guard genesis39 00100_dns
+
+#
+# We do NOT want to use the DNS servers advertised by the ISP because
+# we want to use the OpenDNS Family Shield DNS servers instead.
+#
+uci -q batch <<-EOT
+  set network.wan.peerdns='0'
+  set network.wan6.peerdns='0'
+EOT
+
+#
+# If dnscrypt-proxy is installed, use it.
+# Otherwise, directly use custom DNS servers.
+#
+if command -v dnscrypt-proxy; then
+  uci -q batch <<-EOT
+    delete dhcp.@dnsmasq[0].server
+    add_list dhcp.@dnsmasq[0].server='127.0.0.1#5353'
+    add_list dhcp.@dnsmasq[0].server='/pool.ntp.org/8.8.8.8'
+
+    set dnscrypt-proxy.ns1.resolver='cisco-familyshield'
+EOT
+else
+  uci -q batch <<-EOT
+    delete dhcp.@dnsmasq[0].server
+    add_list dhcp.@dnsmasq[0].server=185.228.168.10
+    add_list dhcp.@dnsmasq[0].server=185.228.169.10
+EOT
+fi
+
+#DNS that should not be resolved using the default DNS servers.
+#This protects us in the unlikely event that the DNS provider
+#we're using for this project stops working. In that case,
+#we'll be able to upload new packages to point to a new DNS
+#provider and auto-update everyone to the new provider.
+uci -q batch <<-EOT
+  add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
+EOT
+
+exit 0
