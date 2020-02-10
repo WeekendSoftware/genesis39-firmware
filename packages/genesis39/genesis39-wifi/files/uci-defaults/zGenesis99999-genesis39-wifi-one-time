@@ -15,6 +15,6 @@
 script_guard genesis39 99999_wifi_one_time
 
 
-/etc/init.d/genesis39-wifi-one-time enable
+/etc/init.d/genesis39-wifi enable
 
 exit 0
