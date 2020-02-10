@@ -12,7 +12,7 @@
 # would run again after an upgrade
 #
 . /lib/script-guard.sh
-script_guard genesis39 00001_defaults
+script_guard genesis39 10000_defaults
 
 #
 # Change default hostname
