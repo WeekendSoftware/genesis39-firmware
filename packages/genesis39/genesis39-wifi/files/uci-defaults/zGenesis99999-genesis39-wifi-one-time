@@ -11,6 +11,9 @@
 # This script should only run once. Without this, check, this script
 # would run again after an upgrade
 #
+. /lib/script-guard.sh
+script_guard genesis39 99999_wifi_one_time
+
 
 /etc/init.d/genesis39-wifi-one-time enable
 

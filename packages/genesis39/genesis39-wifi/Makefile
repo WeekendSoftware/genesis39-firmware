@@ -5,7 +5,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=genesis39-wifi-one-time
+PKG_NAME:=genesis39-wifi
 PKG_VERSION:=1.0.0
 PKG_RELEASE:=1
 PKG_LICENSE:=MIT
@@ -13,7 +13,7 @@ PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/genesis39-wifi-one-time
+define Package/genesis39-wifi
 	SECTION:=genesis39
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 WiFi One Time Setup
@@ -23,16 +23,16 @@ define Package/genesis39-wifi-one-time
   	+script-guard
 endef
 
-define Package/genesis39-wifi-one-time/description
+define Package/genesis39-wifi/description
 Add the last 4 digits of the mac address to the wifi network name(s).
 endef
 
 define Build/Compile
 endef
 
-define Package/genesis39-wifi-one-time/install
-	$(INSTALL_DIR) $(1)/genesis39/service/firstboot/
-	$(INSTALL_BIN) ./files/genesis39/service/firstboot/* $(1)/genesis39/service/firstboot/
+define Package/genesis39-wifi/install
+	$(INSTALL_DIR) $(1)/genesis39/service/
+	$(INSTALL_BIN) ./files/genesis39/service/* $(1)/genesis39/service/
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/init.d/* $(1)/etc/init.d/
@@ -41,4 +41,4 @@ define Package/genesis39-wifi-one-time/install
 	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
 endef
 
-$(eval $(call BuildPackage,genesis39-wifi-one-time))
+$(eval $(call BuildPackage,genesis39-wifi))
