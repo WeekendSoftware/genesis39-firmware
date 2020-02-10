@@ -7,27 +7,25 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
+#
+# This script should only run once. Without this, check, this script
+# would run again after an upgrade
+#
+. /lib/script-guard.sh
+script_guard genesis39 zGenesis-00050-guest-network
+
+. /lib/genesis39-functions.sh
 . /lib/functions.sh
 
-#
-# Change the Wifi SSID on each radio to Genesis39_FFFF where FFFF is the
-# last part of the MAC address.
-#
-wifi_ssid() {
-  local ssid=`uci get wireless.$1.ssid`
-  uci -q batch <<-EOT
-  set wireless.$1.ssid='${ssid}_$2'
-EOT
+network=Guest
+zonename=Guest
+ip='192.168.2.1'
 
-}
+genesis39_add_network $network $ip
+genesis39_add_zone $zonename $network
+genesis39_force_zone_dns_to_router Guest
 
-lan=`uci get network.lan.ifname`
-mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
-
-config_load wireless
-config_foreach wifi_ssid wifi-iface $mac
-uci commit wireless
-
-/sbin/wifi reload
+genesis39_allow_zone_ntp_to_router $zonename
+genesis39_force_zone_ntp_to_router $zonename $network
 
 exit 0

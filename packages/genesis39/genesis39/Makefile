@@ -21,7 +21,7 @@ define Package/genesis39
   DEPENDS:= \
   	+genesis39-scripts \
   	+genesis39-dns \
-  	+genesis39-wifi-postfix-mac \
+  	+genesis39-wifi-one-time \
   	+genesis39-keys \
   	+genesis39-auto-upgrade \
   	+safe-search \

@@ -11,24 +11,7 @@
 # This script should only run once. Without this, check, this script
 # would run again after an upgrade
 #
-. /lib/script-guard.sh
-script_guard genesis39 00020_wireless_name
 
-. /lib/genesis39-functions.sh
-. /lib/functions.sh
-
-#
-# Change the Wifi SSID on each radio to Genesis39_FFFF where FFFF is the
-# last part of the MAC address.
-#
-wifi_ssid() {
-  uci -q batch <<-EOT
-  set wireless.$1.ssid='Genesis39'
-EOT
-
-}
-
-config_load wireless
-config_foreach wifi_ssid wifi-iface
+/etc/init.d/genesis39-wifi-one-time enable
 
 exit 0

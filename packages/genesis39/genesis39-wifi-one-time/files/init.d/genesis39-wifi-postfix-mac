@@ -15,10 +15,10 @@ EXTRA_HELP="        explain Explains what this service is for"
  
 boot() {
   echo "Updating wifi ssid(s)"
-  /genesis39/service/firstboot/genesis39-wifi-postfix-mac
+  /genesis39/service/firstboot/genesis39-wifi-one-time
 
   echo "Disabling the service"
-  /etc/init.d/genesis39-wifi-postfix-mac disable
+  /etc/init.d/genesis39-wifi-one-time disable
 }
 
 explain(){

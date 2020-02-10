@@ -7,44 +7,51 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see http://www.gnu.org/licenses/.
-#
-# This script should only run once. Without this, check, this script
-# would run again after an upgrade
-#
 . /lib/script-guard.sh
-script_guard genesis39 00030_guest_network
+script_guard genesis39 genesis39-wifi-one-time
 
 . /lib/genesis39-functions.sh
 . /lib/functions.sh
 
-network=Guest
-zonename=Guest
-wifiname="Genesis39_Guest"
-wifikey='Genesis39'
-wifiencryption='none'
-ip='192.168.2.1'
+lan=`uci get network.lan.ifname`
+mac=`cat /sys/class/net/$lan/address | sed s/://g | grep -o '....$'`
+config_load wireless
 
-genesis39_add_network $network $ip
-genesis39_add_zone $zonename $network
-genesis39_force_zone_dns_to_router Guest
+wifi_main_ssid() {
+  uci -q batch <<-EOT
+  set wireless.$1.ssid='Genesis39_$2'
+  set wireless.$1.key='Genesis39'
+  set wireless.$iface.encryption='psk2'
+EOT
 
-genesis39_allow_zone_ntp_to_router $zonename
-genesis39_force_zone_ntp_to_router $zonename $network
+}
+config_foreach wifi_main_ssid wifi-iface $mac
+
 
 wifi_addGuest() {
   local iface=$(uci add wireless wifi-iface)
   uci -q batch <<-EOT
     set wireless.$iface.device='$1'
     set wireless.$iface.mode='ap'
-    set wireless.$iface.ssid='$wifiname'
-    set wireless.$iface.key='$wifikey'
-    set wireless.$iface.encryption='$wifiencryption'
-    set wireless.$iface.network=$network
+    set wireless.$iface.ssid='Genesis39_Guest_$mac'
+    set wireless.$iface.key='Genesis39'
+    set wireless.$iface.encryption='psk2'
+    set wireless.$iface.network='Guest'
     set wireless.$iface.isolate='1'
 EOT
 }
-
-config_load wireless
 config_foreach wifi_addGuest wifi-device
+
+
+wifi_enable() {
+  uci -q batch <<-EOT
+  delete wireless.$1.disabled
+EOT
+}
+config_foreach wifi_enable wifi-device
+
+
+uci commit wireless
+/sbin/wifi reload
 
 exit 0
