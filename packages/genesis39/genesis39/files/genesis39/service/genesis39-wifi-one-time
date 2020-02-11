@@ -33,7 +33,7 @@ wifi_addGuest() {
     set wireless.$iface.ssid='Genesis39_Guest_$mac'
     set wireless.$iface.key='Genesis39'
     set wireless.$iface.encryption='psk2'
-    set wireless.$iface.network='Guest'
+    set wireless.$iface.network='guest'
     set wireless.$iface.isolate='1'
 EOT
 }
