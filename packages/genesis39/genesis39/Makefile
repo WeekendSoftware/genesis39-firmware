@@ -19,10 +19,11 @@ define Package/genesis39
 	TITLE:=Genesis 39
 	PKGARCH:=all
   DEPENDS:= \
-  	+genesis39-auto-upgrade \
-  	+genesis39-dns \
   	+genesis39-scripts \
+  	+genesis39-dns \
   	+genesis39-wifi \
+  	+genesis39-keys \
+  	+genesis39-auto-upgrade \
   	+safe-search \
   	+script-guard
 endef

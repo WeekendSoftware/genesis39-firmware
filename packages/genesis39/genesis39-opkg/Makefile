@@ -1,5 +1,3 @@
-
-
 #
 # Copyright (c) 2018 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 # This is free software, licensed under the MIT License
@@ -7,7 +5,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=genesis39-auto-upgrade
+PKG_NAME:=genesis39-opkg
 PKG_VERSION:=1.0.0
 PKG_RELEASE:=1
 PKG_LICENSE:=MIT
@@ -15,35 +13,31 @@ PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/genesis39-auto-upgrade
+define Package/genesis39-opkg
 	SECTION:=genesis39
 	CATEGORY:=Genesis39
-	TITLE:=Genesis 39 Automatic Upgrades
+	TITLE:=Genesis 39 opkg update sources
 	PKGARCH:=all
-  DEPENDS:=genesis39-keys
 endef
 
-define Package/genesis39-auto-upgrade/description
-Automatic Genesis39 Project Upgrades
+define Package/genesis39-opkg/description
+Where to download the latest version of the genesis39 project.
 endef
 
 define Build/Compile
 endef
 
-define Package/genesis39-auto-upgrade/install
-	$(INSTALL_DIR) $(1)/sbin
-	$(INSTALL_BIN) ./files/sbin/genesis39-upgrade $(1)/sbin/
-
+define Package/genesis39-opkg/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
 endef
 
-define Package/genesis39-auto-upgrade/prerm
+define Package/genesis39-opkg/prerm
 #!/bin/sh
 if [ -z "$${IPGK_INSTROOT}" ]; then
-  crontab -l | grep -v "0 3 \* \* 1 /sbin/genesis39-upgrade" | sort | uniq | crontab -
+  cat /etc/opkg/customfeeds.conf | grep -v "src/gz genesis39" > /etc/opkg/customfeeds.conf
 fi
 exit 0
 endef
 
-$(eval $(call BuildPackage,genesis39-auto-upgrade))
+$(eval $(call BuildPackage,genesis39-opkg))

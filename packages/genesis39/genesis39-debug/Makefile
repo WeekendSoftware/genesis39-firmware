@@ -16,7 +16,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/genesis39-debug
 	SECTION:=genesis39
 	CATEGORY:=Genesis39
-	TITLE:=Genesis 39 Remote Debugging
+	TITLE:=Genesis 39 Remote Debug
 	PKGARCH:=all
 endef
 
