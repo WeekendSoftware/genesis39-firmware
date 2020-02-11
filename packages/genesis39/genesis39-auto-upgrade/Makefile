@@ -32,7 +32,7 @@ endef
 
 define Package/genesis39-auto-upgrade/install
 	$(INSTALL_DIR) $(1)/sbin
-	$(INSTALL_BIN) ./files/sbin/genesis39-upgrade $(1)/sbin/
+	$(INSTALL_BIN) ./files/sbin/* $(1)/sbin/
 
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
