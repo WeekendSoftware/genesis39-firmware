@@ -23,6 +23,6 @@ boot() {
 
 explain(){
   echo This service only executes once on boot. It automatically disables
-  echo itsself and should NOT be executed again. It sets up some things
+  echo itsself and should NOT be executed again. It configures settings
   echo that cannot be configured using /etc/uci-defaults
 }
