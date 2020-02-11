@@ -21,3 +21,6 @@ Instead it will make avaiable only what the typical parent needs.
         [] WiFi network for each child. Parent connects child's device to child's network.
             - do this so that the parent dosen't need to figure out which MAC address is which child's device...
         [] Timeout feature for childern disables wifi for specified period of time.
+[ ] Things We Don't Do
+    [] We don't provide uninstall support. Once installed, the only way to remove is to flash a different firmware, or reset the router (if installed via packages)
+
