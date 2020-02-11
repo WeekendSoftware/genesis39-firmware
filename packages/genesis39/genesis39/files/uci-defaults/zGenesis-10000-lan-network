@@ -14,6 +14,8 @@
 . /lib/script-guard.sh
 script_guard genesis39 20000_dns
 
+. /lib/genesis39-functions.sh
+
 #
 # We do NOT want to use the DNS servers advertised by the ISP because
 # we want to use the OpenDNS Family Shield DNS servers instead.
@@ -51,5 +53,12 @@ fi
 uci -q batch <<-EOT
   add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
 EOT
+
+# Capture and redirect ALL LAN DNS requests so that this router handles them.
+# This makes it very hard for someone to use a DNS server other than the one
+# we have configured. For example, trying to use 8.8.8.8 for DNS will no longer
+# answered by 8.8.8.8. Instead, this router will reply.
+#
+genesis39_force_zone_dns_to_router lan
 
 exit 0
