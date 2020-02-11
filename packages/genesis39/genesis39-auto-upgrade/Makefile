@@ -20,7 +20,6 @@ define Package/genesis39-auto-upgrade
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 Automatic Upgrades
 	PKGARCH:=all
-  DEPENDS:=genesis39-keys
 endef
 
 define Package/genesis39-auto-upgrade/description
@@ -31,18 +30,29 @@ define Build/Compile
 endef
 
 define Package/genesis39-auto-upgrade/install
-	$(INSTALL_DIR) $(1)/sbin
-	$(INSTALL_BIN) ./files/sbin/genesis39-upgrade $(1)/sbin/
-
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
+
+	$(INSTALL_DIR) $(1)/sbin
+	$(INSTALL_BIN) ./files/sbin/* $(1)/sbin/
+
+  $(INSTALL_DIR) $(1)/etc/opkg/keys
+  $(INSTALL_DATA) ./files/keys/* $(1)/etc/opkg/keys/
 endef
 
 define Package/genesis39-auto-upgrade/prerm
 #!/bin/sh
+
+# Remove automatic upgrade crontab
 if [ -z "$${IPGK_INSTROOT}" ]; then
   crontab -l | grep -v "0 3 \* \* 1 /sbin/genesis39-upgrade" | sort | uniq | crontab -
 fi
+
+# Remove genesis39 custom opkg feed
+if [ -z "$${IPGK_INSTROOT}"  ]; then
+  cat /etc/opkg/customfeeds.conf | grep -v "src/gz genesis39" > /etc/opkg/customfeeds.conf
+fi
+
 exit 0
 endef
 
