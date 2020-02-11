@@ -12,11 +12,8 @@
 # would run again after an upgrade
 #
 . /lib/script-guard.sh
-script_guard genesis39 20000_dns
+script_guard genesis39 00002_dns
 
-. /lib/genesis39-functions.sh
-
-#
 # We do NOT want to use the DNS servers advertised by the ISP because
 # we want to use the OpenDNS Family Shield DNS servers instead.
 #
@@ -33,7 +30,7 @@ if command -v dnscrypt-proxy; then
   uci -q batch <<-EOT
     delete dhcp.@dnsmasq[0].server
     add_list dhcp.@dnsmasq[0].server='127.0.0.1#5353'
-    add_list dhcp.@dnsmasq[0].server='/pool.ntp.org/8.8.8.8'
+    add_list dhcp.@dnsmasq[0].server='/ntp.org/8.8.8.8'
 
     set dnscrypt-proxy.ns1.resolver='cisco-familyshield'
 EOT
@@ -49,16 +46,10 @@ fi
 #This protects us in the unlikely event that the DNS provider
 #we're using for this project stops working. In that case,
 #we'll be able to upload new packages to point to a new DNS
-#provider and auto-update everyone to the new provider.
+#provider and auto-update existing installs to the new provider.
 uci -q batch <<-EOT
   add_list dhcp.@dnsmasq[0].server='/genesis39.org/8.8.8.8'
+  add_list dhcp.@dnsmasq[0].server='/openwrt.org/8.8.8.8'
 EOT
-
-# Capture and redirect ALL LAN DNS requests so that this router handles them.
-# This makes it very hard for someone to use a DNS server other than the one
-# we have configured. For example, trying to use 8.8.8.8 for DNS will no longer
-# answered by 8.8.8.8. Instead, this router will reply.
-#
-genesis39_force_zone_dns_to_router lan
 
 exit 0

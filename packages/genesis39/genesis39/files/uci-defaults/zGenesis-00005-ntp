@@ -12,20 +12,30 @@
 # would run again after an upgrade
 #
 . /lib/script-guard.sh
-script_guard genesis39 10000_guest_network
+script_guard genesis39 00005_ntp
 
 . /lib/genesis39-functions.sh
 . /lib/functions.sh
 
-network=Guest
-zonename=Guest
-ip='192.168.2.1'
+#
+# Enable the router to serve NTP time to devices connected to it.
+#
+uci -q batch <<-EOT
+  set system.ntp=timeserver
+  set system.ntp.enabled='1'
+  set system.ntp.enable_server='1'
+EOT
 
-genesis39_add_network $network $ip
-genesis39_add_zone $zonename $network
-genesis39_force_zone_dns_to_router Guest
+# The router will answer all NTP requests even when a NTP client tries to
+# communicate with a different NTP server on the internet.
+#
+# This has the side-effect of making every host on the internet look like it is
+# running a NTP server!
+#
+genesis39_allow_zone_ntp_to_router lan
+genesis39_force_zone_ntp_to_router lan lan
 
-genesis39_allow_zone_ntp_to_router $zonename
-genesis39_force_zone_ntp_to_router $zonename $network
+genesis39_allow_zone_ntp_to_router guest
+genesis39_force_zone_ntp_to_router guest guest
 
 exit 0

@@ -1,0 +1,31 @@
+#!/bin/sh
+# Copyright (C) 2018 Gregory L. Dietsche
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License version 2 as published by the
+# Free Software Foundation. This program is distributed in the hope that it
+# will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see http://www.gnu.org/licenses/.
+#
+# This script should only run once. Without this, check, this script
+# would run again after an upgrade
+#
+. /lib/script-guard.sh
+script_guard genesis39 00004_guest_network
+
+. /lib/genesis39-functions.sh
+. /lib/functions.sh
+
+network=guest
+zonename=guest
+ip='192.168.2.1'
+
+genesis39_add_network $network $ip
+genesis39_add_zone $zonename $network
+genesis39_force_zone_dns_to_router guest
+
+genesis39_allow_zone_ntp_to_router $zonename
+genesis39_force_zone_ntp_to_router $zonename $network
+
+exit 0
