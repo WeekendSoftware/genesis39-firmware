@@ -14,4 +14,8 @@ upgrade genesis39-keys
 upgrade genesis39-opkg
 upgrade genesis39-auto-upgrade
 upgrade genesis39-debug
+upgrade genesis39-scripts
+upgrade genesis39-dns
+upgrade genesis39-wifi
 upgrade genesis39
+
