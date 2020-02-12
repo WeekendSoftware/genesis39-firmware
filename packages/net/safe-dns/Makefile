@@ -44,4 +44,19 @@ define Package/safe-dns/install
 	$(INSTALL_BIN) ./files/safe-dns-update $(1)/usr/sbin/safe-dns-update
 endef
 
+define Package/safe-dns/prerm
+#!/bin/sh
+if [ -z "$${IPGK_INSTROOT}" ]; then
+  uci set network.wan.peerdns='1'
+  uci set network.wan6.peerdns='1'
+  uci delete dhcp.@dnsmasq[0].server
+	uci commit dhcp
+	uci commit network
+	/etc/init.d/network reload
+	/etc/init.d/dnsmasq reload
+fi
+exit 0
+endef
+
+
 $(eval $(call BuildPackage,safe-dns))

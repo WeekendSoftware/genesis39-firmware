@@ -5,37 +5,32 @@
 #
 . /lib/functions.sh
 
-setupPeerDNS(){
-  if [ "$1" -eq 1 ] ; then
-    uci set network.wan.peerdns='0'
-    uci set network.wan6.peerdns='0'
-  else
-    uci set network.wan.peerdns='1'
-    uci set network.wan6.peerdns='1'
-  fi
-}
+config_load 'safe-dns'
+config_get_bool enabled default enabled 0
+config_get dns default dns default
 
-uninstallDNS(){
-  #cleanbrowsing-adult-filter
-  uci del_list dhcp.@dnsmasq[0].server=185.228.168.10
+# If other DNS servers are in the list, they'll cause some DNS queries to
+# not be filtered, so we remove all servers from thes list if any are present.
+# This also handles the case where the user requests that we uninstall/disable
+# the safe-dns feature.
+uci delete dhcp.@dnsmasq[0].server
 
-  #cleanbrowsing-family-filter
-  uci del_list dhcp.@dnsmasq[0].server=185.228.168.168
+if [ "$enabled" -eq 1 ] ; then
+  # We don't want to use ISP DNS servers because they don't filter queries
+  uci set network.wan.peerdns='0'
+  uci set network.wan6.peerdns='0'
 
-  #cisco-family-shield
-  uci del_list dhcp.@dnsmasq[0].server=208.67.222.123
-  uci del_list dhcp.@dnsmasq[0].server=208.67.220.123
-}
-
-installDNS() {
+  # Configure the DNS server(s) that will handle filtering.
   case $dns in
     cleanbrowsing-adult-filter)
       echo cleanbrowsing-adult-filter activated
       uci add_list dhcp.@dnsmasq[0].server=185.228.168.10
+      uci add_list dhcp.@dnsmasq[0].server=185.228.169.11
       ;;
     cleanbrowsing-family-filter)
       echo cleanbrowsing-family-filter activated
       uci add_list dhcp.@dnsmasq[0].server=185.228.168.168
+      uci add_list dhcp.@dnsmasq[0].server=185.228.169.168
       ;;
     cisco-family-shield)
       echo cisco-family-shield activated
@@ -46,18 +41,11 @@ installDNS() {
       echo $dns is not supported.
       ;;
   esac
-}
-
-config_load 'safe-dns'
-config_get_bool enabled default enabled 0
-config_get dns default dns default
-
-setupPeerDNS $enabled
-uninstallDNS
-if [ "$enabled" -eq 1 ]; then
-  installDNS
 else
-  echo ISP DNS servers activated
+  # This is the OpenWrt default
+  uci set network.wan.peerdns='1'
+  uci set network.wan6.peerdns='1'
+  echo ISP DNS server(s) activated
 fi
 
 uci commit dhcp
@@ -65,4 +53,3 @@ uci commit network
 
 /etc/init.d/dnsmasq reload
 /etc/init.d/network reload
-
