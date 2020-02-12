@@ -12,7 +12,7 @@ Currently Supported:
     - CleanBrowsing.org Adult Filter
         -  https://cleanbrowsing.org/filters#adult
         - Blocks access to all adult, pornographic and explicit sites. It does not block proxy or VPNs, nor mixed-content sites. Sites like Reddit are allowed. Google and Bing are set to the Safe Mode. Malicious and Phishing domains are blocked.
-- Optional DNS Filters:
+- Alternate DNS Filters:
     - CleanBrowsing.org Family Filter
         -  https://cleanbrowsing.org/filters#family
         - Blocks access to all adult, pornographic and explicit sites. It also blocks proxy and VPN domains that are used to bypass the filters. Mixed content sites (like Reddit) are also blocked. Google, Bing and Youtube are set to the Safe Mode. Malicious and Phishing domains are blocked.
