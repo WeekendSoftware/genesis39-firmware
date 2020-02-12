@@ -35,7 +35,7 @@ endef
 
 define Package/safe-dns/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DATA) ./files/uci-defaults/* $(1)/etc/uci-defaults/
+	$(INSTALL_DATA) ./files/safe-dns.uci-defaults $(1)/etc/uci-defaults/safe-dns
 
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) ./files/safe-dns.conf $(1)/etc/config/safe-dns
