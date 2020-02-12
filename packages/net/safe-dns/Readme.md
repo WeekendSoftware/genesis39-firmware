@@ -7,7 +7,6 @@ The default settings are designed to be appropriate for most businesses and fami
 Enabled and disable Safe DNS by editing /etc/config/safe-dns . To make
 your changes active, run safe-dns-update.
 
-Currently Supported:
 - Default DNS Filter
     - CleanBrowsing.org Adult Filter
         -  https://cleanbrowsing.org/filters#adult
