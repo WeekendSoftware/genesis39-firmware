@@ -9,16 +9,15 @@ config_load 'safe-dns'
 config_get_bool enabled default enabled 0
 config_get dns default dns default
 
-# If other DNS servers are in the list, they'll cause some DNS queries to
-# not be filtered, so we remove all servers from thes list if any are present.
-# This also handles the case where the user requests that we uninstall/disable
-# the safe-dns feature.
-uci delete dhcp.@dnsmasq[0].server
 
 if [ "$enabled" -eq 1 ] ; then
   # We don't want to use ISP DNS servers because they don't filter queries
   uci set network.wan.peerdns='0'
   uci set network.wan6.peerdns='0'
+
+  # If other DNS servers are in the list, they'll cause some DNS queries to
+  # not be filtered, so we remove all servers from thes list if any are present.
+  uci delete dhcp.@dnsmasq[0].server
 
   # Configure the DNS server(s) that will handle filtering.
   case $dns in
@@ -45,6 +44,7 @@ else
   # This is the OpenWrt default
   uci set network.wan.peerdns='1'
   uci set network.wan6.peerdns='1'
+  uci delete dhcp.@dnsmasq[0].server
   echo ISP DNS server(s) activated
 fi
 
