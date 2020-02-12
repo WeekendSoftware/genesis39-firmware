@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# Copyright (c) 2020 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
+# This is free software, licensed under the MIT License
+#
+. /lib/functions.sh
+
+setupPeerDNS(){
+  if [ "$1" -eq 1 ] ; then
+    uci set network.wan.peerdns='0'
+    uci set network.wan6.peerdns='0'
+  else
+    uci set network.wan.peerdns='1'
+    uci set network.wan6.peerdns='1'
+  fi
+}
+
+uninstallDNS(){
+  #cleanbrowsing-adult-filter
+  uci del_list dhcp.@dnsmasq[0].server=185.228.168.10
+
+  #cleanbrowsing-family-filter
+  uci del_list dhcp.@dnsmasq[0].server=185.228.168.168
+
+  #cisco-family-shield
+  uci del_list dhcp.@dnsmasq[0].server=208.67.222.123
+  uci del_list dhcp.@dnsmasq[0].server=208.67.220.123
+}
+
+installDNS() {
+  case $dns in
+    cleanbrowsing-adult-filter)
+      echo cleanbrowsing-adult-filter activated
+      uci add_list dhcp.@dnsmasq[0].server=185.228.168.10
+      ;;
+    cleanbrowsing-family-filter)
+      echo cleanbrowsing-family-filter activated
+      uci add_list dhcp.@dnsmasq[0].server=185.228.168.168
+      ;;
+    cisco-family-shield)
+      echo cisco-family-shield activated
+      uci add_list dhcp.@dnsmasq[0].server=208.67.222.123
+      uci add_list dhcp.@dnsmasq[0].server=208.67.220.123
+      ;;
+    *)
+      echo $dns is not supported.
+      ;;
+  esac
+}
+
+config_load 'safe-dns'
+config_get_bool enabled default enabled 0
+config_get dns default dns default
+
+setupPeerDNS $enabled
+uninstallDNS
+if [ "$enabled" -eq 1 ]; then
+  installDNS
+else
+  echo ISP DNS servers activated
+fi
+
+uci commit dhcp
+uci commit network
+
+/etc/init.d/dnsmasq reload
+/etc/init.d/network reload
+
