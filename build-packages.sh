@@ -48,3 +48,5 @@ if [ ! -d genesis39-packages ]; then
 fi
 
 popd>/dev/null
+
+rsync -av --delete dynamic-files/genesis39-packages/ /data/ace/greg/tftp/packages/

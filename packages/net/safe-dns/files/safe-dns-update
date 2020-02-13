@@ -7,25 +7,32 @@
 
 config_load 'safe-dns'
 config_get_bool enabled default enabled 0
+config_get_bool redirect_dns default redirect_dns 0
 config_get dns default dns default
+
+# If other DNS servers are in the list, they will cause some DNS queries to
+# not be filtered, so we remove all servers from thes list if any are present.
+# Also, if safe-dns is disabled, we want to clear the server list
+uci delete dhcp.@dnsmasq[0].server
+
+# Always remove the firewall rule if present.
+# If it is enabled, the code will re-add it later.
+uci delete firewall.safe_dns_lan
 
 if [ "$enabled" -ne 1 ] ; then
   # This is the OpenWrt default. safe-dns not enabled
   uci set network.wan.peerdns='1'
   uci set network.wan6.peerdns='1'
   uci delete dhcp.@dnsmasq[0].server
-  echo ISP DNS server(s) activated
-
+  echo 'ISP DNS server(s) activated'
 else
+
   #safe-dns is enabled
 
   # We don't want to use ISP DNS servers because they don't filter queries
   uci set network.wan.peerdns='0'
   uci set network.wan6.peerdns='0'
 
-  # If other DNS servers are in the list, they will cause some DNS queries to
-  # not be filtered, so we remove all servers from thes list if any are present.
-  uci delete dhcp.@dnsmasq[0].server
 
   # Configure the DNS server(s) that will handle filtering.
   case $dns in
@@ -48,10 +55,29 @@ else
       echo $dns is not supported.
       ;;
   esac
+
+  if [ "$redirect_dns" -eq 1 ] ; then
+    zone=lan
+    ip=$(uci get network.$zone.ipaddr)
+
+    uci -q batch <<-EOT
+    set firewall.safe_dns_lan=redirect
+    add_list firewall.safe_dns_lan.proto='tcp'
+    add_list firewall.safe_dns_lan.proto='udp'
+    set firewall.safe_dns_lan.src_dport='53'
+    set firewall.safe_dns_lan.target='DNAT'
+    set firewall.safe_dns_lan.src='$zone'
+    set firewall.safe_dns_lan.dest='$zone'
+    set firewall.safe_dns_lan.dest_ip='$ip'
+    set firewall.safe_dns_lan.name='safe-dns redirect for $zone zone'
+EOT
+  fi
 fi
 
 uci commit dhcp
 uci commit network
+uci commit firewall
 
 /etc/init.d/dnsmasq reload
 /etc/init.d/network reload
+/etc/init.d/firewall reload
