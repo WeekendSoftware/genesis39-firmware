@@ -57,7 +57,6 @@ test_not_safe(){
   uci set safe-dns.default.enabled=0
   uci commit safe-dns
   safe-dns-update
-  sleep 1
 
   expect_not_safe "Site 1" 3000 'https://www.sex.com'
   expect_not_safe "Site 2" 3000 'https://www.pornhub.com'
@@ -75,7 +74,6 @@ test_filter(){
   uci set safe-dns.default.dns=$1
   uci commit safe-dns
   safe-dns-update
-  sleep 1
 
   expect_safe "Site 1" 3000 'https://www.sex.com'
   expect_safe "Site 2" 3000 'https://www.pornhub.com'
