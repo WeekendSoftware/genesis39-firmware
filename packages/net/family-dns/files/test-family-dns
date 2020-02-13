@@ -54,16 +54,16 @@ expect_safe(){
 }
 
 test_not_safe(){
-  uci set safe-dns.default.enabled=0
-  uci commit safe-dns
-  safe-dns-update
+  uci set family-dns.default.enabled=0
+  uci commit family-dns
+  family-dns-update
 
   expect_not_safe "Site 1" 3000 'https://www.sex.com'
   expect_not_safe "Site 2" 3000 'https://www.pornhub.com'
 
-  uci set safe-dns.default.enabled=1
-  uci commit safe-dns
-  safe-dns-update
+  uci set family-dns.default.enabled=1
+  uci commit family-dns
+  family-dns-update
 
   echo
 }
@@ -71,9 +71,9 @@ test_not_safe(){
 test_filter(){
   echo testing $1
 
-  uci set safe-dns.default.dns=$1
-  uci commit safe-dns
-  safe-dns-update
+  uci set family-dns.default.dns=$1
+  uci commit family-dns
+  family-dns-update
 
   expect_safe "Site 1" 3000 'https://www.sex.com'
   expect_safe "Site 2" 3000 'https://www.pornhub.com'
