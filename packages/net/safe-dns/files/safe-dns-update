@@ -10,6 +10,11 @@ config_get_bool enabled default enabled 0
 config_get_bool redirect_dns default redirect_dns 0
 config_get dns default dns default
 
+#uninstall and disable are designed to be equivalent.
+if [ "$1" == "uninstall" ] ; then
+  enabled=0
+fi
+
 # Set Defaults
 uci -q batch <<-EOT
   set network.wan.peerdns='1'
@@ -18,12 +23,8 @@ uci -q batch <<-EOT
   delete firewall.safe_dns_lan
 EOT
 
-if [ "$1" == "uninstall" ] ; then
-  enabled=0
-fi
-
 if [ "$enabled" -ne 1 ] ; then
-  echo 'Default ISP DNS server(s) activated'
+  echo 'Activating Default ISP DNS server(s)'
 else
   # We don't want to use ISP DNS servers because they don't filter queries
   uci set network.wan.peerdns='0'
@@ -32,17 +33,17 @@ else
   # Configure the DNS server(s) that will handle filtering.
   case $dns in
     cleanbrowsing-adult-filter)
-      echo cleanbrowsing-adult-filter activated
+      echo Activating cleanbrowsing-adult-filter
       uci add_list dhcp.@dnsmasq[0].server=185.228.168.10
       uci add_list dhcp.@dnsmasq[0].server=185.228.169.11
       ;;
     cleanbrowsing-family-filter)
-      echo cleanbrowsing-family-filter activated
+      echo Activating cleanbrowsing-family-filter
       uci add_list dhcp.@dnsmasq[0].server=185.228.168.168
       uci add_list dhcp.@dnsmasq[0].server=185.228.169.168
       ;;
     cisco-family-shield)
-      echo cisco-family-shield activated
+      echo Activating cisco-family-shield
       uci add_list dhcp.@dnsmasq[0].server=208.67.222.123
       uci add_list dhcp.@dnsmasq[0].server=208.67.220.123
       ;;
@@ -52,6 +53,7 @@ else
   esac
 
   if [ "$redirect_dns" -eq 1 ] ; then
+    echo Activating DNS redirect
     zone=lan
     ip=$(uci get network.$zone.ipaddr)
 
