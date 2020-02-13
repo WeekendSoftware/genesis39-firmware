@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=safe-dns
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=9
+PKG_RELEASE:=12
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -49,13 +49,14 @@ define Package/safe-dns/prerm
 if [ -z "$${IPGK_INSTROOT}" ]; then
   uci set network.wan.peerdns='1'
   uci set network.wan6.peerdns='1'
-  uci delete dhcp.@dnsmasq[0].server
-  uci delete firewall.safe-dns-lan
-	uci commit dhcp
+  uci delete network.wan.dns
+  uci delete network.wan6.dns
+  uci delete firewall.safe_dns_lan
+
 	uci commit network
 	uci commit firewall
+
 	/etc/init.d/network reload
-	/etc/init.d/dnsmasq reload
 	/etc/init.d/firewall reload
 fi
 exit 0
