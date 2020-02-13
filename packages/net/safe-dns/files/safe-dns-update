@@ -11,17 +11,17 @@ config_get_bool redirect_dns default redirect_dns 0
 config_get dns default dns default
 
 # Set Defaults
-uci set network.wan.peerdns='1'
-uci set network.wan6.peerdns='1'
-uci delete network.wan.dns
-uci delete network.wan6.dns
-uci delete firewall.safe_dns_lan
+uci -q batch <<-EOT
+  set network.wan.peerdns='1'
+  set network.wan6.peerdns='1'
+  delete network.wan.dns
+  delete network.wan6.dns
+  delete firewall.safe_dns_lan
+EOT
 
 if [ "$enabled" -ne 1 ] ; then
   echo 'ISP DNS server(s) activated'
 else
-  echo Enabling Safe-DNS
-
   # We don't want to use ISP DNS servers because they don't filter queries
   uci set network.wan.peerdns='0'
   uci set network.wan6.peerdns='0'
@@ -70,9 +70,13 @@ EOT
   fi
 fi
 
-uci commit network
-uci commit firewall
+uci -q batch <<-EOT
+  commit network
+  commit firewall
+EOT
 
 /etc/init.d/network reload
 /etc/init.d/firewall reload 2>/dev/null
+/etc/init.d/dnsmasq reload
+/etc/init.d/odhcpd reload
 

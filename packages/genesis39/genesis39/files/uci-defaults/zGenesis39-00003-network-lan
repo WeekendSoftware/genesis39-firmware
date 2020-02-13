@@ -22,6 +22,6 @@ script_guard genesis39 00003_network_lan
 # we have configured. For example, trying to use 8.8.8.8 for DNS will no longer
 # answered by 8.8.8.8. Instead, this router will reply.
 #
-genesis39_force_zone_dns_to_router lan
+#genesis39_force_zone_dns_to_router lan
 
 exit 0

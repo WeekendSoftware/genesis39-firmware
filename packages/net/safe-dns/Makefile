@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=safe-dns
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=12
+PKG_RELEASE:=16
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -47,20 +47,25 @@ endef
 define Package/safe-dns/prerm
 #!/bin/sh
 if [ -z "$${IPGK_INSTROOT}" ]; then
-  uci set network.wan.peerdns='1'
-  uci set network.wan6.peerdns='1'
-  uci delete network.wan.dns
-  uci delete network.wan6.dns
-  uci delete firewall.safe_dns_lan
 
-	uci commit network
-	uci commit firewall
+  uci -q batch <<-EOT
+    set network.wan.peerdns='1'
+    set network.wan6.peerdns='1'
 
-	/etc/init.d/network reload
-	/etc/init.d/firewall reload
+    delete network.wan.dns
+    delete network.wan6.dns
+    delete firewall.safe_dns_lan
+
+    commit network
+    commit firewall
+EOT
+
+  /etc/init.d/network reload
+  /etc/init.d/firewall reload 2>/dev/null
+  /etc/init.d/dnsmasq reload
+  /etc/init.d/odhcpd reload
 fi
 exit 0
 endef
-
 
 $(eval $(call BuildPackage,safe-dns))
