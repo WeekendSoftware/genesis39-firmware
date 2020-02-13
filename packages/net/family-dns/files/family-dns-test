@@ -1,0 +1,98 @@
+#!/bin/sh
+#
+# Copyright (c) 2020 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
+# This is free software, licensed under the MIT License
+#
+
+#Yucky global variable.
+global_result=0
+
+expect_not_safe(){
+  local title=$1
+  local size=$2
+  local web=$3
+
+  actual=`wget -4 -O - $web | wc -l` 2> /dev/null
+  if [ $actual -gt $size ] ; then
+    echo "$title: IPv4: $size/$actual. NOT SAFE"
+  else
+    echo "$title: IPv4: SAFE. $actual (expected not safe!) ***************"
+    global_result=1
+  fi
+
+  actual=`wget -6 -O - $web  | wc -l` 2> /dev/null
+  if [ $actual -gt $size ] ; then
+    echo "$title: IPv6: $size/$actual. NOT SAFE"
+  else
+    echo "$title: IPv6: SAFE. $actual (expected not safe!) ***************"
+    global_result=1
+  fi
+  return $global_result
+}
+
+expect_safe(){
+  local title=$1
+  local size=$2
+  local web=$3
+
+  actual=`wget -4 -O - $web | wc -l` 2> /dev/null
+  if [ $actual -gt $size ] ; then
+    echo "$title: IPv4: $size/$actual. NOT SAFE ******************"
+    global_result=1
+  else
+    echo "$title: IPv4: SAFE. $actual"
+  fi
+
+  actual=`wget -6 -O - $web  | wc -l` 2> /dev/null
+  if [ $actual -gt $size ] ; then
+    echo "$title: IPv6: $size/$actual. NOT SAFE ******************"
+    global_result=1
+  else
+    echo "$title: IPv6: SAFE. $actual"
+  fi
+  return $global_result
+}
+
+test_not_safe(){
+  uci set safe-dns.default.enabled=0
+  uci commit safe-dns
+  safe-dns-update
+  sleep 1
+
+  expect_not_safe "Site 1" 3000 'https://www.sex.com'
+  expect_not_safe "Site 2" 3000 'https://www.pornhub.com'
+
+  uci set safe-dns.default.enabled=1
+  uci commit safe-dns
+  safe-dns-update
+
+  echo
+}
+
+test_filter(){
+  echo testing $1
+
+  uci set safe-dns.default.dns=$1
+  uci commit safe-dns
+  safe-dns-update
+  sleep 1
+
+  expect_safe "Site 1" 3000 'https://www.sex.com'
+  expect_safe "Site 2" 3000 'https://www.pornhub.com'
+
+  echo
+}
+
+test_not_safe
+test_filter cisco-family-shield
+test_filter cleanbrowsing-family-filter
+test_filter cleanbrowsing-adult-filter
+# with cleanbrowsing-adult-filter on, run this test on a different device (not the router)
+# the result should be 0 when redirect_dns=1 and the result should be 1 when redirect_dns=0
+nslookup -query=A www.sex.com 8.8.8.8 | grep NXDOMAIN | wc -l
+
+
+if [ $global_result -ne 0 ]; then
+  echo '************ Test(s) failed! ********************************************************'
+fi
+exit $global_result

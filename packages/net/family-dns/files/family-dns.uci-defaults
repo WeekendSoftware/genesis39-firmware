@@ -4,6 +4,6 @@
 # This is free software, licensed under the MIT License
 #
 
-/usr/sbin/safe-dns-update
+/usr/sbin/family-dns-update
 
 exit 0

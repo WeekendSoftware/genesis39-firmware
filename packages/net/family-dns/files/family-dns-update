@@ -5,7 +5,7 @@
 #
 . /lib/functions.sh
 
-config_load 'safe-dns'
+config_load 'family-dns'
 config_get_bool enabled default enabled 0
 config_get_bool redirect_dns default redirect_dns 0
 config_get dns default dns default
@@ -20,7 +20,7 @@ uci -q batch <<-EOT
   set network.wan.peerdns='1'
   set network.wan6.peerdns='1'
   delete dhcp.@dnsmasq[0].server
-  delete firewall.safe_dns_lan
+  delete firewall.family_dns_lan
 EOT
 
 if [ "$enabled" -ne 1 ] ; then
@@ -58,15 +58,15 @@ else
     ip=$(uci get network.$zone.ipaddr)
 
     uci -q batch <<-EOT
-    set firewall.safe_dns_lan=redirect
-    add_list firewall.safe_dns_lan.proto='tcp'
-    add_list firewall.safe_dns_lan.proto='udp'
-    set firewall.safe_dns_lan.src_dport='53'
-    set firewall.safe_dns_lan.dest_ip='$ip'
-    set firewall.safe_dns_lan.target='DNAT'
-    set firewall.safe_dns_lan.src='$zone'
-    set firewall.safe_dns_lan.dest='$zone'
-    set firewall.safe_dns_lan.name='safe-dns redirect for $zone zone'
+    set firewall.family_dns_lan=redirect
+    add_list firewall.family_dns_lan.proto='tcp'
+    add_list firewall.family_dns_lan.proto='udp'
+    set firewall.family_dns_lan.src_dport='53'
+    set firewall.family_dns_lan.dest_ip='$ip'
+    set firewall.family_dns_lan.target='DNAT'
+    set firewall.family_dns_lan.src='$zone'
+    set firewall.family_dns_lan.dest='$zone'
+    set firewall.family_dns_lan.name='family-dns redirect for $zone zone'
 EOT
   fi
 fi
