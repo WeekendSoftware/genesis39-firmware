@@ -14,13 +14,16 @@ config_get dns default dns default
 uci -q batch <<-EOT
   set network.wan.peerdns='1'
   set network.wan6.peerdns='1'
-  delete network.wan.dns
-  delete network.wan6.dns
+  delete dhcp.@dnsmasq[0].server
   delete firewall.safe_dns_lan
 EOT
 
+if [ "$1" == "uninstall" ] ; then
+  enabled=0
+fi
+
 if [ "$enabled" -ne 1 ] ; then
-  echo 'ISP DNS server(s) activated'
+  echo 'Default ISP DNS server(s) activated'
 else
   # We don't want to use ISP DNS servers because they don't filter queries
   uci set network.wan.peerdns='0'
@@ -30,22 +33,18 @@ else
   case $dns in
     cleanbrowsing-adult-filter)
       echo cleanbrowsing-adult-filter activated
-      uci add_list network.wan.dns=185.228.168.10
-      uci add_list network.wan.dns=185.228.169.11
-      uci add_list network.wan6.dns=2a0d:2a00:1::1
-      uci add_list network.wan6.dns=2a0d:2a00:2::1
+      uci add_list dhcp.@dnsmasq[0].server=185.228.168.10
+      uci add_list dhcp.@dnsmasq[0].server=185.228.169.11
       ;;
     cleanbrowsing-family-filter)
       echo cleanbrowsing-family-filter activated
-      uci add_list network.wan.dns=185.228.168.168
-      uci add_list network.wan.dns=185.228.169.168
-      uci add_list network.wan6.dns=2a0d:2a00:1::
-      uci add_list network.wan6.dns=2a0d:2a00:2::1
+      uci add_list dhcp.@dnsmasq[0].server=185.228.168.168
+      uci add_list dhcp.@dnsmasq[0].server=185.228.169.168
       ;;
     cisco-family-shield)
       echo cisco-family-shield activated
-      uci add_list network.wan.dns=208.67.222.123
-      uci add_list network.wan.dns=208.67.220.123
+      uci add_list dhcp.@dnsmasq[0].server=208.67.222.123
+      uci add_list dhcp.@dnsmasq[0].server=208.67.220.123
       ;;
     *)
       echo $dns is not supported.
@@ -71,12 +70,12 @@ EOT
 fi
 
 uci -q batch <<-EOT
+  commit dhcp
   commit network
   commit firewall
 EOT
 
 /etc/init.d/network reload
-/etc/init.d/firewall reload 2>/dev/null
 /etc/init.d/dnsmasq reload
-/etc/init.d/odhcpd reload
+/etc/init.d/firewall reload 2>/dev/null
 

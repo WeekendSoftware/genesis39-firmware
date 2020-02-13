@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=safe-dns
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=16
+PKG_RELEASE:=20
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -42,28 +42,15 @@ define Package/safe-dns/install
 
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) ./files/safe-dns-update $(1)/usr/sbin/safe-dns-update
+
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) ./files/safe-dns-update-test $(1)/usr/bin/safe-dns-update-test
 endef
 
 define Package/safe-dns/prerm
 #!/bin/sh
 if [ -z "$${IPGK_INSTROOT}" ]; then
-
-  uci -q batch <<-EOT
-    set network.wan.peerdns='1'
-    set network.wan6.peerdns='1'
-
-    delete network.wan.dns
-    delete network.wan6.dns
-    delete firewall.safe_dns_lan
-
-    commit network
-    commit firewall
-EOT
-
-  /etc/init.d/network reload
-  /etc/init.d/firewall reload 2>/dev/null
-  /etc/init.d/dnsmasq reload
-  /etc/init.d/odhcpd reload
+  /usr/sbin/safe-dns-update uninstall
 fi
 exit 0
 endef
