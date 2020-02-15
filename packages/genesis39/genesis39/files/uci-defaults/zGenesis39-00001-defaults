@@ -14,36 +14,17 @@
 . /lib/script-guard.sh
 script_guard genesis39 00001_defaults
 
-#
-# Change default hostname
-#
-uci -q batch <<-EOT
-  set system.@system[0].hostname='Genesis39'
-EOT
-
-
-#
-# Tweak the OpenWRT default firewall so that it drops invalid packets.
-#
-uci -q batch <<-EOT
-  set firewall.@defaults[0].drop_invalid='1'
-EOT
-
-#
-# The routers we're targeting have more than enough memory, so increase the
-# cache size to the maximum. This ensures VERY fast DNS lookups.
-#
-uci -q batch <<-EOT
-  set dhcp.@dnsmasq[0].cachesize='10000'
-EOT
-
-#
-# Default to a timezone in the USA. This will help with automatic upgrade
-# scheduling because we expect most users to be in the USA.
-#
 uci -q batch <<-EOT
   set system.@system[0].zonename='America/Menominee'
   set system.@system[0].timezone='CST6CDT,M3.2.0,M11.1.0'
+
+  set system.@system[0].hostname='Genesis39'
+
+  set firewall.@defaults[0].drop_invalid='1'
+  set firewall.@defaults[0].flow_offloading='1'
+
+  set dhcp.@dnsmasq[0].cachesize='10000'
+
 EOT
 
 exit 0
