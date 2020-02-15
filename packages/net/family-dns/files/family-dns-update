@@ -19,7 +19,8 @@ fi
 uci -q batch <<-EOT
   set network.wan.peerdns='1'
   set network.wan6.peerdns='1'
-  delete dhcp.@dnsmasq[0].server
+  delete network.wan.dns
+  delete network.wan6.dns
   delete firewall.family_dns_lan
 EOT
 
@@ -34,18 +35,22 @@ else
   case $dns in
     cleanbrowsing-adult-filter)
       echo Activating cleanbrowsing-adult-filter
-      uci add_list dhcp.@dnsmasq[0].server=185.228.168.10
-      uci add_list dhcp.@dnsmasq[0].server=185.228.169.11
+      uci add_list network.wan.dns=185.228.168.10
+      uci add_list network.wan.dns=185.228.169.11
+      uci add_list network.wan6.dns=2a0d:2a00:1::1
+      uci add_list network.wan6.dns=2a0d:2a00:2::1
       ;;
     cleanbrowsing-family-filter)
       echo Activating cleanbrowsing-family-filter
-      uci add_list dhcp.@dnsmasq[0].server=185.228.168.168
-      uci add_list dhcp.@dnsmasq[0].server=185.228.169.168
+      uci add_list network.wan.dns=185.228.168.168
+      uci add_list network.wan.dns=185.228.169.168
+      uci add_list network.wan6.dns=2a0d:2a00:1::
+      uci add_list network.wan6.dns=2a0d:2a00:2::
       ;;
     cisco-family-shield)
       echo Activating cisco-family-shield
-      uci add_list dhcp.@dnsmasq[0].server=208.67.222.123
-      uci add_list dhcp.@dnsmasq[0].server=208.67.220.123
+      uci add_list network.wan.dns=208.67.222.123
+      uci add_list network.wan.dns=208.67.220.123
       ;;
     *)
       echo $dns is not supported.
@@ -72,7 +77,6 @@ EOT
 fi
 
 uci -q batch <<-EOT
-  commit dhcp
   commit network
   commit firewall
 EOT
