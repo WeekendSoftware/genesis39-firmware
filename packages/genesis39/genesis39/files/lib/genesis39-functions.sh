@@ -10,11 +10,12 @@
 
 # for example allow lan to access Guest
 genesis39_forward_zone_to_zone(){
-  local src_zone=$1
-  local dst_zone=$2
+  local rule=$1
+  local src_zone=$2
+  local dst_zone=$3
 
-  local rule=$(uci add firewall forwarding)
   uci -q batch <<-EOT
+    set firewall.$rule=forwarding
     set firewall.$rule.src='$src_zone'
     set firewall.$rule.dest='$dst_zone'
 EOT
@@ -25,11 +26,12 @@ EOT
 # allowing it to go to the DNS server that it was intended for.
 #
 genesis39_force_zone_dns_to_router(){
-  local zone=$1
+  local rule=$1
+  local zone=$2
   local ip=$(uci get network.$zone.ipaddr)
 
-  local rule=$(uci add firewall redirect)
   uci -q batch <<-EOT
+  set firewall.$rule=redirect
   set firewall.$rule.target='DNAT'
   set firewall.$rule.src='$zone'
   set firewall.$rule.proto='tcp udp'
@@ -45,11 +47,12 @@ EOT
 # can be answered.
 #
 genesis39_allow_zone_ntp_to_router(){
-  local zone=$1
+  local rule=$1
+  local zone=$2
   if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
     #Allow ntp access because the router is setup as a ntp server
-    local rule=$(uci add firewall rule)
     uci -q batch <<-EOT
+      set firewall.$rule=rule
       set firewall.$rule.target='ACCEPT'
       set firewall.$rule.proto='udp'
       set firewall.$rule.src='$zone'
@@ -64,14 +67,15 @@ EOT
 # allowing it to go to the NTP server that it was intended for.
 #
 genesis39_force_zone_ntp_to_router(){
-  local zone=$1
-  local networkname=$2
+  local rule=$1
+  local zone=$2
+  local networkname=$3
   local ip=$(uci get network.$networkname.ipaddr)
 
   if [[ "$(uci -q get system.ntp.enable_server)" = "1" ]]; then
     # Force all NTP traffic to this router
-    local rule=$(uci add firewall redirect)
     uci -q batch <<-EOT
+      set firewall.$rule=redirect
       set firewall.$rule.target='DNAT'
       set firewall.$rule.src='$zone'
       set firewall.$rule.proto='udp'
@@ -111,61 +115,62 @@ EOT
 # Create a new firewall zone
 #
 genesis39_add_zone(){
-  local zone=$1
-  local network=$2
+  local rule=$1
+  local zone=$2
+  local network=$3
 
-  local rule=$(uci add firewall zone)
   uci -q batch <<-EOT
-  set firewall.$rule.input='REJECT'
-  set firewall.$rule.forward='REJECT'
-  set firewall.$rule.output='ACCEPT'
-  set firewall.$rule.name=$zone
-  set firewall.$rule.network=$network
+  set firewall.${rule}_zone=zone
+  set firewall.${rule}_zone.input='REJECT'
+  set firewall.${rule}_zone.forward='REJECT'
+  set firewall.${rule}_zone.output='ACCEPT'
+  set firewall.${rule}_zone.name=$zone
+  set firewall.${rule}_zone.network=$network
 EOT
 
-  rule=$(uci add firewall forwarding)
   uci -q batch <<-EOT
-    set firewall.$rule.src=$zone
-    set firewall.$rule.dest='wan'
+    set firewall.${rule}_fwd_wan=forwarding
+    set firewall.${rule}_fwd_wan.src=$zone
+    set firewall.${rule}_fwd_wan.dest='wan'
 EOT
 
-  rule=$(uci add firewall rule)
   uci -q batch <<-EOT
-    set firewall.$rule.target='ACCEPT'
-    set firewall.$rule.proto='tcp udp'
-    set firewall.$rule.dest_port='53'
-    set firewall.$rule.src=$zone
-    set firewall.$rule.name='$zone dns'
+    set firewall.${rule}_accept_dns=rule
+    set firewall.${rule}_accept_dns.target='ACCEPT'
+    set firewall.${rule}_accept_dns.proto='tcp udp'
+    set firewall.${rule}_accept_dns.dest_port='53'
+    set firewall.${rule}_accept_dns.src=$zone
+    set firewall.${rule}_accept_dns.name='$zone dns'
 EOT
 
-  rule=$(uci add firewall rule)
   uci -q batch <<-EOT
-    set firewall.$rule.target='ACCEPT'
-    set firewall.$rule.proto='udp'
-    set firewall.$rule.src=$zone
-    set firewall.$rule.family='ipv4'
-    set firewall.$rule.dest_port='67'
-    set firewall.$rule.src_port='68'
-    set firewall.$rule.name='$zone dhcp4'
+    set firewall.${rule}_accept_dhcp_four=rule
+    set firewall.${rule}_accept_dhcp_four.target='ACCEPT'
+    set firewall.${rule}_accept_dhcp_four.proto='udp'
+    set firewall.${rule}_accept_dhcp_four.src=$zone
+    set firewall.${rule}_accept_dhcp_four.family='ipv4'
+    set firewall.${rule}_accept_dhcp_four.dest_port='67'
+    set firewall.${rule}_accept_dhcp_four.src_port='68'
+    set firewall.${rule}_accept_dhcp_four.name='$zone dhcp4'
 EOT
 
-  rule=$(uci add firewall rule)
   uci -q batch <<-EOT
-    set firewall.$rule.target='ACCEPT'
-    set firewall.$rule.src=$zone
-    set firewall.$rule.name='$zone dhcp6'
-    set firewall.$rule.family='ipv6'
-    set firewall.$rule.dest_port='547'
-    set firewall.$rule.proto='udp'
-    set firewall.$rule.src_port='546'
+    set firewall.${rule}_accept_dhcp_six=rule
+    set firewall.${rule}_accept_dhcp_six.target='ACCEPT'
+    set firewall.${rule}_accept_dhcp_six.src=$zone
+    set firewall.${rule}_accept_dhcp_six.name='$zone dhcp6'
+    set firewall.${rule}_accept_dhcp_six.family='ipv6'
+    set firewall.${rule}_accept_dhcp_six.dest_port='547'
+    set firewall.${rule}_accept_dhcp_six.proto='udp'
+    set firewall.${rule}_accept_dhcp_six.src_port='546'
 EOT
 
-  rule=$(uci add firewall rule)
   uci -q batch <<-EOT
-    set firewall.$rule.target='ACCEPT'
-    set firewall.$rule.family='ipv6'
-    set firewall.$rule.proto='icmp'
-    set firewall.$rule.src='$zone'
-    set firewall.$rule.name='$zone icmp6'
+    set firewall.${rule}_accept_icmp_six=rule
+    set firewall.${rule}_accept_icmp_six='ACCEPT'
+    set firewall.${rule}_accept_icmp_six.family='ipv6'
+    set firewall.${rule}_accept_icmp_six.proto='icmp'
+    set firewall.${rule}_accept_icmp_six.src='$zone'
+    set firewall.${rule}_accept_icmp_six.name='$zone icmp6'
 EOT
 }

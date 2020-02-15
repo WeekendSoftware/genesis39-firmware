@@ -22,7 +22,7 @@ zonename=guest
 ip='192.168.2.1'
 
 genesis39_add_network $network $ip
-genesis39_add_zone $zonename $network
-genesis39_force_zone_dns_to_router guest
+genesis39_add_zone genesis39_${zone}_zone $zonename $network
+genesis39_force_zone_dns_to_router genesis39_force_guest_dns guest
 
 exit 0

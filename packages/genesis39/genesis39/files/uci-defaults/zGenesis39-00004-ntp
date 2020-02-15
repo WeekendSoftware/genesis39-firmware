@@ -32,10 +32,10 @@ EOT
 # This has the side-effect of making every host on the internet look like it is
 # running a NTP server!
 #
-genesis39_allow_zone_ntp_to_router lan
-genesis39_force_zone_ntp_to_router lan lan
+genesis39_allow_zone_ntp_to_router genesis39_ntp_lan_allow lan
+genesis39_force_zone_ntp_to_router genesis39_ntp_lan_redirect lan lan
 
-genesis39_allow_zone_ntp_to_router guest
-genesis39_force_zone_ntp_to_router guest guest
+genesis39_allow_zone_ntp_to_router genesis39_ntp_guest_allow guest
+genesis39_force_zone_ntp_to_router genesis39_ntp_guest_redirect guest guest
 
 exit 0
