@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Copyright (c) 2020 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
+# This is free software, licensed under the MIT License
+#
+echo src/gz genesis39 http://www.genesis39.org/static/packages/next>> /etc/opkg/customfeeds.conf
+exit 0

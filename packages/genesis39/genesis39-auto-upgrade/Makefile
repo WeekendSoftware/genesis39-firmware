@@ -20,7 +20,8 @@ define Package/genesis39-auto-upgrade
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 Automatic Upgrades
 	PKGARCH:=all
-  DEPENDS:=genesis39-keys
+  DEPENDS:=genesis39-keys \
+  	genesis39-opkg-release
 endef
 
 define Package/genesis39-auto-upgrade/description
