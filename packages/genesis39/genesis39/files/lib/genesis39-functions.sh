@@ -32,7 +32,7 @@ genesis39_force_zone_dns_to_router(){
   uci -q batch <<-EOT
   set firewall.$rule.target='DNAT'
   set firewall.$rule.src='$zone'
-  set firewall.$rule.proto='tcpudp'
+  set firewall.$rule.proto='tcp udp'
   set firewall.$rule.src_dport='53'
   set firewall.$rule.dest='$zone'
   set firewall.$rule.dest_ip='$ip'
@@ -95,17 +95,13 @@ genesis39_add_network(){
     set network.$network.proto='static'
     set network.$network.ipaddr='$ip'
     set network.$network.netmask='255.255.255.0'
-EOT
 
-  uci -q batch <<-EOT
     set dhcp.$network=dhcp
     set dhcp.$network.start='50'
     set dhcp.$network.leasetime='6h'
     set dhcp.$network.limit='200'
     set dhcp.$network.interface=$network
-EOT
 
-  uci -q batch <<-EOT
     set dhcp.$network.ra='server'
     set dhcp.$network.dhcpv6='server'
 EOT
