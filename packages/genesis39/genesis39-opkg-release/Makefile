@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=genesis39-opkg-release
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=5
+PKG_RELEASE:=9
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -18,6 +18,10 @@ define Package/genesis39-opkg-release
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 opkg release update sources
 	PKGARCH:=all
+  DEPENDS:= \
+  	+ca-certificates \
+  	+ca-bundle \
+  	+libustream-openssl
 endef
 
 define Package/genesis39-opkg-release/description
@@ -35,7 +39,7 @@ endef
 define Package/genesis39-opkg-release/prerm
 #!/bin/sh
 if [ -z "$${IPGK_INSTROOT}" ]; then
-  sed -i "/^src\/gz genesis39 http:\/\/www\.genesis39\.org\/static\/packages\/release" /etc/opkg/customfeeds.conf 
+  sed -i "/^src\/gz genesis39-opkg-release https:\/\/www\.genesis39\.org\/static\/packages\/release/d" /etc/opkg/customfeeds.conf 
 fi
 exit 0
 endef

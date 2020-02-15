@@ -37,7 +37,7 @@ pushd dynamic-files/$upstreamSdk>/dev/null
 
 make package/genesis39/compile
 make package/genesis39-opkg-next/compile
-make package/genesis39-opkg-release/compile
+make package/genesis39-opkg-release/compile V=s
 make package/genesis39-debug/compile
 make package/family-dns/compile
 make package/index

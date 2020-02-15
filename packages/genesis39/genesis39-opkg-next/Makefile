@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=genesis39-opkg-next
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=4
+PKG_RELEASE:=9
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -18,7 +18,11 @@ define Package/genesis39-opkg-next
 	CATEGORY:=Genesis39
 	TITLE:=Genesis 39 opkg next update sources
 	PKGARCH:=all
-  DEPENDS:=genesis39-debug
+  DEPENDS:= \
+  	+genesis39-debug \
+    +ca-certificates \
+  	+ca-bundle \
+  	+libustream-openssl
 endef
 
 define Package/genesis39-opkg-next/description
@@ -36,7 +40,7 @@ endef
 define Package/genesis39-opkg-next/prerm
 #!/bin/sh
 if [ -z "$${IPGK_INSTROOT}" ]; then
-  sed -i "/^src\/gz genesis39 http:\/\/www\.genesis39\.org\/static\/packages\/next" /etc/opkg/customfeeds.conf 
+  sed -i "/^src\/gz genesis39-opkg-next https:\/\/www\.genesis39\.org\/static\/packages\/next/d" /etc/opkg/customfeeds.conf 
 fi
 exit 0
 endef
