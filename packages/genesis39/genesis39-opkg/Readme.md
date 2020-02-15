@@ -1,4 +1,3 @@
-# Package: genesis39/genesis39-debug
+# Package: genesis39/genesis39-opkg
 
-Allow software engineers at the Genesis39 project to access and debug your
-wireless device.
+Production opkg repository for Genesis39 project.

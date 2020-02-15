@@ -3,5 +3,5 @@
 # Copyright (c) 2018 Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 # This is free software, licensed under the MIT License
 #
-echo src/gz genesis39 http://www.genesis39.org/dl/packages>> /etc/opkg/customfeeds.conf
+echo src/gz genesis39 http://www.genesis39.org/static/packages/release>> /etc/opkg/customfeeds.conf
 exit 0

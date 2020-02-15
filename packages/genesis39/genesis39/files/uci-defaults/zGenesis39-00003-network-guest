@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2020 Gregory L. Dietsche
+# Copyright (C) 2018 Gregory L. Dietsche
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License version 2 as published by the
 # Free Software Foundation. This program is distributed in the hope that it
@@ -12,16 +12,17 @@
 # would run again after an upgrade
 #
 . /lib/script-guard.sh
-script_guard genesis39 00003_network_lan
+script_guard genesis39 00004_network_guest
 
 . /lib/genesis39-functions.sh
 . /lib/functions.sh
 
-# Capture and redirect ALL LAN DNS requests so that this router handles them.
-# This makes it very hard for someone to use a DNS server other than the one
-# we have configured. For example, trying to use 8.8.8.8 for DNS will no longer
-# answered by 8.8.8.8. Instead, this router will reply.
-#
-#genesis39_force_zone_dns_to_router lan
+network=guest
+zonename=guest
+ip='192.168.2.1'
+
+genesis39_add_network $network $ip
+genesis39_add_zone $zonename $network
+genesis39_force_zone_dns_to_router guest
 
 exit 0

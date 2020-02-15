@@ -21,6 +21,7 @@ define Package/genesis39
   DEPENDS:= \
   	+genesis39-keys \
   	+genesis39-auto-upgrade \
+    +family-dns \
   	+safe-search \
   	+script-guard
 endef
