@@ -120,12 +120,12 @@ genesis39_add_zone(){
   local network=$3
 
   uci -q batch <<-EOT
-  set firewall.${rule}_zone=zone
-  set firewall.${rule}_zone.input='REJECT'
-  set firewall.${rule}_zone.forward='REJECT'
-  set firewall.${rule}_zone.output='ACCEPT'
-  set firewall.${rule}_zone.name=$zone
-  set firewall.${rule}_zone.network=$network
+  set firewall.${rule}=zone
+  set firewall.${rule}.input='REJECT'
+  set firewall.${rule}.forward='REJECT'
+  set firewall.${rule}.output='ACCEPT'
+  set firewall.${rule}.name=$zone
+  set firewall.${rule}.network=$network
 EOT
 
   uci -q batch <<-EOT
