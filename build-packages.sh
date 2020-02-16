@@ -50,4 +50,4 @@ fi
 
 popd>/dev/null
 
-rsync -av --delete dynamic-files/genesis39-packages/ /data/ace/greg/tftp/packages/
+rsync -av --delete dynamic-files/genesis39-packages/ /data/ace/greg/tftp/g39/packages/

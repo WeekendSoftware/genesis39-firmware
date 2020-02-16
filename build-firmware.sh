@@ -57,4 +57,4 @@ export genesis39_secret_key=/home/greg/genesis39/usign-genesis39/usign.genesis39
 
 ../usign/usign  -S -m ${genesis39_publish_firmware}/* -s ${genesis39_secret_key}
 chmod ugo+r dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/
-rsync -avz dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/${upstreamFaction}-${upstreamVersion}-${upstreamTarget}-generic-${upstreamProfile}-squashfs-sysupgrade.bin ${genesis39_publish_firmware}/
+rsync -avz --delete dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/* ${genesis39_publish_firmware}/
