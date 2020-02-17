@@ -15,6 +15,8 @@ Instead it will make avaiable only what the typical parent needs.
     [] Genesis39 will ensure each script only runs once.
     - This allows us to add bug-fix / feature enhancement scripts "at the end"
     - We do this so that automatic upgrades work correctly no matter what.
+[] Reproduction
+    [] Package to enable TFTP sever on TP-Link Archer A7, with firmware images so that more routers can be made from the first router....
 [] User Friendly UI
     [] Only allow configuration of wireless network name and password.
     [] Child Friendly
