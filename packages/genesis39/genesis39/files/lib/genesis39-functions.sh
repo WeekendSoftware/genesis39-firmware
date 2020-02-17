@@ -120,57 +120,57 @@ genesis39_add_zone(){
   local network=$3
 
   uci -q batch <<-EOT
-  set firewall.${rule}=zone
-  set firewall.${rule}.input='REJECT'
-  set firewall.${rule}.forward='REJECT'
-  set firewall.${rule}.output='ACCEPT'
-  set firewall.${rule}.name=$zone
-  set firewall.${rule}.network=$network
+  set firewall.${rule}_zone=zone
+  set firewall.${rule}_zone.input='REJECT'
+  set firewall.${rule}_zone.forward='REJECT'
+  set firewall.${rule}_zone.output='ACCEPT'
+  set firewall.${rule}_zone.name=$zone
+  set firewall.${rule}_zone.network=$network
 EOT
 
   uci -q batch <<-EOT
-    set firewall.${rule}_fwd_wan=forwarding
-    set firewall.${rule}_fwd_wan.src=$zone
-    set firewall.${rule}_fwd_wan.dest='wan'
+    set firewall.${rule}_zone_fwd_wan=forwarding
+    set firewall.${rule}_zone_fwd_wan.src=$zone
+    set firewall.${rule}_zone_fwd_wan.dest='wan'
 EOT
 
   uci -q batch <<-EOT
-    set firewall.${rule}_accept_dns=rule
-    set firewall.${rule}_accept_dns.target='ACCEPT'
-    set firewall.${rule}_accept_dns.proto='tcp udp'
-    set firewall.${rule}_accept_dns.dest_port='53'
-    set firewall.${rule}_accept_dns.src=$zone
-    set firewall.${rule}_accept_dns.name='$zone dns'
+    set firewall.${rule}_zone_accept_dns=rule
+    set firewall.${rule}_zone_accept_dns.target='ACCEPT'
+    set firewall.${rule}_zone_accept_dns.proto='tcp udp'
+    set firewall.${rule}_zone_accept_dns.dest_port='53'
+    set firewall.${rule}_zone_accept_dns.src=$zone
+    set firewall.${rule}_zone_accept_dns.name='$zone dns'
 EOT
 
   uci -q batch <<-EOT
-    set firewall.${rule}_accept_dhcp_four=rule
-    set firewall.${rule}_accept_dhcp_four.target='ACCEPT'
-    set firewall.${rule}_accept_dhcp_four.proto='udp'
-    set firewall.${rule}_accept_dhcp_four.src=$zone
-    set firewall.${rule}_accept_dhcp_four.family='ipv4'
-    set firewall.${rule}_accept_dhcp_four.dest_port='67'
-    set firewall.${rule}_accept_dhcp_four.src_port='68'
-    set firewall.${rule}_accept_dhcp_four.name='$zone dhcp4'
+    set firewall.${rule}_zone_accept_dhcp_four=rule
+    set firewall.${rule}_zone_accept_dhcp_four.target='ACCEPT'
+    set firewall.${rule}_zone_accept_dhcp_four.proto='udp'
+    set firewall.${rule}_zone_accept_dhcp_four.src=$zone
+    set firewall.${rule}_zone_accept_dhcp_four.family='ipv4'
+    set firewall.${rule}_zone_accept_dhcp_four.dest_port='67'
+    set firewall.${rule}_zone_accept_dhcp_four.src_port='68'
+    set firewall.${rule}_zone_accept_dhcp_four.name='$zone dhcp4'
 EOT
 
   uci -q batch <<-EOT
-    set firewall.${rule}_accept_dhcp_six=rule
-    set firewall.${rule}_accept_dhcp_six.target='ACCEPT'
-    set firewall.${rule}_accept_dhcp_six.src=$zone
-    set firewall.${rule}_accept_dhcp_six.name='$zone dhcp6'
-    set firewall.${rule}_accept_dhcp_six.family='ipv6'
-    set firewall.${rule}_accept_dhcp_six.dest_port='547'
-    set firewall.${rule}_accept_dhcp_six.proto='udp'
-    set firewall.${rule}_accept_dhcp_six.src_port='546'
+    set firewall.${rule}_zone_accept_dhcp_six=rule
+    set firewall.${rule}_zone_accept_dhcp_six.target='ACCEPT'
+    set firewall.${rule}_zone_accept_dhcp_six.src=$zone
+    set firewall.${rule}_zone_accept_dhcp_six.name='$zone dhcp6'
+    set firewall.${rule}_zone_accept_dhcp_six.family='ipv6'
+    set firewall.${rule}_zone_accept_dhcp_six.dest_port='547'
+    set firewall.${rule}_zone_accept_dhcp_six.proto='udp'
+    set firewall.${rule}_zone_accept_dhcp_six.src_port='546'
 EOT
 
   uci -q batch <<-EOT
-    set firewall.${rule}_accept_icmp_six=rule
-    set firewall.${rule}_accept_icmp_six='ACCEPT'
-    set firewall.${rule}_accept_icmp_six.family='ipv6'
-    set firewall.${rule}_accept_icmp_six.proto='icmp'
-    set firewall.${rule}_accept_icmp_six.src='$zone'
-    set firewall.${rule}_accept_icmp_six.name='$zone icmp6'
+    set firewall.${rule}_zone_accept_icmp_six=rule
+    set firewall.${rule}_zone_accept_icmp_six='ACCEPT'
+    set firewall.${rule}_zone_accept_icmp_six.family='ipv6'
+    set firewall.${rule}_zone_accept_icmp_six.proto='icmp'
+    set firewall.${rule}_zone_accept_icmp_six.src='$zone'
+    set firewall.${rule}_zone_accept_icmp_six.name='$zone icmp6'
 EOT
 }
