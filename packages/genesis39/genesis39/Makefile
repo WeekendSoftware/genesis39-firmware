@@ -20,7 +20,6 @@ define Package/genesis39
 	PKGARCH:=all
   DEPENDS:= \
   	+genesis39-keys \
-  	+genesis39-opkg-auto-upgrade \
     +family-dns \
   	+safe-search \
   	+script-guard

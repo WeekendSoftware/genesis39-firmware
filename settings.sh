@@ -4,9 +4,9 @@
 # Quick controls to set the target version and hardware
 # Only exporting variables that are required by the build script
 #
-upstreamVersion=19.07.1
+upstreamVersion=19.07.2
 upstreamTarget=ath79
-export upstreamProfile=tplink_archer-a7-v5
+export upstreamProfile=tplink_archer-c7-v5
 
 # lede|openwrt
 export upstreamFaction=openwrt
