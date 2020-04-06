@@ -1,10 +1,10 @@
 # Package: net/family-dns
 
-This package configures dnsmasq to block access to adult websites.
+This package configures your router to block access to adult websites.
 
 The default settings are designed to be appropriate for most businesses and families.
 
-Enabled and disable Safe DNS by editing /etc/config/family-dns. To make
+Enabled and disable Family DNS by editing /etc/config/family-dns. To make
 your changes active, run family-dns-update.
 
 - Default DNS Filter

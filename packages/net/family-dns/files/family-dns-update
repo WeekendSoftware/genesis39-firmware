@@ -15,7 +15,7 @@ if [ "$1" == "uninstall" ] ; then
   enabled=0
 fi
 
-# Set Defaults
+# Set OpenWRT Defaults
 uci -q batch <<-EOT
   set network.wan.peerdns='1'
   set network.wan6.peerdns='1'

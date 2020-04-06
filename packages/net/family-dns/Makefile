@@ -21,7 +21,7 @@ define Package/family-dns
 endef
 
 define Package/family-dns/description
-This package configures dnsmasq to block adult websites on your router.
+This package configures your router to block adult websites.
 The default settings are designed to be appropriate for most businesses and
 families.
 endef
