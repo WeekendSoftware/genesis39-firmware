@@ -14,7 +14,7 @@ global_result=0
 # Decode
 # | tr '[A-Za-z]' '[N-ZA-Mn-za-m]'
 # A list of adult websites that support both IPv4 and IPv6
-IPv4And6EnabledSitesROT13="uggcf://kunzfgre.pbz uggcf://jjj.jngpuzlrkts.arg uggcf://jjj.pnzuho.pp uggcf://tnlznyrghor.pbz"
+IPv4And6EnabledSitesROT13="uggcf://kunzfgre.pbz uggcf://jjj.jngpuzlrkts.arg uggcf://tnlznyrghor.pbz"
 
 expect_not_safe(){
   title=$1
