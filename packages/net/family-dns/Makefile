@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=family-dns
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=5
+PKG_RELEASE:=1
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Gregory L. Dietsche <Gregory.Dietsche@cuw.edu>
 
@@ -22,8 +22,8 @@ endef
 
 define Package/family-dns/description
 This package configures your router to block adult websites.
-The default settings are designed to be appropriate for most businesses and
-families.
+The default settings are designed to be appropriate for most businesses,
+schools and families.
 endef
 
 define Package/family-dns/conffiles

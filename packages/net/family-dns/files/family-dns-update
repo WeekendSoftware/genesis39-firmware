@@ -11,7 +11,7 @@ config_get_bool redirect_dns default redirect_dns 0
 config_get dns default dns default
 
 #uninstall and disable are designed to be equivalent.
-if [ "$1" == "uninstall" ] ; then
+if [ "$1" = "uninstall" ] ; then
   enabled=0
 fi
 
@@ -53,7 +53,9 @@ else
       uci add_list network.wan.dns=208.67.220.123
       ;;
     *)
-      echo $dns is not supported.
+      echo "$dns" is not supported.
+      uci revert network
+      redirect_dns=0
       ;;
   esac
 
