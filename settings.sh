@@ -6,7 +6,7 @@
 #
 upstreamVersion=19.07.2
 upstreamTarget=ath79
-export upstreamProfile=tplink_archer-c7-v5
+export upstreamProfile=tplink_archer-a7-v5
 
 # lede|openwrt
 export upstreamFaction=openwrt
