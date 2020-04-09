@@ -39,11 +39,11 @@ fi
 chmod -R ugo+rX filesystem/genesis39
 
 #the BIN_DIR variable seems to do better when it has a fully qualified path.
-mkdir -p dynamic-files/bin/$upstreamBuilder
-rm  dynamic-files/bin/$upstreamBuilder/*
-binfolder=`echo $(pwd)/dynamic-files/bin/$upstreamBuilder`
+mkdir -p "dynamic-files/bin/$upstreamBuilder"
+rm "dynamic-files/bin/$upstreamBuilder/*"
+binfolder=$(echo "$(pwd)/dynamic-files/bin/$upstreamBuilder")
 
-pushd dynamic-files/$upstreamBuilder>/dev/null
+pushd "dynamic-files/$upstreamBuilder">/dev/null
 
 #make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search family-dns genesis39 genesis39-keys genesis39-opkg-release genesis39-opkg-next genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
 make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search family-dns genesis39 genesis39-keys genesis39-opkg-release genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
@@ -58,4 +58,4 @@ export genesis39_secret_key=/home/greg/genesis39/usign-genesis39/usign.genesis39
 
 ../usign/usign  -S -m ${genesis39_publish_firmware}/* -s ${genesis39_secret_key}
 chmod ugo+r dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/
-rsync -avz --delete dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/* ${genesis39_publish_firmware}/
+rsync -avz --delete "dynamic-files/bin/${upstreamFaction}-imagebuilder-${upstreamVersion}-${upstreamTarget}-generic.Linux-x86_64/*" ${genesis39_publish_firmware}/

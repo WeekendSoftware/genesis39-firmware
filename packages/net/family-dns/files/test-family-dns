@@ -105,6 +105,7 @@ test_filter(){
 #############################################
 test_not_safe
 test_filter cisco-family-shield
+test_filter cloudflare-malware-and-adult-content
 test_filter cleanbrowsing-family-filter
 test_filter cleanbrowsing-adult-filter
 
