@@ -9,12 +9,8 @@
 ########################
 global_result=0
 
-# Encode
-# tr 'A-Za-z' 'N-ZA-Mn-za-m' <<<"https://www.gregd.org/"
-# Decode
-# | tr '[A-Za-z]' '[N-ZA-Mn-za-m]'
 # A list of adult websites that support both IPv4 and IPv6
-IPv4And6EnabledSitesROT13="uggcf://kunzfgre.pbz uggcf://jjj.jngpuzlrkts.arg uggcf://tnlznyrghor.pbz"
+IPv4andIPv6EnabledSiteList="https://xhamster.com https://www.watchmyexgf.net https://gaymaletube.com"
 
 expect_not_safe(){
   title=$1
@@ -70,9 +66,10 @@ test_not_safe(){
   echo "******************************"
   echo "Testing Without Protection ***"
   echo "******************************"
-  for site in ${IPv4And6EnabledSitesROT13}; do
-    site_decoded=$(echo "$site" | tr '[A-Za-z]' '[N-ZA-Mn-za-m]')
-    expect_not_safe "$site" 500 "$site_decoded"
+  c=0
+  for site in ${IPv4andIPv6EnabledSiteList}; do
+    expect_not_safe "Site $c" 500 "$site"
+    c=$((c+1))
   done
 
   uci set family-dns.default.enabled=1
@@ -92,9 +89,10 @@ test_filter(){
   uci commit family-dns
   family-dns-update
 
-  for site in ${IPv4And6EnabledSitesROT13}; do
-    site_decoded=$(echo "$site" | tr '[A-Za-z]' '[N-ZA-Mn-za-m]')
-    expect_safe "$site" 500 "$site_decoded"
+  c=0
+  for site in ${IPv4andIPv6EnabledSiteList}; do
+    expect_safe "Testing Site $c" 500 "$site"
+    c=$((c+1))
   done
 
   echo

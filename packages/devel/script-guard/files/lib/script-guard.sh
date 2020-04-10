@@ -12,9 +12,9 @@
 # The first parameter is the uci configuration section
 # The second parameter should be something that uniquely identifies your script.
 script_guard_begin(){
-  local config_section="$1"
-  local script_id="$2"
-  local result
+  config_section="$1"
+  script_id="$2"
+  result
 
   config_load "$config_section"
   config_get_bool result guard "$script_id" 0
@@ -31,15 +31,15 @@ script_guard_begin(){
 # should match the parameter given to script_guard_begin
 #
 script_guard_end(){
-  local config_section="$1"
-  local script_id="$2"
+  config_section="$1"
+  script_id="$2"
 
   if [ ! -f "/etc/config/$config_section"  ]; then
     touch "/etc/config/$config_section"
   fi
 
-  uci -q set $config_section.guard=script
-  uci -q set $config_section.guard.$script_id=1
+  uci -q set "$config_section.guard=script"
+  uci -q set "$config_section.guard.$script_id=1"
 }
 
 # Call this from the beginning of each script that should run only once.
