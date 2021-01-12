@@ -40,6 +40,7 @@ make package/genesis39-opkg-next/compile
 make package/genesis39-opkg-release/compile V=s
 make package/genesis39-debug/compile
 make package/family-dns/compile
+make package/safe-search/compile
 make package/index
 #make
 cd ..
@@ -50,4 +51,4 @@ fi
 
 popd>/dev/null
 
-rsync -av --delete dynamic-files/genesis39-packages/ /data/ace/greg/tftp/g39/packages/
+rsync -av --delete dynamic-files/genesis39-packages/ /data/greg/tftp/g39/packages/

@@ -52,8 +52,8 @@ make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns 
 popd>/dev/null
 echo Genesis 39: Build Complete
 
-export genesis39_publish_packages=/data/ace/greg/tftp/g39/packages
-export genesis39_publish_firmware=/data/ace/greg/tftp/g39/firmware
+export genesis39_publish_packages=/data/greg/tftp/g39/packages
+export genesis39_publish_firmware=/data/greg/tftp/g39/firmware
 export genesis39_secret_key=/home/greg/genesis39/usign-genesis39/usign.genesis39.secret.key
 
 ../usign/usign  -S -m ${genesis39_publish_firmware}/* -s ${genesis39_secret_key}
