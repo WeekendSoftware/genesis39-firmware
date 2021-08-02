@@ -26,6 +26,8 @@ if command -v dnscrypt-proxy; then
     delete dhcp.@dnsmasq[0].server
     add_list dhcp.@dnsmasq[0].server='127.0.0.1#5353'
     add_list dhcp.@dnsmasq[0].server='/pool.ntp.org/8.8.8.8'
+    add_list dhcp.@dnsmasq[0].server='/openwrt.org/8.8.8.8'
+    add_list dhcp.@dnsmasq[0].server='/downloads.openwrt.org/8.8.8.8'
 
     set dnscrypt-proxy.ns1.resolver='cisco-familyshield'
 EOT
