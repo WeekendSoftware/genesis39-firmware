@@ -29,13 +29,13 @@ if command -v dnscrypt-proxy; then
     add_list dhcp.@dnsmasq[0].server='/openwrt.org/8.8.8.8'
     add_list dhcp.@dnsmasq[0].server='/downloads.openwrt.org/8.8.8.8'
 
-    set dnscrypt-proxy.ns1.resolver='cisco-familyshield'
+    set dnscrypt-proxy.ns1.resolver='cleanbrowsing-adult'
 EOT
 else
   uci -q batch <<-EOT
     delete dhcp.@dnsmasq[0].server
-    add_list dhcp.@dnsmasq[0].server=208.67.222.123
-    add_list dhcp.@dnsmasq[0].server=208.67.220.123
+    add_list dhcp.@dnsmasq[0].server=185.228.168.10
+    add_list dhcp.@dnsmasq[0].server=185.228.169.11
 EOT
 fi
 
