@@ -4,7 +4,7 @@
 # Quick controls to set the target version and hardware
 # Only exporting variables that are required by the build script
 #
-upstreamVersion=19.07.7
+upstreamVersion=21.00.0-rc3
 upstreamTarget=ath79
 export upstreamProfile=tplink_archer-a7-v5
 
