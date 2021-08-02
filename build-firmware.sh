@@ -47,7 +47,7 @@ pushd "dynamic-files/$upstreamBuilder">/dev/null
 
 #make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search family-dns genesis39 genesis39-keys genesis39-opkg-release genesis39-opkg-next genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search family-dns genesis39 genesis39-keys genesis39-opkg-release genesis39-debug" FILES="../../filesystem/" BIN_DIR="$binfolder"
-make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search family-dns dnscrypt-proxy" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image PROFILE="$upstreamProfile" PACKAGES="luci luci-app-sqm luci-app-ddns safe-search family-dns dnscrypt-proxy -wpad-basic-wolfssl wpad-wolfssl" FILES="../../filesystem/" BIN_DIR="$binfolder"
 
 popd>/dev/null
 echo Genesis 39: Build Complete
