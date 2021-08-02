@@ -10,7 +10,6 @@ be protected by CleanBrowsing.org's Adult Filter.
 Blocks access to all adult, pornographic and explicit sites. It does not block
 proxy or VPNs, nor mixed-content sites. Sites like Reddit are allowed. Google
 and Bing are set to the Safe Mode. Malicious and Phishing domains are blocked.
->>>>>>> master
 
 ## Preconfigured WiFi Networks
 - Genesis39
