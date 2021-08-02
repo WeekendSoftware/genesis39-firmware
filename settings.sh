@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export genesisBuilder=lede-imagebuilder-17.01.4-ar71xx-generic.Linux-x86_64
-export genesisDownload=https://downloads.lede-project.org/releases/17.01.4/targets/ar71xx/generic/lede-imagebuilder-17.01.4-ar71xx-generic.Linux-x86_64.tar.xz
-export buildProfile=archer-c7-v2
+export genesisBuilder=openwrt-imagebuilder-19.07.7-ath79-generic.Linux-x86_64
+export genesisDownload=https://downloads.openwrt.org/releases/19.07.7/targets/ath79/generic/openwrt-imagebuilder-19.07.7-ath79-generic.Linux-x86_64.tar.xz
+export buildProfile=tplink_archer-c7-v5
