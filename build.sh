@@ -35,7 +35,7 @@ rm  dynamic-files/bin/$genesisBuilder/*
 binfolder=`echo $(pwd)/dynamic-files/bin/$genesisBuilder`
 
 pushd dynamic-files/$genesisBuilder>/dev/null
-make image  PROFILE="$buildProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy -wpad-basic-wolfssl wpad-wolfssl hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
+make image  PROFILE="$buildProfile" PACKAGES="luci luci-app-sqm luci-app-ddns dnscrypt-proxy2 -wpad-basic-wolfssl wpad-wolfssl hostapd-utils" FILES="../../filesystem/" BIN_DIR="$binfolder"
 #make clean
 popd>/dev/null
 echo Genesis 39: Build Complete
