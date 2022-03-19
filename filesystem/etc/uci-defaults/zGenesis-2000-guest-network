@@ -15,7 +15,7 @@ network=Guest
 zonename=Guest
 wifiname='Genesis39-Guest'
 wifikey='Genesis39'
-ip='192.168.12.1'
+ip='192.168.40.1'
 
 genesis39_add_network $network $ip
 genesis39_add_zone $zonename $network
